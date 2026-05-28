@@ -71,38 +71,45 @@ CadPoints_LT_Plugin_v0_6_0.zip
 The package currently contains or should contain:
 
 ```text
-CadPoints.bundle/
-  PackageContents.xml
-  Contents/
-    LISP/
-      cadpoints.lsp
-    Resources/
-      cp-export.bmp
-      cp-export-16.bmp
-      cp-settings.bmp
-      cp-settings-16.bmp
-      cp-help.bmp
-      cp-help-16.bmp
-    Menu/
-      cadpoints.mnu
-    Test/
-      example_test.dxf
-      create_example_test.scr
-      cadpoints_smoke_test.lsp
-      README_TEST.md
-  README.md
+src/
+  CadPoints.bundle/
+    PackageContents.xml
+    Contents/
+      LISP/
+        cadpoints.lsp
+      Resources/
+        cp-export.bmp
+        cp-export-16.bmp
+        cp-settings.bmp
+        cp-settings-16.bmp
+        cp-help.bmp
+        cp-help-16.bmp
+      Menu/
+        cadpoints.mnu
+      Test/
+        example_test.dxf
+        create_example_test.scr
+        cadpoints_smoke_test.lsp
+        README_TEST.md
+    README.md
 ```
 
-If the repository structure differs after import, preserve the same logical separation:
+The canonical editable bundle source location in this repository is:
 
 ```text
-source LISP
-bundle metadata
-resources/icons
-menu/ribbon helper files
-test fixtures
-documentation
-release zip output
+src/CadPoints.bundle
+```
+
+The editable bundle source is kept in `src/CadPoints.bundle`. The build script copies it to `dist/CadPoints.bundle` as generated output, then packages release ZIPs from the generated `dist` bundle. AutoCAD users should install either a built `dist/CadPoints.bundle` or the release ZIP contents, not random intermediate files.
+
+Preserve the same logical separation:
+
+```text
+src/CadPoints.bundle editable bundle source tracked by Git
+dist/CadPoints.bundle generated installable AutoCAD LT bundle
+scripts/             repository automation
+tests/               repository-level static tests
+releases/            generated release ZIP output
 ```
 
 ## Core commands
@@ -544,6 +551,7 @@ Do not overpromise Civil 3D level functionality.
 8. Fail gracefully on unsupported entities.
 9. Add or update tests whenever changing extraction, naming, table, scale, or contour logic.
 10. Update README whenever adding or changing a setting.
+11. Update `TODO.md` after each completed task so it reflects newly completed work, newly discovered follow-ups, and changed priorities.
 
 ## Suggested next development steps
 
@@ -554,15 +562,19 @@ Import the latest package structure into the repository root.
 Recommended initial structure:
 
 ```text
-CadPoints.bundle/
+dist/
+  CadPoints.bundle/
+src/
+  CadPoints.bundle/
 README.md
 scripts/
-  build-release.js
-  static-test.js
+  build_release.py
+tests/
+  run_static_tests.py
 releases/
 ```
 
-Keep the actual distributable bundle in `CadPoints.bundle/`.
+Keep the editable bundle source in `src/CadPoints.bundle/`. Generate `dist/CadPoints.bundle/` with `py scripts/build_release.py`.
 
 ### Step 2: Add repeatable build script
 
@@ -627,6 +639,8 @@ tests run
 test results
 known limitations
 ```
+
+After each task, update `TODO.md` before the final response. Mark completed items, add any follow-up work discovered during implementation, and remove or reword stale items when the project direction changes.
 
 If AutoCAD LT runtime testing was not performed, state it explicitly.
 

@@ -1,14 +1,23 @@
 from pathlib import Path
-import re
-import zipfile
 
-root = Path(__file__).resolve().parent / "CadPoints.bundle"
+repo_root = Path(__file__).resolve().parents[1]
+root = repo_root / "src" / "CadPoints.bundle"
 lsp = root / "Contents" / "LISP" / "cadpoints.lsp"
 readme = root / "README.md"
 package = root / "PackageContents.xml"
 test_dir = root / "Contents" / "Test"
 
 errors = []
+for required_path in [root, lsp, readme, package, test_dir]:
+    if not required_path.exists():
+        errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
+
+if errors:
+    print("STATIC TESTS FAILED")
+    for error in errors:
+        print("-", error)
+    raise SystemExit(1)
+
 text = lsp.read_text(encoding="utf-8")
 
 # Parenthesis balance ignoring comments and strings.
