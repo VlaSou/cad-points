@@ -4,6 +4,10 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 
 ## Standardization
 
+- [ ] Fix GitHub push authentication for this workstation.
+  - `git push origin main` failed with `Permission denied (publickey)` for `git@github.com`.
+  - Confirm the SSH key is loaded and authorized for `VlaSou/cad-points`, or switch the remote to an approved HTTPS/authenticated workflow.
+
 - [x] Add a project rule that `TODO.md` must be updated after each task.
   - The rule is now part of `AGENTS.md` development and communication guidance.
 
