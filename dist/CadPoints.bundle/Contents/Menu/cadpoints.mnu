@@ -1,0 +1,14 @@
+***MENUGROUP=CADPOINTS
+
+***POP1
+**CADPOINTS
+ID_CADPOINTS       [CadPoints]
+ID_CPEXPORT        [Export points]^C^C_CPEXPORT
+ID_CPSETTINGS      [Settings]^C^C_CPSETTINGS
+ID_CPHELP          [Help]^C^C_CPHELP
+
+***TOOLBARS
+**CADPOINTS
+ID_CPEXPORT [_Button("Export points", "cp-export.bmp", "cp-export.bmp")]^C^C_CPEXPORT
+ID_CPSETTINGS [_Button("Settings", "cp-settings.bmp", "cp-settings.bmp")]^C^C_CPSETTINGS
+ID_CPHELP [_Button("Help", "cp-help.bmp", "cp-help.bmp")]^C^C_CPHELP

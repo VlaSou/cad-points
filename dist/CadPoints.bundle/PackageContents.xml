@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ApplicationPackage
+  SchemaVersion="1.0"
+  AppVersion="0.6.0"
+  Name="CadPoints"
+  Description="Exports named points and sampled curve points from configured AutoCAD LT layers to CSV, inserts generated point entities, labels, and a point table into the drawing."
+  Author="Weela"
+  ProductCode="{6F4C5B0D-9929-4A24-A6DD-7FD57296506D}"
+  Icon="./Contents/Resources/cadpoints.ico"
+  Helpfile="./Contents/Resources/help.html">
+  <CompanyDetails
+    Name="Weela"
+    Email="support@example.local" />
+  <Components>
+    <RuntimeRequirements
+      OS="Win32|Win64"
+      Platform="ACADLT" />
+    <ComponentEntry
+      AppName="CadPoints"
+      ModuleName="./Contents/LISP/cadpoints.lsp" />
+  </Components>
+</ApplicationPackage>
