@@ -39,6 +39,9 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 
 ## Documentation
 
+- [x] Add Czech user-facing README.
+  - Added `README.cs-CZ.md` as a Czech localized version of the current user documentation.
+
 - [ ] Split documentation by audience.
   - Keep root `README.md` as the user-facing quick start.
   - Add `docs/development.md` for repository layout, testing, release process, and AutoCAD LT limitations.
