@@ -111,15 +111,20 @@ scripts/             repository automation
 tests/               repository-level static tests
 releases/            generated release ZIP output
 .agents/             agent-specific runbooks and verification instructions
+docs/                human-facing developer and settings documentation
 ```
 
 The `.agents/` folder is part of the repository documentation surface for local and future agents. Keep any agent-facing runbooks there, including:
 
 ```text
+.agents/AGENTS.development.md
+.agents/AGENTS.test.md
 .agents/AGENTS.verification.md
 ```
 
 Add future agent instruction files to the same folder rather than scattering them through the repository root.
+
+Keep `docs/` for human-facing documentation and `.agents/` for agent-facing runbooks.
 
 ## Core commands
 

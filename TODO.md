@@ -136,6 +136,10 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 - [x] Expose the `.agents/` folder in root `AGENTS.md`.
   - Root instructions now point to `.agents/` and to `.agents/AGENTS.verification.md` as the canonical agent runbook location.
 
+- [x] Add separate agent runbooks for development and test workflows.
+  - Added `.agents/AGENTS.development.md` for implementation and release work.
+  - Added `.agents/AGENTS.test.md` for static, release, install, and AutoCAD LT smoke-test validation.
+
 ## AutoLISP Maintainability
 
 - [ ] Group `cadpoints.lsp` into clearer sections with comment headers.

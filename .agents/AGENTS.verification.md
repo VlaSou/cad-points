@@ -2,6 +2,11 @@
 
 This file is for a local verification agent that can run AutoCAD LT on Windows.
 
+Related runbooks:
+
+- `AGENTS.development.md` for implementation and packaging work
+- `AGENTS.test.md` for static checks, release validation, and smoke-test steps
+
 ## Goal
 
 Verify that CadPoints can be:
