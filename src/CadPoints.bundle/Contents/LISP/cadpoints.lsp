@@ -3,7 +3,7 @@
 
 (if (fboundp 'vl-load-com) (vl-load-com))
 
-(setq *cadpoints-version* "0.6.0")
+(setq *cadpoints-version* "0.6.1")
 (setq *cadpoints-point-name-pattern* "")
 (setq *cadpoints-point-name-counters* nil)
 (setq *cadpoints-env-prefix* "CADPOINTS_")

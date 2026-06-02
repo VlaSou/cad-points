@@ -15,7 +15,8 @@ installer_test = repo_root / "tests" / "test_install_windows.py"
 docs_dev = repo_root / "docs" / "development.md"
 docs_settings = repo_root / "docs" / "settings.md"
 package_json = repo_root / "package.json"
-release_wrapper = repo_root / "scripts" / "release.mjs"
+version_script = repo_root / "scripts" / "version.py"
+release_wrapper = repo_root / "scripts" / "release.py"
 
 errors = []
 for required_path in [
@@ -30,6 +31,7 @@ for required_path in [
     docs_dev,
     docs_settings,
     package_json,
+    version_script,
     release_wrapper,
 ]:
     if not required_path.exists():
@@ -65,7 +67,6 @@ if plain.count('(') != plain.count(')'):
     errors.append(f"Unbalanced parentheses: {plain.count('(')} != {plain.count(')')}")
 
 required_tokens = [
-    '(setq *cadpoints-version* "0.6.0")',
     '(cons "DRAWING_SCALE"',
     '(cons "POINT_NAME_PATTERN"',
     '(cons "DRAW_POINTS"',
@@ -83,7 +84,6 @@ for token in required_tokens:
 
 readme_text = readme.read_text(encoding="utf-8")
 for token in [
-    "0.6.0",
     "Point naming",
     "example_test.dxf",
     "cadpoints_smoke_test.lsp",
@@ -139,20 +139,24 @@ try:
 except json.JSONDecodeError as exc:
     errors.append(f"package.json is invalid JSON: {exc}")
 else:
+    version = package_json_data.get("version")
     if package_json_data.get("name") != "@vlasou/cad-points":
         errors.append("package.json name is not @vlasou/cad-points")
-    if package_json_data.get("version") != "0.6.0":
-        errors.append("package.json version is not 0.6.0")
+    if not isinstance(version, str) or not version.count(".") == 2:
+        errors.append("package.json version is missing or invalid")
     if package_json_data.get("packageManager") != "pnpm@9.15.4":
         errors.append("package.json packageManager is not pnpm@9.15.4")
     scripts = package_json_data.get("scripts", {})
     expected_scripts = {
         "check": "py -3 tests/run_static_tests.py",
         "test": "pnpm check",
-        "build:zip": "py -3 scripts/build_release.py",
+        "version:patch": "py -3 scripts/version.py patch",
+        "version:minor": "py -3 scripts/version.py minor",
+        "version:major": "py -3 scripts/version.py major",
+        "build:zip": "py -3 scripts/release.py",
         "build": "pnpm build:zip",
-        "release:check": "node scripts/release.mjs --check",
-        "release": "node scripts/release.mjs",
+        "release:check": "py -3 scripts/release.py --check",
+        "release": "py -3 scripts/release.py",
     }
     for script_name, expected_value in expected_scripts.items():
         actual_value = scripts.get(script_name)
@@ -161,14 +165,27 @@ else:
                 f"package.json script {script_name} is {actual_value!r}, expected {expected_value!r}"
             )
 
+    help_html_text = (root / "Contents" / "Resources" / "help.html").read_text(encoding="utf-8")
+    versioned_bodies = {
+        "bundle README": readme_text,
+        "Czech README": cz_readme_text,
+        "help.html": help_html_text,
+        "PackageContents.xml": package.read_text(encoding="utf-8"),
+        "cadpoints.lsp": text,
+    }
+    for label, body in versioned_bodies.items():
+        if version not in body:
+            errors.append(f"Missing version {version} in {label}")
+
+version_wrapper_text = version_script.read_text(encoding="utf-8")
+for token in ["bump_semver", "replace_first", "Release ZIP name will use"]:
+    if token not in version_wrapper_text:
+        errors.append(f"Missing token in version wrapper: {token}")
+
 wrapper_text = release_wrapper.read_text(encoding="utf-8")
-for token in ["build_release.py", "--check"]:
+for token in ["package_version", "validate_bundle", "create_zip"]:
     if token not in wrapper_text:
         errors.append(f"Missing token in release wrapper: {token}")
-
-pkg_text = package.read_text(encoding="utf-8")
-if 'AppVersion="0.6.0"' not in pkg_text:
-    errors.append("PackageContents.xml AppVersion is not 0.6.0")
 
 for filename in ["example_test.dxf", "create_example_test.scr", "cadpoints_smoke_test.lsp", "README_TEST.md"]:
     if not (test_dir / filename).exists():

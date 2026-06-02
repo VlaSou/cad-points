@@ -18,7 +18,7 @@ Run the static checks and create the release ZIP from the repository root:
 
 ```text
 python tests/run_static_tests.py
-python scripts/build_release.py
+python scripts/release.py
 ```
 
 If you prefer npm-style entry points, the repository also exposes:
@@ -38,7 +38,7 @@ pnpm release
 pnpm release:check
 ```
 
-`pnpm release` delegates to `scripts/release.mjs`, which wraps the Python release build script.
+`pnpm release` delegates to `scripts/release.py`, which wraps the Python release build script.
 
 The release ZIP is expected to contain:
 
@@ -50,11 +50,15 @@ install_windows.bat
 
 Before each release:
 
-1. Bump the version in the project version source and sync the version string in the README files, `help.html`, and `PackageContents.xml`.
-2. Make sure no editor, file browser, AutoCAD session, or preview pane is holding files inside `dist/CadPoints.bundle`.
-3. Run `python tests/run_static_tests.py`.
-4. Run `python scripts/build_release.py`.
-5. Verify the ZIP name and contents before publishing.
+1. Bump the version with the SemVer script from `package.json`:
+   - `pnpm version:patch`
+   - `pnpm version:minor`
+   - `pnpm version:major`
+2. Confirm the versioned files in the README files, `help.html`, and `PackageContents.xml` were updated together.
+3. Make sure no editor, file browser, AutoCAD session, or preview pane is holding files inside `dist/CadPoints.bundle`.
+4. Run `python tests/run_static_tests.py`.
+5. Run `python scripts/release.py`.
+6. Verify the ZIP name and contents before publishing.
 
 If `dist/CadPoints.bundle` is locked by an editor or preview pane, the build script falls back to a temporary staging copy so the ZIP can still be created. For a clean `dist` refresh, close anything that is holding files open and rerun the build.
 

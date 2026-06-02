@@ -215,7 +215,11 @@ This is not equivalent to Civil 3D terrain contours.
 
 Before each release:
 
-1. bump the version in all versioned files,
+1. bump the version with the SemVer script:
+   - `pnpm version:patch`
+   - `pnpm version:minor`
+   - `pnpm version:major`
+2. confirm the versioned files were updated consistently,
 2. run static tests,
 3. build the release ZIP,
 4. verify ZIP contents,
@@ -230,7 +234,7 @@ pnpm release
 pnpm release:check
 ```
 
-`pnpm release` delegates to `scripts/release.mjs`, which wraps the Python release build.
+`pnpm release` delegates to `scripts/release.py`, which performs validation and builds the release ZIP.
 
 ## Installer Notes
 

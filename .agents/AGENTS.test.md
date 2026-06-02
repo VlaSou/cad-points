@@ -24,7 +24,8 @@ Confirm these files exist:
 ```text
 package.json
 scripts/build_release.py
-scripts/release.mjs
+scripts/release.py
+scripts/version.py
 scripts/install_windows.bat
 tests/run_static_tests.py
 tests/test_install_windows.py
@@ -62,7 +63,7 @@ The static checks should confirm:
 Build the ZIP:
 
 ```text
-py -3 scripts/build_release.py
+py -3 scripts/release.py
 ```
 
 Or use the pnpm entrypoint:
@@ -74,7 +75,7 @@ pnpm release
 Expected ZIP:
 
 ```text
-releases/CadPoints_LT_Plugin_v0_6_0.zip
+releases/CadPoints_LT_Plugin_vX_Y_Z.zip
 ```
 
 The archive must contain:

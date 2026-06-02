@@ -5,7 +5,7 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 ## Version
 
 ```text
-0.6.0
+0.6.1
 ```
 
 ## Supported AutoCAD
@@ -46,8 +46,8 @@ docs/development.md
 docs/settings.md
 ```
 
-Release note: bump the version before each release and keep the versioned files in sync before running `python scripts/build_release.py`.
-pnpm-first package commands are available via `pnpm check`, `pnpm build:zip`, `pnpm release`, and `pnpm release:check`. `pnpm release` uses `scripts/release.mjs` as its entrypoint.
+Release note: bump the version before each release with `pnpm version:patch` (or `minor`/`major` as appropriate) and keep the versioned files in sync before running `python scripts/release.py`.
+pnpm-first package commands are available via `pnpm check`, `pnpm build:zip`, `pnpm release`, and `pnpm release:check`. `pnpm release` uses `scripts/release.py` as its entrypoint.
 
 ## Commands
 

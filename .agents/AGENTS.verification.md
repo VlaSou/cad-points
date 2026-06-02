@@ -57,7 +57,8 @@ Confirm that these files exist:
 
 ```text
 package.json
-scripts/build_release.py
+scripts/release.py
+scripts/version.py
 scripts/install_windows.bat
 tests/run_static_tests.py
 src/CadPoints.bundle/PackageContents.xml
@@ -83,13 +84,13 @@ STATIC TESTS OK
 From the repository root, run:
 
 ```text
-py -3 scripts/build_release.py
+py -3 scripts/release.py
 ```
 
 Expected result:
 
 ```text
-releases/CadPoints_LT_Plugin_v0_6_0.zip
+releases/CadPoints_LT_Plugin_vX_Y_Z.zip
 ```
 
 The ZIP must contain:

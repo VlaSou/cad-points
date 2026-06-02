@@ -19,11 +19,10 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 - [x] Fix `tests/run_static_tests.py` path resolution.
   - The script now resolves the canonical source bundle path from the repository root: `src/CadPoints.bundle`.
 
-- [ ] Add a single source of truth for the project version.
-  - Current version `0.6.0` appears in README files, `PackageContents.xml`, `cadpoints.lsp`, and `help.html`.
-  - Add a small manifest file or release script check so these values cannot drift.
-  - Bump the version before every release and keep all versioned files in sync.
-  - `package.json` now participates in the same version check.
+- [x] Add a single source of truth for the project version.
+  - `package.json` is the canonical version source.
+  - `pnpm version:patch|minor|major` updates `package.json`, `PackageContents.xml`, `cadpoints.lsp`, the README files, and `help.html` together.
+  - The release build and static checks verify that the versioned files stay in sync.
 
 - [x] Add a repeatable release build script.
   - Validate bundle structure.
@@ -31,6 +30,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Create `releases/CadPoints_LT_Plugin_vX_Y_Z.zip`.
   - Ensure the ZIP root contains `CadPoints.bundle/` directly, without an extra parent folder.
   - The build now falls back to a temporary staging copy if `dist/CadPoints.bundle` is locked by an editor.
+  - Use the SemVer bump script before release when the version needs to change.
 
 - [x] Standardize generated/build output directories.
   - Keep source, test assets, release zips, and temporary build output clearly separated.
@@ -98,11 +98,11 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 
 ## Tests And Quality Gates
 
-- [ ] Make static tests runnable from a clean checkout with one command.
+- [x] Make static tests runnable from a clean checkout with one command.
   - Prefer `python tests/run_static_tests.py` unless the project later adopts a package manager.
   - If JavaScript tooling is added, prefer `pnpm` for dependency management.
   - `package.json` now exposes pnpm-first scripts for check/build/release.
-  - `scripts/release.mjs` now provides the pnpm release entrypoint around the Python release workflow.
+  - `scripts/version.py` and `scripts/release.py` now provide the pnpm release/version entrypoints around the Python workflow.
 
 - [ ] Extend static tests to validate documentation coverage.
   - Installation instructions.
@@ -139,6 +139,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 - [x] Add separate agent runbooks for development and test workflows.
   - Added `.agents/AGENTS.development.md` for implementation and release work.
   - Added `.agents/AGENTS.test.md` for static, release, install, and AutoCAD LT smoke-test validation.
+  - Added `.agents/AGENTS.verification.md` for end-to-end local clone/install/AutoCAD verification.
 
 ## AutoLISP Maintainability
 

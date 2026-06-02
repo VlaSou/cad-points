@@ -62,10 +62,10 @@ Never introduce metre-based defaults such as `1` for 1 m unless the setting clea
 
 ## Current package state
 
-The latest prepared package version is:
+The latest prepared package version follows SemVer and is stored in `package.json`.
 
 ```text
-CadPoints_LT_Plugin_v0_6_0.zip
+CadPoints_LT_Plugin_vX_Y_Z.zip
 ```
 
 The package currently contains or should contain:
@@ -583,12 +583,14 @@ src/
 README.md
 scripts/
   build_release.py
+  release.py
+  version.py
 tests/
   run_static_tests.py
 releases/
 ```
 
-Keep the editable bundle source in `src/CadPoints.bundle/`. Generate `dist/CadPoints.bundle/` with `py scripts/build_release.py`.
+Keep the editable bundle source in `src/CadPoints.bundle/`. Generate `dist/CadPoints.bundle/` with `py scripts/release.py`.
 
 ### Step 2: Add repeatable build script
 
