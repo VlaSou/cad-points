@@ -44,7 +44,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Reworked the install flow for non-technical Windows users.
 
 - [x] Add a simple Windows installer script.
-  - Added `scripts/install_windows.ps1`.
+  - Added `install_windows.bat`.
   - The script installs the bundle into `%APPDATA%\Autodesk\ApplicationPlugins` without admin rights.
   - It auto-finds the bundle from `dist/`, `src/`, or the current working directory.
 
@@ -92,7 +92,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Contour limitation.
   - Test fixture instructions.
   - Windows installer script coverage.
-  - Added an integration test for `scripts/install_windows.ps1`.
+  - Added an integration test for `install_windows.bat`.
 
 - [ ] Add release-zip validation tests.
   - ZIP exists for the requested version.

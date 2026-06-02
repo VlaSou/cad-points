@@ -8,7 +8,7 @@ lsp = root / "Contents" / "LISP" / "cadpoints.lsp"
 readme = root / "README.md"
 package = root / "PackageContents.xml"
 test_dir = root / "Contents" / "Test"
-installer = repo_root / "scripts" / "install_windows.ps1"
+installer = repo_root / "install_windows.bat"
 cz_readme = repo_root / "README.cs-CZ.md"
 installer_test = repo_root / "tests" / "test_install_windows.py"
 
@@ -70,7 +70,7 @@ for token in ["0.6.0", "Point naming", "example_test.dxf", "cadpoints_smoke_test
 
 cz_readme_text = cz_readme.read_text(encoding="utf-8")
 for token in [
-    "scripts\\install_windows.ps1",
+    "install_windows.bat",
     "AutoCAD LT 2026.1.1",
     "%APPDATA%\\Autodesk\\ApplicationPlugins",
 ]:

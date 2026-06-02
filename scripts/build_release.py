@@ -13,6 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_BUNDLE_DIR = REPO_ROOT / "src" / "CadPoints.bundle"
 DIST_BUNDLE_DIR = REPO_ROOT / "dist" / "CadPoints.bundle"
 RELEASES_DIR = REPO_ROOT / "releases"
+INSTALLER_BAT = REPO_ROOT / "install_windows.bat"
 
 
 def read_text(path: Path) -> str:
@@ -98,11 +99,15 @@ def create_zip(version: str) -> Path:
         for path in sorted(DIST_BUNDLE_DIR.rglob("*")):
             if path.is_file():
                 archive.write(path, Path("CadPoints.bundle") / path.relative_to(DIST_BUNDLE_DIR))
+        if INSTALLER_BAT.exists():
+            archive.write(INSTALLER_BAT, INSTALLER_BAT.name)
 
     with zipfile.ZipFile(zip_path) as archive:
         names = set(archive.namelist())
         if "CadPoints.bundle/PackageContents.xml" not in names:
             raise ValueError("Release ZIP does not contain CadPoints.bundle/PackageContents.xml")
+        if INSTALLER_BAT.exists() and INSTALLER_BAT.name not in names:
+            raise ValueError(f"Release ZIP does not contain {INSTALLER_BAT.name}")
 
     return zip_path
 

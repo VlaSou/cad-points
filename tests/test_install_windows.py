@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -8,19 +7,16 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-INSTALLER = REPO_ROOT / "scripts" / "install_windows.ps1"
+INSTALLER = REPO_ROOT / "install_windows.bat"
 SOURCE_BUNDLE = REPO_ROOT / "src" / "CadPoints.bundle"
 
 
 def run_install(destination_root: Path, cwd: Path) -> subprocess.CompletedProcess[str]:
     command = [
-        "powershell",
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
+        "cmd.exe",
+        "/c",
         str(INSTALLER),
-        "-DestinationRoot",
+        str(SOURCE_BUNDLE),
         str(destination_root),
     ]
     return subprocess.run(
@@ -64,7 +60,7 @@ def main() -> int:
         sentinel = destination_bundle / "sentinel.txt"
         sentinel.write_text("old bundle", encoding="utf-8")
 
-        result = run_install(destination_root=destination_root, cwd=REPO_ROOT / "tests")
+        result = run_install(destination_root=destination_root, cwd=REPO_ROOT)
         if result.returncode != 0:
             print("INSTALLER TEST FAILED")
             print("STDOUT:")

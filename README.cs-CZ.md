@@ -12,17 +12,13 @@ Tato verze je připravená pro Windows a pro podporu AutoCAD LT 2026.1.1 (`W.164
 
 ## Rychlá instalace ve Windows
 
-Nejjednodušší způsob je použít připravený PowerShell skript. Nepotřebuje administrátorská práva.
+Nejjednodušší způsob je použít připravený `install_windows.bat`. Nepotřebuje administrátorská práva.
+V release ZIPu je tento soubor v kořenové složce vedle `CadPoints.bundle`.
 
 ### Varianta 1: doporučená
 
 1. Stáhni nebo rozbal CadPoints do nějaké složky, například na Plochu nebo do Dokumentů.
-2. Otevři PowerShell v kořenové složce projektu.
-3. Spusť:
-
-```powershell
-powershell -ExecutionPolicy Bypass -File .\scripts\install_windows.ps1
-```
+2. Dvojklikni na `install_windows.bat` v kořenové složce balíčku.
 
 Skript:
 
