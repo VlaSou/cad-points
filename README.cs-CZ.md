@@ -16,6 +16,8 @@ Nejjednodušší způsob je použít připravený `install_windows.bat`. Nepotř
 V release ZIPu je tento soubor v kořenové složce vedle `CadPoints.bundle`.
 Ve zdrojovém repozitáři je instalační skript v `scripts\install_windows.bat`.
 
+Složka `releases/` je lokální generovaný výstup, ne verzovaný zdroj. Uživatel má stahovat výsledný release ZIP artefakt, ne čekat, že v gitu bude vidět `releases/` adresář.
+
 ### Varianta 1: doporučená
 
 1. Stáhni nebo rozbal CadPoints do nějaké složky, například na Plochu nebo do Dokumentů.

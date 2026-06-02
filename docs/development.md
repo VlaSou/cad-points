@@ -48,6 +48,8 @@ CadPoints.bundle/Contents/...
 install_windows.bat
 ```
 
+`releases/` is a generated local output folder and is intentionally not tracked in Git. The downloadable artifact for end users should be the ZIP itself, published as a GitHub Release asset or equivalent distribution channel.
+
 Before each release:
 
 1. Bump the version with the SemVer script from `package.json`:
