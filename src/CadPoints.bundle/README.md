@@ -35,6 +35,13 @@ or, for all users:
 
 Restart AutoCAD LT.
 
+For developer notes, build/release instructions, and the runtime test workflow, see:
+
+```text
+docs/development.md
+docs/settings.md
+```
+
 ## Commands
 
 ```text
@@ -507,3 +514,38 @@ CUILOAD
 ```
 
 For daily use, the manual `CUI` ribbon setup above is more predictable.
+
+## Troubleshooting
+
+- If the bundle does not autoload, confirm that `CadPoints.bundle` is copied into `%APPDATA%\Autodesk\ApplicationPlugins` and restart AutoCAD LT.
+- If `CPEXPORT` returns no points, check the configured source layers in `CPSETTINGS` and make sure the drawing actually contains matching geometry on those layers.
+- If labels or the table look too large or too small, check `drawing scale` and `table scale`; they are separate settings.
+- If curve sampling fails on a specific object type, the entity may not expose the curve functions required by AutoCAD LT. The bundle should report the unsupported type or handle and continue gracefully.
+- If contour output looks wrong, remember that CadPoints produces approximate contours from existing segments, not a Civil 3D terrain surface.
+
+## Test Workflow
+
+Run the static checks from the repository root:
+
+```text
+python tests/run_static_tests.py
+```
+
+Then test the bundle in AutoCAD LT 2026.1.1:
+
+```text
+APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
+APPLOAD CadPoints.bundle\Contents\Test\cadpoints_smoke_test.lsp
+CPSETTINGS
+CPEXPORT
+```
+
+Expected runtime results:
+
+- `CSV` file is created
+- `POINT` entities are created on `CADPOINTS_POINTS`
+- point labels are created on `CADPOINTS_POINT_LABELS`
+- the table is inserted to the right of the maximum X coordinate
+- expected point name prefixes appear in the output
+
+Important: runtime validation in AutoCAD LT is required for the final check. Static tests do not prove that AutoCAD-specific commands and curve functions behave correctly on the target machine.

@@ -48,6 +48,13 @@ do této složky:
 
 Pak restartuj AutoCAD LT.
 
+Pro vývojářské poznámky, build/release postup a runtime test workflow viz:
+
+```text
+docs/development.md
+docs/settings.md
+```
+
 ### Co když se nic nenačte
 
 - zkontroluj, že se kopíruje celá složka `CadPoints.bundle`, ne jen její obsah,
@@ -283,3 +290,6 @@ Pro běžné použití stačí vytvořit panel v AutoCAD LT přes `CUI` a přida
 - Pokud `CPEXPORT` nic nenajde, zkontroluj nastavení zdrojových hladin v `CPSETTINGS`.
 - Pokud jsou popisy nebo tabulka moc velké nebo malé, zkontroluj `drawing scale` a `table scale`.
 - Pokud se vrstvy nebo tabulka objeví špatně, zkontroluj, že výkres opravdu pracuje v milimetrech.
+- Pokud `CPEXPORT` vrátí nulu bodů, ověř, že jsou zdrojové objekty opravdu na nastavených hladinách a že jde o podporovanou geometrii.
+- Pokud vzorkování křivek selže na konkrétním objektu, může AutoCAD LT pro daný typ neposkytnout potřebné curve funkce. Balíček by měl typ nebo handle nahlásit a pokračovat dál.
+- Pokud vrstvy vypadají nepřesně, pamatuj, že CadPoints vytváří jen přibližné vrstevnice ze segmentů, ne skutečný povrch jako v Civil 3D.

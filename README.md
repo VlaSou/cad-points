@@ -35,6 +35,13 @@ or, for all users:
 
 Restart AutoCAD LT.
 
+For developer notes, build/release instructions, and the runtime test workflow, see:
+
+```text
+docs/development.md
+docs/settings.md
+```
+
 ## Commands
 
 ```text
@@ -507,3 +514,11 @@ CUILOAD
 ```
 
 For daily use, the manual `CUI` ribbon setup above is more predictable.
+
+## Troubleshooting
+
+- If the bundle does not autoload, confirm that `CadPoints.bundle` is copied into `%APPDATA%\Autodesk\ApplicationPlugins` and restart AutoCAD LT.
+- If `CPEXPORT` returns no points, check the configured source layers in `CPSETTINGS` and make sure the drawing actually contains matching geometry on those layers.
+- If labels or the table look too large or too small, check `drawing scale` and `table scale`; they are separate settings.
+- If curve sampling fails on a specific object type, the entity may not expose the curve functions required by AutoCAD LT. The bundle should report the unsupported type or handle and continue gracefully.
+- If contour output looks wrong, remember that CadPoints produces approximate contours from existing segments, not a Civil 3D terrain surface.

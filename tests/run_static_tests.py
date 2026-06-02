@@ -11,9 +11,22 @@ test_dir = root / "Contents" / "Test"
 installer = repo_root / "install_windows.bat"
 cz_readme = repo_root / "README.cs-CZ.md"
 installer_test = repo_root / "tests" / "test_install_windows.py"
+docs_dev = repo_root / "docs" / "development.md"
+docs_settings = repo_root / "docs" / "settings.md"
 
 errors = []
-for required_path in [root, lsp, readme, package, test_dir, installer, cz_readme, installer_test]:
+for required_path in [
+    root,
+    lsp,
+    readme,
+    package,
+    test_dir,
+    installer,
+    cz_readme,
+    installer_test,
+    docs_dev,
+    docs_settings,
+]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
 
@@ -64,7 +77,16 @@ for token in required_tokens:
         errors.append(f"Missing token in LISP: {token}")
 
 readme_text = readme.read_text(encoding="utf-8")
-for token in ["0.6.0", "Point naming", "example_test.dxf", "cadpoints_smoke_test.lsp", "DWG writing requires AutoCAD"]:
+for token in [
+    "0.6.0",
+    "Point naming",
+    "example_test.dxf",
+    "cadpoints_smoke_test.lsp",
+    "DWG writing requires AutoCAD",
+    "Troubleshooting",
+    "docs/development.md",
+    "docs/settings.md",
+]:
     if token not in readme_text:
         errors.append(f"Missing token in README: {token}")
 
@@ -73,9 +95,35 @@ for token in [
     "install_windows.bat",
     "AutoCAD LT 2026.1.1",
     "%APPDATA%\\Autodesk\\ApplicationPlugins",
+    "Rychlé řešení problémů",
+    "docs/development.md",
+    "docs/settings.md",
 ]:
     if token not in cz_readme_text:
         errors.append(f"Missing token in Czech README: {token}")
+
+docs_dev_text = docs_dev.read_text(encoding="utf-8")
+for token in [
+    "Repository Layout",
+    "Build And Release",
+    "Testing Workflow",
+    "AutoCAD LT Limitations",
+]:
+    if token not in docs_dev_text:
+        errors.append(f"Missing token in development docs: {token}")
+
+docs_settings_text = docs_settings.read_text(encoding="utf-8")
+for token in [
+    "CPSETTINGS",
+    "CPEXPORT",
+    "CPHELP",
+    "CADPOINTS_POINTS",
+    "CADPOINTS_POINT_LABELS",
+    "CADPOINTS_TABLE",
+    "CADPOINTS_CONTOURS",
+]:
+    if token not in docs_settings_text:
+        errors.append(f"Missing token in settings docs: {token}")
 
 pkg_text = package.read_text(encoding="utf-8")
 if 'AppVersion="0.6.0"' not in pkg_text:

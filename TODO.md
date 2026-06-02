@@ -52,6 +52,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Keep root `README.md` as the user-facing quick start.
   - Add `docs/development.md` for repository layout, testing, release process, and AutoCAD LT limitations.
   - Add `docs/settings.md` for all environment-backed settings and defaults.
+  - Completed in root README, Czech README, bundle README, and new docs files.
 
 - [ ] Add a troubleshooting section.
   - Bundle does not autoload.
@@ -60,12 +61,14 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - CSV path or write permission fails.
   - Curved geometry sampling fails because an AutoCAD LT curve function is unavailable.
   - Table or labels appear at unexpected scale because drawing/table scale is wrong.
+  - Completed in root README, Czech README, and `help.html`.
 
 - [ ] Document the test workflow end to end.
   - Static test command from repository root.
   - AutoCAD LT smoke test commands.
   - Expected generated CSV, point layers, labels, table, and point naming behavior.
   - Explicitly state that AutoCAD runtime testing is required for true validation.
+  - Completed in root README, Czech README, and bundle README.
 
 - [ ] Expand `Contents/Resources/help.html`.
   - Current file is a short summary.
