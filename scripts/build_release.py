@@ -5,6 +5,7 @@ import re
 import shutil
 import subprocess
 import sys
+import tempfile
 import zipfile
 from pathlib import Path
 
@@ -75,11 +76,20 @@ def validate_bundle() -> str:
     return version
 
 
-def build_dist_bundle() -> None:
+def build_dist_bundle() -> Path:
     if DIST_BUNDLE_DIR.exists():
-        shutil.rmtree(DIST_BUNDLE_DIR)
+        try:
+            shutil.rmtree(DIST_BUNDLE_DIR)
+        except PermissionError:
+            # Fall back to a clean staging tree when the generated dist bundle is
+            # open in an editor or file preview and cannot be removed safely.
+            staging_root = Path(tempfile.mkdtemp(prefix="CadPoints.bundle_staging_"))
+            staging_dir = staging_root / "CadPoints.bundle"
+            shutil.copytree(SOURCE_BUNDLE_DIR, staging_dir)
+            return staging_dir
     DIST_BUNDLE_DIR.parent.mkdir(exist_ok=True)
     shutil.copytree(SOURCE_BUNDLE_DIR, DIST_BUNDLE_DIR)
+    return DIST_BUNDLE_DIR
 
 
 def run_static_tests() -> None:
@@ -91,14 +101,14 @@ def run_static_tests() -> None:
 
 
 def create_zip(version: str) -> Path:
-    build_dist_bundle()
+    bundle_dir = build_dist_bundle()
     RELEASES_DIR.mkdir(exist_ok=True)
     zip_path = RELEASES_DIR / f"CadPoints_LT_Plugin_v{version_slug(version)}.zip"
 
     with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED) as archive:
-        for path in sorted(DIST_BUNDLE_DIR.rglob("*")):
+        for path in sorted(bundle_dir.rglob("*")):
             if path.is_file():
-                archive.write(path, Path("CadPoints.bundle") / path.relative_to(DIST_BUNDLE_DIR))
+                archive.write(path, Path("CadPoints.bundle") / path.relative_to(bundle_dir))
         if INSTALLER_BAT.exists():
             archive.write(INSTALLER_BAT, INSTALLER_BAT.name)
 

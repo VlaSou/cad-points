@@ -37,6 +37,8 @@ Before each release:
 4. Run `python scripts/build_release.py`.
 5. Verify the ZIP name and contents before publishing.
 
+If `dist/CadPoints.bundle` is locked by an editor or preview pane, the build script falls back to a temporary staging copy so the ZIP can still be created. For a clean `dist` refresh, close anything that is holding files open and rerun the build.
+
 ## Testing Workflow
 
 Static validation is not enough for a final release. The bundle must also be tested in AutoCAD LT 2026.1.1 on a real Windows PC.

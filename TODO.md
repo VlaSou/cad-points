@@ -29,6 +29,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Run static tests.
   - Create `releases/CadPoints_LT_Plugin_vX_Y_Z.zip`.
   - Ensure the ZIP root contains `CadPoints.bundle/` directly, without an extra parent folder.
+  - The build now falls back to a temporary staging copy if `dist/CadPoints.bundle` is locked by an editor.
 
 - [x] Standardize generated/build output directories.
   - Keep source, test assets, release zips, and temporary build output clearly separated.
