@@ -141,8 +141,12 @@ else:
         errors.append("package.json name is not @vlasou/cad-points")
     if package_json_data.get("version") != "0.6.0":
         errors.append("package.json version is not 0.6.0")
-    if "build" not in package_json_data.get("scripts", {}):
-        errors.append("package.json is missing the build script")
+    if package_json_data.get("packageManager") != "pnpm@9.15.4":
+        errors.append("package.json packageManager is not pnpm@9.15.4")
+    scripts = package_json_data.get("scripts", {})
+    for token in ["check", "test", "build:zip", "build", "release:check", "release"]:
+        if token not in scripts:
+            errors.append(f"package.json is missing the {token} script")
 
 pkg_text = package.read_text(encoding="utf-8")
 if 'AppVersion="0.6.0"' not in pkg_text:

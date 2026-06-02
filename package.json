@@ -5,10 +5,14 @@
   "license": "UNLICENSED",
   "private": false,
   "type": "commonjs",
+  "packageManager": "pnpm@9.15.4",
   "scripts": {
-    "test": "py -3 tests/run_static_tests.py",
-    "build": "py -3 scripts/build_release.py",
-    "release": "py -3 scripts/build_release.py"
+    "check": "py -3 tests/run_static_tests.py",
+    "test": "pnpm check",
+    "build:zip": "py -3 scripts/build_release.py",
+    "build": "pnpm build:zip",
+    "release:check": "py -3 scripts/build_release.py --check",
+    "release": "pnpm check && pnpm build:zip"
   },
   "files": [
     "dist/CadPoints.bundle",

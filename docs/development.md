@@ -29,6 +29,15 @@ npm run build
 npm run release
 ```
 
+This repository is pnpm-first. Use `pnpm` for package-manager-driven commands:
+
+```text
+pnpm check
+pnpm build:zip
+pnpm release
+pnpm release:check
+```
+
 The release ZIP is expected to contain:
 
 ```text
