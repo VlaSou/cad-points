@@ -22,6 +22,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 - [ ] Add a single source of truth for the project version.
   - Current version `0.6.0` appears in README files, `PackageContents.xml`, `cadpoints.lsp`, and `help.html`.
   - Add a small manifest file or release script check so these values cannot drift.
+  - Bump the version before every release and keep all versioned files in sync.
 
 - [x] Add a repeatable release build script.
   - Validate bundle structure.
@@ -80,6 +81,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Confirm root and bundle README version.
   - Confirm ZIP structure.
   - Confirm smoke test status.
+  - Confirm `dist/CadPoints.bundle` is not open in another app before running the build.
 
 - [ ] Add optional `.cuix` support for a ready-made ribbon panel.
   - The current install flow works without admin rights, but the user still has to create or load a panel manually.

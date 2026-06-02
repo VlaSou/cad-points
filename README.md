@@ -46,6 +46,8 @@ docs/development.md
 docs/settings.md
 ```
 
+Release note: bump the version before each release and keep the versioned files in sync before running `python scripts/build_release.py`.
+
 ## Commands
 
 ```text

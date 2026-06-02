@@ -56,6 +56,8 @@ docs/development.md
 docs/settings.md
 ```
 
+Release poznámka: před každým releasem zvedni verzi a srovnej verzi ve všech verzovaných souborech ještě před spuštěním `python scripts/build_release.py`.
+
 ### Co když se nic nenačte
 
 - zkontroluj, že se kopíruje celá složka `CadPoints.bundle`, ne jen její obsah,

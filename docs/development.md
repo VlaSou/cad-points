@@ -29,6 +29,14 @@ CadPoints.bundle/Contents/...
 install_windows.bat
 ```
 
+Before each release:
+
+1. Bump the version in the project version source and sync the version string in the README files, `help.html`, and `PackageContents.xml`.
+2. Make sure no editor, file browser, AutoCAD session, or preview pane is holding files inside `dist/CadPoints.bundle`.
+3. Run `python tests/run_static_tests.py`.
+4. Run `python scripts/build_release.py`.
+5. Verify the ZIP name and contents before publishing.
+
 ## Testing Workflow
 
 Static validation is not enough for a final release. The bundle must also be tested in AutoCAD LT 2026.1.1 on a real Windows PC.
