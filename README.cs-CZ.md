@@ -7,7 +7,7 @@ Tato verze je připravená pro Windows a pro podporu AutoCAD LT 2026.1.1 (`W.164
 ## Verze
 
 ```text
-0.6.1
+0.6.2
 ```
 
 ## Rychlá instalace ve Windows
@@ -17,6 +17,7 @@ V release ZIPu je tento soubor v kořenové složce vedle `CadPoints.bundle`.
 Ve zdrojovém repozitáři je instalační skript v `scripts\install_windows.bat`.
 
 Složka `releases/` je lokální generovaný výstup, ne verzovaný zdroj. Uživatel má stahovat výsledný release ZIP artefakt, ne čekat, že v gitu bude vidět `releases/` adresář.
+Složka `dist/` je generovaný payload balíčku pro packaging a budoucí npm/GitHub Packages publikování, ne uživatelský download.
 
 ### Varianta 1: doporučená
 

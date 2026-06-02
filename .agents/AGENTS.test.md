@@ -88,6 +88,8 @@ install_windows.bat
 
 The archive must not wrap the bundle in an extra parent folder.
 
+Treat `dist/` as generated package payload / staging output and `releases/` as the user-facing installer artifact output.
+
 ## Local Install Validation
 
 Use the Windows installer script:

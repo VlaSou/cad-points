@@ -5,7 +5,7 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 ## Version
 
 ```text
-0.6.1
+0.6.2
 ```
 
 ## Supported AutoCAD
@@ -38,6 +38,7 @@ or, for all users:
 ```
 
 The `releases/` folder is a local generated output folder, not tracked source. Users should download the release ZIP artifact itself, not expect a `releases/` directory inside the Git repository.
+The `dist/` folder is generated package payload used for packaging and future npm/GitHub Packages publishing, not a user-facing download.
 
 Restart AutoCAD LT.
 

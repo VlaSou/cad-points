@@ -30,6 +30,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Create `releases/CadPoints_LT_Plugin_vX_Y_Z.zip`.
   - Ensure the ZIP root contains `CadPoints.bundle/` directly, without an extra parent folder.
   - The build now falls back to a temporary staging copy if `dist/CadPoints.bundle` is locked by an editor.
+  - `dist/` is the generated package payload / staging output, while `releases/` is the installer artifact output.
   - Use the SemVer bump script before release when the version needs to change.
 
 - [x] Standardize generated/build output directories.
@@ -94,8 +95,8 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 - [ ] Add future packaging targets for broader distribution.
   - Chocolatey package for Windows users who prefer package-manager installs.
   - Homebrew formula or cask if a macOS-compatible distribution story ever becomes relevant.
-  - A self-contained executable installer is the preferred nice-to-have before those package-manager targets.
-  - Keep the current `.bat` installer as the primary low-friction path until the executable installer exists.
+  - A self-contained executable installer is the preferred next distribution target and should become the primary user-facing download.
+  - Keep the current release ZIP and `.bat` installer as the interim low-friction path until the executable installer exists.
 
 ## Tests And Quality Gates
 

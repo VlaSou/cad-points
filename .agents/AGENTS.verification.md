@@ -39,7 +39,7 @@ Canonical source bundle:
 src/CadPoints.bundle
 ```
 
-Generated installable bundle:
+Generated package payload / staging output:
 
 ```text
 dist/CadPoints.bundle
@@ -92,6 +92,8 @@ Expected result:
 ```text
 releases/CadPoints_LT_Plugin_vX_Y_Z.zip
 ```
+
+Treat `dist/` as the intermediate package payload and `releases/` as the downloadable installer artifact output.
 
 The ZIP must contain:
 

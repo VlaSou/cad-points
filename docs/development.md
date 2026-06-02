@@ -6,7 +6,7 @@ This document is for maintainers and integrators.
 
 ```text
 src/CadPoints.bundle/   editable bundle source
-dist/CadPoints.bundle/  generated installable bundle
+dist/CadPoints.bundle/  generated package payload / staging output
 scripts/                release and helper scripts
 tests/                  static and installer tests
 releases/               generated ZIP releases
@@ -48,7 +48,11 @@ CadPoints.bundle/Contents/...
 install_windows.bat
 ```
 
-`releases/` is a generated local output folder and is intentionally not tracked in Git. The downloadable artifact for end users should be the ZIP itself, published as a GitHub Release asset or equivalent distribution channel.
+`dist/` is generated output and is not tracked in Git. It is the payload used for package publishing and for assembling the installer ZIP.
+
+`releases/` is the generated installer output folder and is intentionally not tracked in Git. The downloadable artifact for end users should be the ZIP itself, published as a GitHub Release asset or equivalent distribution channel.
+
+Longer term, the preferred user-facing distribution should become a self-contained executable installer, with the release ZIP remaining the build artifact used to produce it.
 
 Before each release:
 

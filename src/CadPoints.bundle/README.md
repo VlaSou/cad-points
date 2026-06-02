@@ -5,7 +5,7 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 ## Version
 
 ```text
-0.6.1
+0.6.2
 ```
 
 ## Supported AutoCAD

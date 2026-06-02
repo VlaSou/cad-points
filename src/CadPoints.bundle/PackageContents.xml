@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ApplicationPackage
   SchemaVersion="1.0"
-  AppVersion="0.6.1"
+  AppVersion="0.6.2"
   Name="CadPoints"
   Description="Exports named points and sampled curve points from configured AutoCAD LT layers to CSV, inserts generated point entities, labels, and a point table into the drawing."
   Author="Weela"
