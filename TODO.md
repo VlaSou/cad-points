@@ -90,6 +90,12 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Generate or provide a tested CUIx that exposes `CPEXPORT`, `CPSETTINGS`, and `CPHELP`.
   - Verify the CUIx in AutoCAD LT 2026.1.1 before treating it as release-ready.
 
+- [ ] Add future packaging targets for broader distribution.
+  - Chocolatey package for Windows users who prefer package-manager installs.
+  - Homebrew formula or cask if a macOS-compatible distribution story ever becomes relevant.
+  - A self-contained executable installer is the preferred nice-to-have before those package-manager targets.
+  - Keep the current `.bat` installer as the primary low-friction path until the executable installer exists.
+
 ## Tests And Quality Gates
 
 - [ ] Make static tests runnable from a clean checkout with one command.
