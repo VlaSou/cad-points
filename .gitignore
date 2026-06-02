@@ -3,4 +3,3 @@ __pycache__/
 
 # Generated release artifacts.
 dist/
-releases/*.zip

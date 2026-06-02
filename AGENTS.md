@@ -109,7 +109,7 @@ src/CadPoints.bundle editable bundle source tracked by Git
 dist/CadPoints.bundle generated package payload / staging output
 scripts/             repository automation
 tests/               repository-level static tests
-releases/            generated release ZIP output
+releases/            tracked release ZIP artifacts
 .agents/             agent-specific runbooks and verification instructions
 docs/                human-facing developer and settings documentation
 ```

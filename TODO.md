@@ -78,14 +78,14 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Current file is a short summary.
   - Include install path, command list, default units, source layer setup, CSV/table columns, and contour limitation.
 
-- [ ] Document release verification.
+- [x] Document release verification.
   - Confirm `PackageContents.xml` version.
   - Confirm `cadpoints.lsp` version.
   - Confirm root and bundle README version.
   - Confirm ZIP structure.
   - Confirm smoke test status.
   - Confirm `dist/CadPoints.bundle` is not open in another app before running the build.
-  - Publish the generated ZIP as a GitHub Release asset so users can actually download it.
+  - The generated ZIPs are tracked in `releases/` for easy download from the repository.
 
 - [ ] Add optional `.cuix` support for a ready-made ribbon panel.
   - The current install flow works without admin rights, but the user still has to create or load a panel manually.

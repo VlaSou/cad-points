@@ -93,7 +93,7 @@ Expected result:
 releases/CadPoints_LT_Plugin_vX_Y_Z.zip
 ```
 
-Treat `dist/` as the intermediate package payload and `releases/` as the downloadable installer artifact output.
+Treat `dist/` as the intermediate package payload and `releases/` as the tracked downloadable installer artifact output.
 
 The ZIP must contain:
 

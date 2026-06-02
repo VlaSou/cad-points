@@ -37,7 +37,7 @@ or, for all users:
 %PROGRAMDATA%\Autodesk\ApplicationPlugins
 ```
 
-The `releases/` folder is a local generated output folder, not tracked source. Users should download the release ZIP artifact itself, not expect a `releases/` directory inside the Git repository.
+The `releases/` folder is tracked in the repository and contains the generated release ZIP artifacts for each published version.
 The `dist/` folder is generated package payload used for packaging and future npm/GitHub Packages publishing, not a user-facing download.
 
 Restart AutoCAD LT.
