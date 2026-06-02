@@ -44,7 +44,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Reworked the install flow for non-technical Windows users.
 
 - [x] Add a simple Windows installer script.
-  - Added `install_windows.bat`.
+  - Added `scripts/install_windows.bat`.
   - The script installs the bundle into `%APPDATA%\Autodesk\ApplicationPlugins` without admin rights.
   - It auto-finds the bundle from `dist/`, `src/`, or the current working directory.
 
@@ -81,6 +81,11 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Confirm ZIP structure.
   - Confirm smoke test status.
 
+- [ ] Add optional `.cuix` support for a ready-made ribbon panel.
+  - The current install flow works without admin rights, but the user still has to create or load a panel manually.
+  - Generate or provide a tested CUIx that exposes `CPEXPORT`, `CPSETTINGS`, and `CPHELP`.
+  - Verify the CUIx in AutoCAD LT 2026.1.1 before treating it as release-ready.
+
 ## Tests And Quality Gates
 
 - [ ] Make static tests runnable from a clean checkout with one command.
@@ -95,7 +100,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Contour limitation.
   - Test fixture instructions.
   - Windows installer script coverage.
-  - Added an integration test for `install_windows.bat`.
+  - Added an integration test for `scripts/install_windows.bat`.
 
 - [ ] Add release-zip validation tests.
   - ZIP exists for the requested version.

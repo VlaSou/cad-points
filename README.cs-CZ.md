@@ -14,11 +14,12 @@ Tato verze je připravená pro Windows a pro podporu AutoCAD LT 2026.1.1 (`W.164
 
 Nejjednodušší způsob je použít připravený `install_windows.bat`. Nepotřebuje administrátorská práva.
 V release ZIPu je tento soubor v kořenové složce vedle `CadPoints.bundle`.
+Ve zdrojovém repozitáři je instalační skript v `scripts\install_windows.bat`.
 
 ### Varianta 1: doporučená
 
 1. Stáhni nebo rozbal CadPoints do nějaké složky, například na Plochu nebo do Dokumentů.
-2. Dvojklikni na `install_windows.bat` v kořenové složce balíčku.
+2. Dvojklikni na `install_windows.bat` v kořenové složce release ZIPu.
 
 Skript:
 

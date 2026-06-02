@@ -13,7 +13,7 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 SOURCE_BUNDLE_DIR = REPO_ROOT / "src" / "CadPoints.bundle"
 DIST_BUNDLE_DIR = REPO_ROOT / "dist" / "CadPoints.bundle"
 RELEASES_DIR = REPO_ROOT / "releases"
-INSTALLER_BAT = REPO_ROOT / "install_windows.bat"
+INSTALLER_BAT = REPO_ROOT / "scripts" / "install_windows.bat"
 
 
 def read_text(path: Path) -> str:

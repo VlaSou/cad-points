@@ -35,6 +35,9 @@ or, for all users:
 
 Restart AutoCAD LT.
 
+For the release ZIP, double-click `install_windows.bat` in the archive root.
+In the source repository, the installer script lives in `scripts\install_windows.bat`.
+
 For developer notes, build/release instructions, and the runtime test workflow, see:
 
 ```text

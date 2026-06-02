@@ -8,7 +8,7 @@ lsp = root / "Contents" / "LISP" / "cadpoints.lsp"
 readme = root / "README.md"
 package = root / "PackageContents.xml"
 test_dir = root / "Contents" / "Test"
-installer = repo_root / "install_windows.bat"
+installer = repo_root / "scripts" / "install_windows.bat"
 cz_readme = repo_root / "README.cs-CZ.md"
 installer_test = repo_root / "tests" / "test_install_windows.py"
 docs_dev = repo_root / "docs" / "development.md"
@@ -92,7 +92,7 @@ for token in [
 
 cz_readme_text = cz_readme.read_text(encoding="utf-8")
 for token in [
-    "install_windows.bat",
+    "scripts\\install_windows.bat",
     "AutoCAD LT 2026.1.1",
     "%APPDATA%\\Autodesk\\ApplicationPlugins",
     "Rychlé řešení problémů",

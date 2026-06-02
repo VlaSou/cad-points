@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-INSTALLER = REPO_ROOT / "install_windows.bat"
+INSTALLER = REPO_ROOT / "scripts" / "install_windows.bat"
 SOURCE_BUNDLE = REPO_ROOT / "src" / "CadPoints.bundle"
 
 

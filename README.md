@@ -15,6 +15,10 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 
 ## Installation
 
+For the release ZIP, double-click `install_windows.bat` in the archive root.
+
+If you work from the repository checkout, the source installer lives in `scripts\install_windows.bat`.
+
 Copy the whole folder:
 
 ```text

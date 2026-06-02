@@ -61,13 +61,13 @@ if defined REQUESTED_SOURCE (
     if defined SOURCE_BUNDLE exit /b 0
 )
 
-call :check_candidate "%SCRIPT_DIR%dist\CadPoints.bundle"
+call :check_candidate "%SCRIPT_DIR%..\dist\CadPoints.bundle"
 if defined SOURCE_BUNDLE exit /b 0
 
-call :check_candidate "%SCRIPT_DIR%src\CadPoints.bundle"
+call :check_candidate "%SCRIPT_DIR%..\src\CadPoints.bundle"
 if defined SOURCE_BUNDLE exit /b 0
 
-call :check_candidate "%SCRIPT_DIR%CadPoints.bundle"
+call :check_candidate "%SCRIPT_DIR%..\CadPoints.bundle"
 if defined SOURCE_BUNDLE exit /b 0
 
 call :check_candidate "%CD%\CadPoints.bundle"
