@@ -30,7 +30,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Create `releases/CadPoints_LT_Plugin_vX_Y_Z.zip`.
   - Ensure the ZIP root contains `CadPoints.bundle/` directly, without an extra parent folder.
   - The build now falls back to a temporary staging copy if `dist/CadPoints.bundle` is locked by an editor.
-  - `dist/` is the generated package payload / staging output, while `releases/` is the installer artifact output.
+  - `dist/` is the generated package payload / staging output for npm/GitHub Packages, while `releases/` is the autoinstaller artifact output.
   - Use the SemVer bump script before release when the version needs to change.
 
 - [x] Standardize generated/build output directories.
@@ -85,7 +85,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Confirm ZIP structure.
   - Confirm smoke test status.
   - Confirm `dist/CadPoints.bundle` is not open in another app before running the build.
-  - The generated ZIPs are tracked in `releases/` for easy download from the repository.
+  - The generated autoinstaller ZIPs are tracked in `releases/` for easy download from the repository.
 
 - [ ] Add optional `.cuix` support for a ready-made ribbon panel.
   - The current install flow works without admin rights, but the user still has to create or load a panel manually.

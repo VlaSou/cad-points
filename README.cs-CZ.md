@@ -16,8 +16,8 @@ Nejjednodušší způsob je použít připravený `install_windows.bat`. Nepotř
 V release ZIPu je tento soubor v kořenové složce vedle `CadPoints.bundle`.
 Ve zdrojovém repozitáři je instalační skript v `scripts\install_windows.bat`.
 
-Složka `releases/` je verzovaná v repozitáři a obsahuje generované release ZIP artefakty pro jednotlivé vydané verze.
-Složka `dist/` je generovaný payload balíčku pro packaging a budoucí npm/GitHub Packages publikování, ne uživatelský download.
+Složka `dist/` je generovaný payload balíčku pro publikování přes npm/GitHub Packages.
+Složka `releases/` je verzovaná v repozitáři a obsahuje autoinstaller ZIP artefakty pro jednotlivé vydané verze.
 
 ### Varianta 1: doporučená
 

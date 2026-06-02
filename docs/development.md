@@ -48,9 +48,9 @@ CadPoints.bundle/Contents/...
 install_windows.bat
 ```
 
-`dist/` is generated output and is not tracked in Git. It is the payload used for package publishing and for assembling the installer ZIP.
+`dist/` is generated output and is not tracked in Git. It is the package payload used for npm/GitHub Packages publishing and for assembling the autoinstaller ZIP.
 
-`releases/` is tracked in Git and contains the generated ZIPs for published versions. If you add a new release, commit the ZIP so the repository history includes the distributable artifact.
+`releases/` is tracked in Git and contains the generated autoinstaller ZIPs for published versions. If you add a new release, commit the ZIP so the repository history includes the distributable artifact.
 
 Longer term, the preferred user-facing distribution should become a self-contained executable installer, with the release ZIP remaining the build artifact used to produce it.
 

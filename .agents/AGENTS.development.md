@@ -16,7 +16,7 @@ CadPoints is an AutoCAD LT compatible `.bundle` plugin for extracting, naming, l
 - Repository root: `c:\CODE\cad-points`
 - Canonical editable bundle source: `src/CadPoints.bundle`
 - Generated package payload / staging output: `dist/CadPoints.bundle`
-- Release ZIP output: `releases/CadPoints_LT_Plugin_vX_Y_Z.zip` (tracked in Git)
+- Autoinstaller ZIP output: `releases/CadPoints_LT_Plugin_vX_Y_Z.zip` (tracked in Git)
 - Agent runbooks: `.agents/`
 
 ## Target Environment
@@ -41,7 +41,7 @@ src/CadPoints.bundle/   editable bundle source tracked by Git
 dist/CadPoints.bundle/  generated package payload / staging output
 scripts/                build and installer scripts
 tests/                  static and installer tests
-releases/               tracked ZIP artifacts
+releases/               tracked autoinstaller ZIP artifacts
 .agents/                agent runbooks and verification instructions
 docs/                   developer and settings documentation
 ```

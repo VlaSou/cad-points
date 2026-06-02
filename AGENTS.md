@@ -100,7 +100,7 @@ The canonical editable bundle source location in this repository is:
 src/CadPoints.bundle
 ```
 
-The editable bundle source is kept in `src/CadPoints.bundle`. The build script copies it to `dist/CadPoints.bundle` as generated output for the npm/GitHub Packages payload and as the staging input for the installer ZIP. AutoCAD users should install the release ZIP contents or the generated bundle payload, not random intermediate files.
+The editable bundle source is kept in `src/CadPoints.bundle`. The build script copies it to `dist/CadPoints.bundle` as generated output for the npm/GitHub Packages payload and as the staging input for the autoinstaller ZIP. AutoCAD users should install the autoinstaller ZIP contents or the generated bundle payload, not random intermediate files.
 
 Preserve the same logical separation:
 
@@ -109,7 +109,7 @@ src/CadPoints.bundle editable bundle source tracked by Git
 dist/CadPoints.bundle generated package payload / staging output
 scripts/             repository automation
 tests/               repository-level static tests
-releases/            tracked release ZIP artifacts
+releases/            tracked autoinstaller ZIP artifacts
 .agents/             agent-specific runbooks and verification instructions
 docs/                human-facing developer and settings documentation
 ```
@@ -590,7 +590,7 @@ tests/
 releases/
 ```
 
-Keep the editable bundle source in `src/CadPoints.bundle/`. Generate `dist/CadPoints.bundle/` with `py scripts/release.py` as the package payload that feeds the release ZIP and future npm/GitHub Packages publishing.
+Keep the editable bundle source in `src/CadPoints.bundle/`. Generate `dist/CadPoints.bundle/` with `py scripts/release.py` as the package payload that feeds the autoinstaller ZIP and future npm/GitHub Packages publishing.
 
 ### Step 2: Add repeatable build script
 
