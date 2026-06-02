@@ -590,7 +590,7 @@ tests/
 releases/
 ```
 
-Keep the editable bundle source in `src/CadPoints.bundle/`. Generate `dist/CadPoints.bundle/` with `py scripts/release.py` as the package payload that feeds the autoinstaller ZIP and future npm/GitHub Packages publishing.
+Keep the editable bundle source in `src/CadPoints.bundle/`. Generate `dist/CadPoints.bundle/` with `py scripts/release.py --package-only` as the package payload that feeds npm/GitHub Packages publishing. Use `py scripts/release.py` for the autoinstaller ZIP.
 
 ### Step 2: Add repeatable build script
 

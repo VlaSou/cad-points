@@ -60,15 +60,18 @@ The static checks should confirm:
 
 ## Release Validation
 
-Build the ZIP:
+Prepare the package payload and build the autoinstaller:
 
 ```text
+py -3 scripts/release.py --package-only
 py -3 scripts/release.py
 ```
 
 Or use the pnpm entrypoint:
 
 ```text
+pnpm package:dist
+pnpm build:autoinstaller
 pnpm release
 ```
 

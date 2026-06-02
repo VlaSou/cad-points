@@ -18,6 +18,7 @@ Run the static checks and create the release ZIP from the repository root:
 
 ```text
 python tests/run_static_tests.py
+python scripts/release.py --package-only
 python scripts/release.py
 ```
 
@@ -33,12 +34,14 @@ This repository is pnpm-first. Use `pnpm` for package-manager-driven commands:
 
 ```text
 pnpm check
-pnpm build:zip
+pnpm package:dist
+pnpm build:autoinstaller
 pnpm release
 pnpm release:check
 ```
 
-`pnpm release` delegates to `scripts/release.py`, which wraps the Python release build script.
+`pnpm package:dist` delegates to `scripts/release.py --package-only` and prepares the npm/GitHub Packages payload in `dist/`.
+`pnpm build:autoinstaller` and `pnpm release` delegate to `scripts/release.py` and build the tracked installer ZIP in `releases/`.
 
 The release ZIP is expected to contain:
 
@@ -63,8 +66,9 @@ Before each release:
 2. Confirm the versioned files in the README files, `help.html`, and `PackageContents.xml` were updated together.
 3. Make sure no editor, file browser, AutoCAD session, or preview pane is holding files inside `dist/CadPoints.bundle`.
 4. Run `python tests/run_static_tests.py`.
-5. Run `python scripts/release.py`.
-6. Verify the ZIP name and contents before publishing.
+5. Run `python scripts/release.py --package-only` if you need the npm/GitHub Packages payload.
+6. Run `python scripts/release.py` for the autoinstaller ZIP.
+7. Verify the ZIP name and contents before publishing.
 
 If `dist/CadPoints.bundle` is locked by an editor or preview pane, the build script falls back to a temporary staging copy so the ZIP can still be created. For a clean `dist` refresh, close anything that is holding files open and rerun the build.
 

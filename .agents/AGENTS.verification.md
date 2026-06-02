@@ -79,11 +79,12 @@ Expected result:
 STATIC TESTS OK
 ```
 
-### 4. Build a release ZIP
+### 4. Prepare package payload and build the autoinstaller
 
 From the repository root, run:
 
 ```text
+py -3 scripts/release.py --package-only
 py -3 scripts/release.py
 ```
 

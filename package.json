@@ -12,10 +12,11 @@
     "version:patch": "py -3 scripts/version.py patch",
     "version:minor": "py -3 scripts/version.py minor",
     "version:major": "py -3 scripts/version.py major",
-    "build:zip": "py -3 scripts/release.py",
-    "build": "pnpm build:zip",
+    "package:dist": "py -3 scripts/release.py --package-only",
+    "build:autoinstaller": "py -3 scripts/release.py",
+    "build": "pnpm build:autoinstaller",
     "release:check": "py -3 scripts/release.py --check",
-    "release": "py -3 scripts/release.py"
+    "release": "pnpm build:autoinstaller"
   },
   "files": [
     "dist/CadPoints.bundle",

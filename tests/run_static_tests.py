@@ -153,10 +153,11 @@ else:
         "version:patch": "py -3 scripts/version.py patch",
         "version:minor": "py -3 scripts/version.py minor",
         "version:major": "py -3 scripts/version.py major",
-        "build:zip": "py -3 scripts/release.py",
-        "build": "pnpm build:zip",
+        "package:dist": "py -3 scripts/release.py --package-only",
+        "build:autoinstaller": "py -3 scripts/release.py",
+        "build": "pnpm build:autoinstaller",
         "release:check": "py -3 scripts/release.py --check",
-        "release": "py -3 scripts/release.py",
+        "release": "pnpm build:autoinstaller",
     }
     for script_name, expected_value in expected_scripts.items():
         actual_value = scripts.get(script_name)
@@ -183,7 +184,7 @@ for token in ["bump_semver", "replace_first", "Release ZIP name will use"]:
         errors.append(f"Missing token in version wrapper: {token}")
 
 wrapper_text = release_wrapper.read_text(encoding="utf-8")
-for token in ["package_version", "validate_bundle", "create_zip"]:
+for token in ["package_version", "validate_bundle", "create_zip", "--package-only"]:
     if token not in wrapper_text:
         errors.append(f"Missing token in release wrapper: {token}")
 

@@ -59,8 +59,9 @@ docs/development.md
 docs/settings.md
 ```
 
-Release poznámka: před každým releasem zvedni verzi přes `pnpm version:patch` (nebo `minor`/`major` podle potřeby) a srovnej verzi ve všech verzovaných souborech ještě před spuštěním `python scripts/release.py`.
-Balíčkové příkazy přes pnpm: `pnpm check`, `pnpm build:zip`, `pnpm release`, `pnpm release:check`. `pnpm release` používá jako vstup `scripts/release.py`.
+Release poznámka: před každým releasem zvedni verzi přes `pnpm version:patch` (nebo `minor`/`major` podle potřeby) a srovnej verzi ve všech verzovaných souborech ještě před spuštěním balíčkovacích skriptů.
+Balíčkové příkazy přes pnpm: `pnpm check`, `pnpm package:dist`, `pnpm build:autoinstaller`, `pnpm release`, `pnpm release:check`.
+`pnpm package:dist` připraví payload pro npm/GitHub Packages do `dist/`, `pnpm build:autoinstaller` a `pnpm release` vytvoří ZIP pro autoinstalátor v `releases/`.
 
 ### Co když se nic nenačte
 

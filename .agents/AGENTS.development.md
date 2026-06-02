@@ -229,12 +229,14 @@ Current pnpm-first entrypoints:
 
 ```text
 pnpm check
-pnpm build:zip
+pnpm package:dist
+pnpm build:autoinstaller
 pnpm release
 pnpm release:check
 ```
 
-`pnpm release` delegates to `scripts/release.py`, which performs validation and builds the release ZIP.
+`pnpm package:dist` delegates to `scripts/release.py --package-only` and prepares the npm/GitHub Packages payload in `dist/`.
+`pnpm build:autoinstaller` and `pnpm release` delegate to `scripts/release.py` and build the tracked installer ZIP in `releases/`.
 
 ## Installer Notes
 

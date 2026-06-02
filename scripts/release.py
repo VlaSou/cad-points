@@ -137,6 +137,11 @@ def main() -> int:
         action="store_true",
         help="Only validate the source bundle and run static tests; do not create dist output or a ZIP.",
     )
+    parser.add_argument(
+        "--package-only",
+        action="store_true",
+        help="Validate, run static tests, and prepare dist/CadPoints.bundle without creating the autoinstaller ZIP.",
+    )
     args = parser.parse_args()
 
     version = validate_bundle()
@@ -146,6 +151,11 @@ def main() -> int:
         print(f"Release checks OK for CadPoints {version}")
         return 0
 
+    if args.package_only:
+        build_dist_bundle()
+        print(f"Prepared dist/CadPoints.bundle for CadPoints {version}")
+        return 0
+
     zip_path = create_zip(version)
     print(f"Created {zip_path.relative_to(REPO_ROOT)}")
     return 0
@@ -153,4 +163,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

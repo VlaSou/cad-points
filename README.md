@@ -49,8 +49,9 @@ docs/development.md
 docs/settings.md
 ```
 
-Release note: bump the version before each release with `pnpm version:patch` (or `minor`/`major` as appropriate) and keep the versioned files in sync before running `python scripts/release.py`.
-pnpm-first package commands are available via `pnpm check`, `pnpm build:zip`, `pnpm release`, and `pnpm release:check`. `pnpm release` uses `scripts/release.py` as its entrypoint.
+Release note: bump the version before each release with `pnpm version:patch` (or `minor`/`major` as appropriate) and keep the versioned files in sync before running the packaging scripts.
+pnpm-first package commands are available via `pnpm check`, `pnpm package:dist`, `pnpm build:autoinstaller`, `pnpm release`, and `pnpm release:check`.
+Use `pnpm package:dist` to prepare the npm/GitHub Packages payload in `dist/`, and `pnpm build:autoinstaller` or `pnpm release` to create the installer ZIP in `releases/`.
 
 ## Commands
 
