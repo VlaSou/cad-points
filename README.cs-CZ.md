@@ -294,3 +294,28 @@ Pro běžné použití stačí vytvořit panel v AutoCAD LT přes `CUI` a přida
 - Pokud `CPEXPORT` vrátí nulu bodů, ověř, že jsou zdrojové objekty opravdu na nastavených hladinách a že jde o podporovanou geometrii.
 - Pokud vzorkování křivek selže na konkrétním objektu, může AutoCAD LT pro daný typ neposkytnout potřebné curve funkce. Balíček by měl typ nebo handle nahlásit a pokračovat dál.
 - Pokud vrstvy vypadají nepřesně, pamatuj, že CadPoints vytváří jen přibližné vrstevnice ze segmentů, ne skutečný povrch jako v Civil 3D.
+
+### Rychlá diagnostika
+
+V AutoCAD LT použij tyto příkazy, když chceš zjistit, kde je problém:
+
+```text
+APPAUTOLOAD
+APPAUTOLOADER
+APPLOAD
+TRUSTEDPATHS
+```
+
+Co zkontrolovat:
+
+- `APPAUTOLOAD` by měl běžně umožnit načítání plug-inů. Pokud je `0`, pluginy se nenačítají automaticky.
+- `APPAUTOLOADER` ukáže, jestli AutoCAD LT vidí nainstalované pluginy a umí je znovu načíst.
+- `APPLOAD` lze použít k ručnímu načtení `CadPoints.bundle\Contents\LISP\cadpoints.lsp` pro jednorázový test.
+- `TRUSTEDPATHS` je důležitý, pokud secure mode blokuje bundle nebo LISP soubor.
+
+Když příkazy po restartu pořád nefungují:
+
+1. Ověř, že je bundle v `%APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle`.
+2. Ověř, že uvnitř té složky je přímo `PackageContents.xml`.
+3. Spusť `APPAUTOLOADER` a zkontroluj, jestli se CadPoints zobrazuje.
+4. Když je potřeba, načti ručně `CadPoints.bundle\Contents\LISP\cadpoints.lsp` přes `APPLOAD` a otestuj `CPSETTINGS` a `CPEXPORT`.

@@ -84,6 +84,7 @@ for token in [
     "cadpoints_smoke_test.lsp",
     "DWG writing requires AutoCAD",
     "Troubleshooting",
+    "Quick Diagnostics",
     "docs/development.md",
     "docs/settings.md",
 ]:
@@ -96,6 +97,7 @@ for token in [
     "AutoCAD LT 2026.1.1",
     "%APPDATA%\\Autodesk\\ApplicationPlugins",
     "Rychlé řešení problémů",
+    "Rychlá diagnostika",
     "docs/development.md",
     "docs/settings.md",
 ]:
@@ -108,6 +110,7 @@ for token in [
     "Build And Release",
     "Testing Workflow",
     "AutoCAD LT Limitations",
+    "Quick Diagnostics",
 ]:
     if token not in docs_dev_text:
         errors.append(f"Missing token in development docs: {token}")

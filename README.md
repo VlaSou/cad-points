@@ -526,3 +526,28 @@ For daily use, the manual `CUI` ribbon setup above is more predictable.
 - If labels or the table look too large or too small, check `drawing scale` and `table scale`; they are separate settings.
 - If curve sampling fails on a specific object type, the entity may not expose the curve functions required by AutoCAD LT. The bundle should report the unsupported type or handle and continue gracefully.
 - If contour output looks wrong, remember that CadPoints produces approximate contours from existing segments, not a Civil 3D terrain surface.
+
+### Quick Diagnostics
+
+Use these commands in AutoCAD LT to narrow down where the problem is:
+
+```text
+APPAUTOLOAD
+APPAUTOLOADER
+APPLOAD
+TRUSTEDPATHS
+```
+
+What to check:
+
+- `APPAUTOLOAD` should normally allow plug-ins to load. If it is `0`, plug-ins will not load automatically.
+- `APPAUTOLOADER` shows whether AutoCAD LT can see the installed plug-ins and can force a reload.
+- `APPLOAD` can be used to load `CadPoints.bundle\Contents\LISP\cadpoints.lsp` manually for a one-session test.
+- `TRUSTEDPATHS` matters if secure mode blocks the bundle or the LISP file.
+
+If the commands still do not appear after a restart:
+
+1. Verify the bundle is located at `%APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle`.
+2. Verify `PackageContents.xml` exists directly inside that folder.
+3. Run `APPAUTOLOADER` and check whether CadPoints is listed.
+4. If needed, load `CadPoints.bundle\Contents\LISP\cadpoints.lsp` manually with `APPLOAD` and test `CPSETTINGS` and `CPEXPORT`.

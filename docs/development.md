@@ -50,6 +50,22 @@ Expected runtime results:
 - the table is inserted to the right of the maximum X coordinate
 - expected point name prefixes appear in the output
 
+## Quick Diagnostics
+
+Useful commands when the bundle does not load:
+
+```text
+APPAUTOLOAD
+APPAUTOLOADER
+APPLOAD
+TRUSTEDPATHS
+```
+
+- `APPAUTOLOAD` should normally allow plug-ins to load.
+- `APPAUTOLOADER` can list or reload plug-ins in the application plug-in folder.
+- `APPLOAD` can manually load `CadPoints.bundle\Contents\LISP\cadpoints.lsp` for a one-session test.
+- `TRUSTEDPATHS` matters if secure mode blocks the bundle or the LISP file.
+
 ## AutoCAD LT Limitations
 
 - The package must stay compatible with AutoCAD LT 2024+.
