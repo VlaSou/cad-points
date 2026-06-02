@@ -110,7 +110,16 @@ dist/CadPoints.bundle generated installable AutoCAD LT bundle
 scripts/             repository automation
 tests/               repository-level static tests
 releases/            generated release ZIP output
+.agents/             agent-specific runbooks and verification instructions
 ```
+
+The `.agents/` folder is part of the repository documentation surface for local and future agents. Keep any agent-facing runbooks there, including:
+
+```text
+.agents/AGENTS.verification.md
+```
+
+Add future agent instruction files to the same folder rather than scattering them through the repository root.
 
 ## Core commands
 

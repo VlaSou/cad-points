@@ -133,6 +133,9 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 - [x] Add a verification-agent onboarding file.
   - Added `.agents/AGENTS.verification.md` for a local agent that can clone, install, build, and verify CadPoints in AutoCAD LT.
 
+- [x] Expose the `.agents/` folder in root `AGENTS.md`.
+  - Root instructions now point to `.agents/` and to `.agents/AGENTS.verification.md` as the canonical agent runbook location.
+
 ## AutoLISP Maintainability
 
 - [ ] Group `cadpoints.lsp` into clearer sections with comment headers.
