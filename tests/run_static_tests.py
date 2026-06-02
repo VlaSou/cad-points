@@ -1,3 +1,5 @@
+import subprocess
+import sys
 from pathlib import Path
 
 repo_root = Path(__file__).resolve().parents[1]
@@ -6,9 +8,12 @@ lsp = root / "Contents" / "LISP" / "cadpoints.lsp"
 readme = root / "README.md"
 package = root / "PackageContents.xml"
 test_dir = root / "Contents" / "Test"
+installer = repo_root / "scripts" / "install_windows.ps1"
+cz_readme = repo_root / "README.cs-CZ.md"
+installer_test = repo_root / "tests" / "test_install_windows.py"
 
 errors = []
-for required_path in [root, lsp, readme, package, test_dir]:
+for required_path in [root, lsp, readme, package, test_dir, installer, cz_readme, installer_test]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
 
@@ -63,6 +68,15 @@ for token in ["0.6.0", "Point naming", "example_test.dxf", "cadpoints_smoke_test
     if token not in readme_text:
         errors.append(f"Missing token in README: {token}")
 
+cz_readme_text = cz_readme.read_text(encoding="utf-8")
+for token in [
+    "scripts\\install_windows.ps1",
+    "AutoCAD LT 2026.1.1",
+    "%APPDATA%\\Autodesk\\ApplicationPlugins",
+]:
+    if token not in cz_readme_text:
+        errors.append(f"Missing token in Czech README: {token}")
+
 pkg_text = package.read_text(encoding="utf-8")
 if 'AppVersion="0.6.0"' not in pkg_text:
     errors.append("PackageContents.xml AppVersion is not 0.6.0")
@@ -82,5 +96,18 @@ if errors:
     for error in errors:
         print("-", error)
     raise SystemExit(1)
+
+installer_test_result = subprocess.run(
+    [sys.executable, str(installer_test)],
+    cwd=repo_root,
+    text=True,
+    capture_output=True,
+    check=False,
+)
+if installer_test_result.returncode != 0:
+    print("STATIC TESTS FAILED")
+    print(installer_test_result.stdout, end="")
+    print(installer_test_result.stderr, end="")
+    raise SystemExit(installer_test_result.returncode)
 
 print("STATIC TESTS OK")

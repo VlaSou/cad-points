@@ -1,6 +1,8 @@
 # CadPoints pro AutoCAD LT
 
-Balíček AutoLISP kompatibilní s AutoCAD LT pro export pojmenovaných souřadnic bodů z vybraných hladin, generování entit `POINT` a popisů do samostatných hladin, vzorkování zakřivené geometrie, vložení konfigurovatelné tabulky bodů do DWG a volitelné generování přibližných vrstevnic ze souřadnic Z.
+CadPoints je lehký AutoLISP balíček pro AutoCAD LT. Umí z vybraných hladin vytahovat body, dávat jim jména, vytvářet `POINT` a popisy ve zvláštních hladinách, exportovat CSV, vložit tabulku do výkresu a volitelně dělat přibližné vrstevnice ze souřadnice Z.
+
+Tato verze je připravená pro Windows a pro podporu AutoCAD LT 2026.1.1 (`W.164.0.0`).
 
 ## Verze
 
@@ -8,117 +10,133 @@ Balíček AutoLISP kompatibilní s AutoCAD LT pro export pojmenovaných souřadn
 0.6.0
 ```
 
-## Podporovaný AutoCAD
+## Rychlá instalace ve Windows
 
-- AutoCAD LT 2024+
-- nasazení ve Windows pomocí `.bundle` ve složce Autodesk `ApplicationPlugins`
+Nejjednodušší způsob je použít připravený PowerShell skript. Nepotřebuje administrátorská práva.
 
-## Instalace
+### Varianta 1: doporučená
 
-Zkopírujte celou složku:
+1. Stáhni nebo rozbal CadPoints do nějaké složky, například na Plochu nebo do Dokumentů.
+2. Otevři PowerShell v kořenové složce projektu.
+3. Spusť:
 
-```text
-CadPoints.bundle
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\install_windows.ps1
 ```
 
-do jedné z těchto složek:
+Skript:
+
+- najde balíček `CadPoints.bundle` v `dist\`, `src\` nebo v aktuální složce,
+- zkopíruje ho do uživatelské složky AutoCAD pluginů,
+- typicky sem:
 
 ```text
 %APPDATA%\Autodesk\ApplicationPlugins
 ```
 
-nebo pro všechny uživatele:
+4. Zavři a znovu spusť AutoCAD LT.
+
+### Varianta 2: ručně
+
+Pokud nechceš použít skript, zkopíruj celou složku:
 
 ```text
-%PROGRAMDATA%\Autodesk\ApplicationPlugins
+CadPoints.bundle
 ```
 
-Restartujte AutoCAD LT.
+do této složky:
+
+```text
+%APPDATA%\Autodesk\ApplicationPlugins
+```
+
+Pak restartuj AutoCAD LT.
+
+### Co když se nic nenačte
+
+- zkontroluj, že se kopíruje celá složka `CadPoints.bundle`, ne jen její obsah,
+- zkontroluj, že jsi kopíroval do uživatelského `ApplicationPlugins`, ne do nějaké náhodné podsložky,
+- pokud už AutoCAD běžel, úplně ho zavři a spusť znovu.
+
+## Co CadPoints dělá
+
+- exportuje body z nakonfigurovaných zdrojových hladin do CSV,
+- může vytvořit skutečné entity `POINT`,
+- může přidat popisy bodů do samostatné hladiny,
+- může vložit tabulku bodů do výkresu,
+- může zkusit vytvořit přibližné vrstevnice ze Z souřadnic,
+- umí vzorkovat zakřivenou geometrii po délce.
 
 ## Příkazy
 
-```text
-CPSETTINGS
-```
+### `CPSETTINGS`
 
-Konfiguruje:
+Hlavní nastavení. V něm se nastavuje například:
 
-- zdrojové hladiny oddělené čárkou, například `CP_POINTS_A,CP_POINTS_B`
-- desetinnou přesnost
-- sloupce CSV/DWG tabulky
-- měřítko výkresu: `1:25`, `1:50`, `1:100`, `1:500` nebo `1:1000`
-- vzor názvu bodu, například `A-SO01-###`
-- generované entity `POINT` v samostatné hladině
-- hladinu bodů, výchozí `CADPOINTS_POINTS`
-- popisy bodů v samostatné hladině
-- výšku textu popisu na papíře, výchozí `2.5` mm
-- hladinu popisů, výchozí `CADPOINTS_POINT_LABELS`
-- zda vložit tabulku bodů do výkresu
-- měřítko tabulky: `1:25`, `1:50`, `1:100`, `1:500` nebo `1:1000`
-- odsazení tabulky na papíře doprava od maximální souřadnice X, výchozí `50` mm na papíře
-- výšku textu tabulky na papíře, výchozí `2.5` mm
-- hladinu tabulky
-- volitelné generování vrstevnic ze souřadnic Z
-- interval vrstevnic Z, výchozí `1000` mm
-- hladinu vrstevnic
-- zda mají být vrstevnice generovány jako entity `SPLINE`, pokud je to možné
-- zda má být zakřivená geometrie vzorkována podle délky
-- interval vzorkování křivek, výchozí `1000` mm
+- zdrojové hladiny,
+- sloupce CSV a tabulky,
+- měřítko výkresu,
+- měřítko tabulky,
+- pojmenování bodů,
+- hladina pro body,
+- hladina pro popisy,
+- zapnutí a vypnutí tabulky,
+- výška textu a odsazení tabulky na papíře,
+- zapnutí a vypnutí vrstevnic,
+- interval vrstevnic,
+- vzorkování křivek a jeho krok.
 
-```text
-CPEXPORT
-```
+### `CPEXPORT`
 
-Exportuje všechny podporované objekty z nakonfigurovaných hladin do CSV.
+Spustí export bodů z nakonfigurovaných hladin.
 
-Podporované entity:
+Při exportu může podle nastavení:
 
-```text
-LINE
-LWPOLYLINE
-POLYLINE
-ARC
-CIRCLE
-ELLIPSE
-SPLINE
-```
+- vytvořit CSV,
+- vytvořit `POINT` entity,
+- vytvořit popisy bodů,
+- vložit tabulku do DWG,
+- vygenerovat přibližné vrstevnice.
 
-Přímé objekty `LINE` a přímé polyčáry se exportují podle skutečných koncových bodů / vrcholů. Zakřivená geometrie se při povoleném vzorkování křivek vzorkuje podle délky.
+### `CPHELP`
 
-Pokud je povoleno vložení tabulky, příkaz zároveň vloží vykreslenou tabulku bodů do DWG. Tabulka se umístí napravo od nejpravějšího exportovaného bodu:
+Krátká nápověda k příkazům a postupu.
+
+## Výchozí hladiny
+
+Generované objekty jsou schválně oddělené od zdrojové geometrie.
 
 ```text
-souřadnice X vložení tabulky = maximální X exportovaného bodu + nakonfigurované odsazení na papíře * nakonfigurované měřítko tabulky
+CADPOINTS_POINTS
+CADPOINTS_POINT_LABELS
+CADPOINTS_TABLE
+CADPOINTS_CONTOURS
 ```
 
-Výchozí umístění tabulky v měřítku `1:100`:
+## Jednotky a měřítko
+
+CadPoints předpokládá, že výkres je v milimetrech.
 
 ```text
-odsazení na papíře = 50 mm
-odsazení v modelu = 50 * 100 = 5000 mm
+1 výkresová jednotka = 1 mm
 ```
 
-Pokud je povoleno generování vrstevnic, příkaz zároveň vygeneruje přibližné vrstevnice do nakonfigurované hladiny vrstevnic.
+Výchozí hodnoty jsou proto v milimetrech:
 
 ```text
-CPHELP
+krok vzorkování křivek = 1000 mm
+interval vrstevnic      = 1000 mm
+výška popisu bodu       = 2.5 mm na papíře
+výška textu tabulky     = 2.5 mm na papíře
+odsazení tabulky        = 50 mm na papíře
 ```
 
-Zobrazí souhrn příkazů.
+Používají se dvě různá měřítka:
 
-## Výkresové jednotky a měřítko tabulky
+- `drawing scale` pro popisy bodů a další výkresové poznámky,
+- `table scale` pro tabulku bodů.
 
-CadPoints předpokládá, že DWG je kresleno v milimetrech. Všechny hodnoty v modelovém prostoru jsou proto považovány za milimetry, pokud nejsou ručně změněny.
-
-Výchozí hodnoty založené na milimetrech:
-
-```text
-interval vzorkování křivek = 1000 mm
-interval vrstevnic          = 1000 mm
-výška popisu bodu           = 250 mm
-```
-
-Popisy bodů jsou řízeny měřítkem výkresu. Vložená tabulka je řízena měřítkem tabulky. Obě měřítka používají stejné povolené hodnoty:
+Povolené hodnoty:
 
 ```text
 1:25
@@ -128,59 +146,49 @@ Popisy bodů jsou řízeny měřítkem výkresu. Vložená tabulka je řízena m
 1:1000
 ```
 
-Interně se výška popisu, výška textu tabulky a pravé odsazení tabulky převádějí z papírových milimetrů na modelové milimetry:
+## Pojmenování bodů
 
-```text
-modelová hodnota popisu = hodnota na papíře * měřítko výkresu
-modelová hodnota tabulky = hodnota na papíře * měřítko tabulky
-```
+Jsou dva režimy:
 
-Příklad pro měřítko `1:100`:
+### 1. Podle suffixu hladiny
 
-```text
-výška textu tabulky na papíře = 2.5 mm
-výška textu tabulky v modelu = 250 mm
-
-odsazení tabulky na papíře = 50 mm
-odsazení tabulky v modelu = 5000 mm
-```
-
-## Pojmenování bodů a generované hladiny bodů
-
-CadPoints umí pro každý exportovaný bod generovat skutečné entity `POINT` a textové popisy. Tyto výstupy jsou záměrně odděleny od zdrojové geometrie.
-
-Výchozí výstupní hladiny:
-
-```text
-generované entity POINT = CADPOINTS_POINTS
-generované popisy bodů  = CADPOINTS_POINT_LABELS
-```
-
-Pokud je vzor názvu bodu prázdný, prefix bodu se převezme ze suffixu zdrojové hladiny za posledním podtržítkem.
+Když je vzor názvu bodu prázdný, prefix se vezme z poslední části názvu hladiny za `_`.
 
 Příklad:
 
 ```text
-zdrojová hladina CP_POINTS_A -> A001, A002, A003
-zdrojová hladina CP_POINTS_B -> B001, B002, B003
+CP_POINTS_A -> A001, A002, A003
+CP_POINTS_B -> B001, B002, B003
 ```
 
-Číselná řada je nezávislá pro každý suffix.
+Číslování je pro každý suffix samostatné.
 
-Toto chování lze přepsat vlastním vzorem v `CPSETTINGS`. Každý znak `#` v první souvislé řadě znaků `#` se nahradí číslem doplněným nulami zleva.
+### 2. Podle vzoru
+
+Když je vzor vyplněný, použije se místo suffixu.
 
 Příklad:
 
 ```text
-A-SO01-### -> A-SO01-001, A-SO01-002, A-SO01-003
-P-####     -> P-0001, P-0002, P-0003
+A-SO01-### -> A-SO01-001
+P-####     -> P-0001
 ```
 
-Při použití vlastního vzoru se používá jedna společná číselná řada pro daný vzor.
+Pravidla:
 
-## Konfigurovatelné sloupce CSV/tabulky
+1. `#` znamená číselný zástupný znak.
+2. Počet `#` určuje počet číslic.
+3. Když ve vzoru není `#`, přidá se na konec 3místné číslo.
 
-Stejná konfigurace sloupců se používá pro CSV export i pro vloženou DWG tabulku.
+## Sloupce CSV a tabulky
+
+Stejné nastavení se používá pro CSV i pro tabulku ve výkresu.
+
+Formát:
+
+```text
+FIELD_ID:Nadpis;FIELD_ID:Nadpis
+```
 
 Výchozí konfigurace:
 
@@ -188,13 +196,7 @@ Výchozí konfigurace:
 POINT_NAME:Bod;LAYER:Hladina;ENTITY_TYPE:Objekt;VERTEX_NO:Vrchol;Y_SJTSK:Y S-JTSK;X_SJTSK:X S-JTSK;Z:Z
 ```
 
-Formát:
-
-```text
-FIELD_ID:Viditelný název sloupce;FIELD_ID:Viditelný název sloupce
-```
-
-Dostupné identifikátory polí:
+Dostupná pole:
 
 ```text
 POINT_NAME
@@ -208,139 +210,57 @@ X_SJTSK
 Z
 ```
 
-### Příklad: skrytí sloupce hladiny
-
-```text
-POINT_NAME:Bod;ENTITY_TYPE:Objekt;VERTEX_NO:Vrchol;Y_SJTSK:Y;X_SJTSK:X;Z:Z
-```
-
-### Příklad: přejmenování sloupců pro vytyčovací tabulku
-
-```text
-POINT_NAME:Cislo bodu;Y_SJTSK:S-JTSK Y;X_SJTSK:S-JTSK X;Z:Vyska
-```
-
-### Příklad: zahrnutí AutoCAD handle
-
-```text
-POINT_NAME:Bod;HANDLE:Handle;Y_SJTSK:Y S-JTSK;X_SJTSK:X S-JTSK;Z:Z
-```
-
 ## Souřadnice S-JTSK
 
-Plugin neprovádí transformaci souřadnic. Předpokládá, že aktuální DWG je již kresleno v S-JTSK nebo v souřadnicové konvenci používané daným projektem.
+CadPoints souřadnice nepřepočítává. Předpokládá, že výkres už je ve správné souřadnicové soustavě.
 
-Výchozí mapování souřadnic je:
-
-```text
-Y_SJTSK = hodnota X bodu z DWG
-X_SJTSK = hodnota Y bodu z DWG
-Z       = hodnota Z bodu z DWG, nebo 0.000, pokud chybí
-```
-
-Toto chování je záměrné, protože mnoho českých CAD workflow ukládá souřadnice S-JTSK v DWG jako výkresové souřadnice X/Y, ale v geodetické notaci je označuje jako Y/X.
-
-Pokud vaše kancelář používá opačnou konvenci, prohoďte hodnoty ve funkci `cp:field-value` uvnitř souboru:
+Používaná konvence je:
 
 ```text
-Contents\LISP\cadpoints.lsp
+Y_SJTSK = hodnota X z DWG
+X_SJTSK = hodnota Y z DWG
+Z       = hodnota Z z DWG
 ```
 
 ## Vzorkování křivek
 
-Vzorkování křivek se nastavuje v `CPSETTINGS`.
+Zakřivená geometrie se může vzorkovat po délce. Výchozí krok je `1000 mm`, tedy přibližně 1 bod na 1 m.
 
-Související nastavení:
-
-```text
-Vzorkovat oblouky, spliny a krivky po delce? [Ano/Ne]
-Krok vzorkovani krivek ve vykresovych jednotkach
-```
-
-Výchozí interval:
+Podporované entity:
 
 ```text
-1000
+LINE
+LWPOLYLINE
+POLYLINE
+ARC
+CIRCLE
+ELLIPSE
+SPLINE
 ```
 
-U výkresů v milimetrech to znamená jeden generovaný bod přibližně po každém 1 m délky křivky.
+## Vrstevnice
 
-Při povoleném vzorkování se vzorkuje tato geometrie:
+Generování vrstevnic je jen přibližné. Nejde o skutečný TIN model jako v Civil 3D.
 
-- `ARC`
-- `CIRCLE`
-- `ELLIPSE`
-- `SPLINE`
-- `LWPOLYLINE` s bulge / obloukovými segmenty
-- starší entity `POLYLINE` podobné křivkám, pokud je AutoCAD zpřístupní přes funkce pro křivky
+CadPoints:
 
-Uzavřené křivky, například kružnice, neduplikují koncový bod uzavření. Otevřené křivky obsahují počáteční i koncový bod.
+1. vezme segmenty z podporované geometrie,
+2. najde průsečíky s vybranými hladinami Z,
+3. seskupí body podle výšky,
+4. zkusí vytvořit `SPLINE`,
+5. když to nejde, použije `LWPOLYLINE`.
 
-Vzorkované body jsou zahrnuty do:
+To je vhodné pro jednoduché vstupy, ale ne pro přesný geodetický model terénu.
 
-- CSV exportu
-- vložené DWG tabulky bodů
-- volitelných popisů bodů
-- volitelných zdrojových segmentů pro interpolaci vrstevnic
+## Testovací soubory
 
-Důležité: vzorkování vychází z výkresových jednotek. Protože výchozí jednotkou projektu jsou milimetry, výchozí interval je `1000`.
-
-## Volitelné generování vrstevnic
-
-Generování vrstevnic se nastavuje v `CPSETTINGS`.
-
-Související nastavení:
+V balíčku jsou testovací soubory ve složce:
 
 ```text
-Vykreslit interpolovane vrstevnice podle Z? [Ano/Ne]
-Interval vrstevnic Z
-Hladina vrstevnic
-Kreslit vrstevnice jako SPLINE? [Ano/Ne]
+Contents\Test
 ```
 
-Výchozí interval a hladina vrstevnic:
-
-```text
-CONTOUR_INTERVAL = 1000 mm
-CONTOUR_LAYER    = CADPOINTS_CONTOURS
-```
-
-### Jak se vrstevnice generují
-
-Plugin používá exportovanou geometrii a vzorkované body křivek jako zdrojové segmenty:
-
-- `LINE`: jeden segment mezi počátečním a koncovým bodem
-- `LWPOLYLINE`: segment mezi každou dvojicí sousedních vrcholů
-- uzavřená `LWPOLYLINE`: také segment mezi posledním a prvním vrcholem
-- `POLYLINE`: segment mezi každou dvojicí sousedních vrcholů
-- uzavřená `POLYLINE`: také segment mezi posledním a prvním vrcholem
-- vzorkované křivky: segment mezi každou dvojicí sousedních vzorkovaných bodů
-
-Pro každou nakonfigurovanou úroveň Z plugin najde průsečíky, kde zdrojové segmenty protínají danou úroveň Z. Tyto interpolované body poté seřadí podle X/Y a vykreslí jednu křivku pro danou úroveň Z.
-
-Pokud je povolen režim spline, pokusí se vytvořit entity `SPLINE`. Pokud se to nepodaří nebo jsou k dispozici pouze dva body, použije jako náhradní řešení `LWPOLYLINE`.
-
-### Důležité omezení
-
-Toto není skutečný model terénu ani TIN triangulace. Jde o přibližnou interpolaci nad existujícími zdrojovými segmenty. Je vhodná jako pomocný výstup pro jednoduché liniové/polygonové vstupy, ale neměla by být považována za certifikovaný geodetický model vrstevnic.
-
-Pro přesné vrstevnice terénu by správný workflow byl:
-
-```text
-body -> TIN / model povrchu -> extrakce vrstevnic
-```
-
-Tato úroveň zpracování se lépe řeší v Civil 3D, plném AutoCADu se silnějším plugin API nebo ve specializovaném geodetickém/GIS nástroji.
-
-## Testovací výkres a smoke test
-
-Balíček obsahuje testovací assety ve složce:
-
-```text
-Contents/Test
-```
-
-Obsažené soubory:
+Obsah:
 
 ```text
 example_test.dxf
@@ -349,160 +269,21 @@ cadpoints_smoke_test.lsp
 README_TEST.md
 ```
 
-Nativní `example_test.dwg` se v tomto balíčku negeneruje, protože zápis DWG vyžaduje AutoCAD nebo jiný licencovaný DWG runtime. Otevřete `example_test.dxf` v AutoCAD LT a uložte jej jako `example_test.dwg`, nebo spusťte `create_example_test.scr` a výsledný výkres uložte.
+## Ruční ribbon / CUI
 
-Smoke test pro pojmenování bodů:
+Balíček obsahuje ikony a menu, ale hotový `.cuix` se negeneruje.
 
-```text
-APPLOAD cadpoints.lsp
-APPLOAD Contents/Test/cadpoints_smoke_test.lsp
-CPTESTNAMES
-```
-
-Očekávaný výstup:
-
-```text
-CPTESTNAMES OK
-```
-
-## Nastavení ribbonu / panelu
-
-Hotový binární `.cuix` není součástí balíčku. V AutoCAD LT je bezpečnější vytvořit částečný ribbon/panel přímo přes vestavěný editor `CUI`, protože AutoCAD ukládá data ribbonu specifická pro pracovní prostor do souborů přizpůsobení CUIx.
-
-Balíček obsahuje připravené soubory ikon a šablonu legacy menu:
-
-```text
-Contents\Menu\cadpoints.mnu
-Contents\Resources\cp-export.bmp
-Contents\Resources\cp-settings.bmp
-Contents\Resources\cp-help.bmp
-Contents\Resources\cp-export-16.bmp
-Contents\Resources\cp-settings-16.bmp
-Contents\Resources\cp-help-16.bmp
-```
-
-### Ruční vytvoření ribbon panelu
-
-1. Spusťte AutoCAD LT.
-2. Spusťte příkaz:
-
-```text
-CUI
-```
-
-3. V levém stromu rozbalte:
-
-```text
-Ribbon > Panels
-```
-
-4. Vytvořte nový panel:
-
-```text
-CadPoints
-```
-
-5. V seznamu příkazů vytvořte tyto tři vlastní příkazy.
-
-### Příkaz: CadPoints Export
-
-Název:
-
-```text
-CadPoints Export
-```
-
-Makro:
+Pro běžné použití stačí vytvořit panel v AutoCAD LT přes `CUI` a přidat příkazy:
 
 ```text
 ^C^C_CPEXPORT
-```
-
-Velký obrázek:
-
-```text
-Contents\Resources\cp-export.bmp
-```
-
-Malý obrázek:
-
-```text
-Contents\Resources\cp-export-16.bmp
-```
-
-### Příkaz: CadPoints Settings
-
-Název:
-
-```text
-CadPoints Settings
-```
-
-Makro:
-
-```text
 ^C^C_CPSETTINGS
-```
-
-Velký obrázek:
-
-```text
-Contents\Resources\cp-settings.bmp
-```
-
-Malý obrázek:
-
-```text
-Contents\Resources\cp-settings-16.bmp
-```
-
-### Příkaz: CadPoints Help
-
-Název:
-
-```text
-CadPoints Help
-```
-
-Makro:
-
-```text
 ^C^C_CPHELP
 ```
 
-Velký obrázek:
+## Rychlé řešení problémů
 
-```text
-Contents\Resources\cp-help.bmp
-```
-
-Malý obrázek:
-
-```text
-Contents\Resources\cp-help-16.bmp
-```
-
-6. Přetáhněte tři příkazy do nového panelu `CadPoints`.
-7. Přetáhněte panel `CadPoints` do existující karty ribbonu, například:
-
-```text
-Ribbon > Tabs > Home - 2D
-```
-
-8. Klikněte na `Apply` a poté na `OK`.
-
-## Alternativní import toolbaru
-
-Níže uvedený soubor lze použít jako výchozí bod pro legacy menu/toolbar:
-
-```text
-Contents\Menu\cadpoints.mnu
-```
-
-Podle verze AutoCAD LT a nastavení profilu jej importujte přes nástroje pro přenos CUI, nebo jej převeďte na částečný soubor přizpůsobení a načtěte přes:
-
-```text
-CUILOAD
-```
-
-Pro každodenní použití je ruční nastavení ribbonu přes `CUI` popsané výše předvídatelnější.
+- Pokud AutoCAD LT nic nenačítá, zkontroluj cestu `%APPDATA%\Autodesk\ApplicationPlugins`.
+- Pokud `CPEXPORT` nic nenajde, zkontroluj nastavení zdrojových hladin v `CPSETTINGS`.
+- Pokud jsou popisy nebo tabulka moc velké nebo malé, zkontroluj `drawing scale` a `table scale`.
+- Pokud se vrstvy nebo tabulka objeví špatně, zkontroluj, že výkres opravdu pracuje v milimetrech.

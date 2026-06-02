@@ -41,6 +41,12 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 
 - [x] Add Czech user-facing README.
   - Added `README.cs-CZ.md` as a Czech localized version of the current user documentation.
+  - Reworked the install flow for non-technical Windows users.
+
+- [x] Add a simple Windows installer script.
+  - Added `scripts/install_windows.ps1`.
+  - The script installs the bundle into `%APPDATA%\Autodesk\ApplicationPlugins` without admin rights.
+  - It auto-finds the bundle from `dist/`, `src/`, or the current working directory.
 
 - [ ] Split documentation by audience.
   - Keep root `README.md` as the user-facing quick start.
@@ -85,6 +91,8 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - S-JTSK coordinate convention.
   - Contour limitation.
   - Test fixture instructions.
+  - Windows installer script coverage.
+  - Added an integration test for `scripts/install_windows.ps1`.
 
 - [ ] Add release-zip validation tests.
   - ZIP exists for the requested version.
