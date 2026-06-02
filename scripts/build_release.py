@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import re
 import shutil
 import subprocess
@@ -57,10 +58,19 @@ def validate_bundle() -> str:
         bundle_readme = read_text(SOURCE_BUNDLE_DIR / "README.md")
         root_readme = read_text(REPO_ROOT / "README.md")
         help_html = read_text(SOURCE_BUNDLE_DIR / "Contents" / "Resources" / "help.html")
+        package_json = read_text(REPO_ROOT / "package.json")
 
         expected_lsp = f'(setq *cadpoints-version* "{version}")'
         if expected_lsp not in lsp_text:
             errors.append(f"cadpoints.lsp version does not match {version}")
+
+        try:
+            package_json_version = json.loads(package_json).get("version")
+        except json.JSONDecodeError as exc:
+            errors.append(f"package.json is invalid JSON: {exc}")
+        else:
+            if package_json_version != version:
+                errors.append(f"package.json version does not match {version}")
 
         for label, text in [
             ("root README.md", root_readme),

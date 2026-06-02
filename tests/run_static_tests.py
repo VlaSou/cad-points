@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import json
 from pathlib import Path
 
 repo_root = Path(__file__).resolve().parents[1]
@@ -13,6 +14,7 @@ cz_readme = repo_root / "README.cs-CZ.md"
 installer_test = repo_root / "tests" / "test_install_windows.py"
 docs_dev = repo_root / "docs" / "development.md"
 docs_settings = repo_root / "docs" / "settings.md"
+package_json = repo_root / "package.json"
 
 errors = []
 for required_path in [
@@ -26,6 +28,7 @@ for required_path in [
     installer_test,
     docs_dev,
     docs_settings,
+    package_json,
 ]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
@@ -127,6 +130,19 @@ for token in [
 ]:
     if token not in docs_settings_text:
         errors.append(f"Missing token in settings docs: {token}")
+
+package_json_text = package_json.read_text(encoding="utf-8")
+try:
+    package_json_data = json.loads(package_json_text)
+except json.JSONDecodeError as exc:
+    errors.append(f"package.json is invalid JSON: {exc}")
+else:
+    if package_json_data.get("name") != "@vlasou/cad-points":
+        errors.append("package.json name is not @vlasou/cad-points")
+    if package_json_data.get("version") != "0.6.0":
+        errors.append("package.json version is not 0.6.0")
+    if "build" not in package_json_data.get("scripts", {}):
+        errors.append("package.json is missing the build script")
 
 pkg_text = package.read_text(encoding="utf-8")
 if 'AppVersion="0.6.0"' not in pkg_text:

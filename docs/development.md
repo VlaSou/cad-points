@@ -21,6 +21,14 @@ python tests/run_static_tests.py
 python scripts/build_release.py
 ```
 
+If you prefer npm-style entry points, the repository also exposes:
+
+```text
+npm run test
+npm run build
+npm run release
+```
+
 The release ZIP is expected to contain:
 
 ```text

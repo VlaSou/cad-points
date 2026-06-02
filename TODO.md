@@ -23,6 +23,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Current version `0.6.0` appears in README files, `PackageContents.xml`, `cadpoints.lsp`, and `help.html`.
   - Add a small manifest file or release script check so these values cannot drift.
   - Bump the version before every release and keep all versioned files in sync.
+  - `package.json` now participates in the same version check.
 
 - [x] Add a repeatable release build script.
   - Validate bundle structure.
