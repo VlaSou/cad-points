@@ -130,6 +130,9 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Suggested file: `docs/runtime-test-checklist.md`.
   - Do not mark runtime behavior as verified unless it was tested in AutoCAD LT.
 
+- [x] Add a verification-agent onboarding file.
+  - Added `.agents/AGENTS.verification.md` for a local agent that can clone, install, build, and verify CadPoints in AutoCAD LT.
+
 ## AutoLISP Maintainability
 
 - [ ] Group `cadpoints.lsp` into clearer sections with comment headers.
