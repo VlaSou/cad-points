@@ -38,6 +38,8 @@ pnpm release
 pnpm release:check
 ```
 
+`pnpm release` delegates to `scripts/release.mjs`, which wraps the Python release build script.
+
 The release ZIP is expected to contain:
 
 ```text

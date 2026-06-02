@@ -15,6 +15,7 @@ installer_test = repo_root / "tests" / "test_install_windows.py"
 docs_dev = repo_root / "docs" / "development.md"
 docs_settings = repo_root / "docs" / "settings.md"
 package_json = repo_root / "package.json"
+release_wrapper = repo_root / "scripts" / "release.mjs"
 
 errors = []
 for required_path in [
@@ -29,6 +30,7 @@ for required_path in [
     docs_dev,
     docs_settings,
     package_json,
+    release_wrapper,
 ]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
@@ -144,9 +146,25 @@ else:
     if package_json_data.get("packageManager") != "pnpm@9.15.4":
         errors.append("package.json packageManager is not pnpm@9.15.4")
     scripts = package_json_data.get("scripts", {})
-    for token in ["check", "test", "build:zip", "build", "release:check", "release"]:
-        if token not in scripts:
-            errors.append(f"package.json is missing the {token} script")
+    expected_scripts = {
+        "check": "py -3 tests/run_static_tests.py",
+        "test": "pnpm check",
+        "build:zip": "py -3 scripts/build_release.py",
+        "build": "pnpm build:zip",
+        "release:check": "node scripts/release.mjs --check",
+        "release": "node scripts/release.mjs",
+    }
+    for script_name, expected_value in expected_scripts.items():
+        actual_value = scripts.get(script_name)
+        if actual_value != expected_value:
+            errors.append(
+                f"package.json script {script_name} is {actual_value!r}, expected {expected_value!r}"
+            )
+
+wrapper_text = release_wrapper.read_text(encoding="utf-8")
+for token in ["build_release.py", "--check"]:
+    if token not in wrapper_text:
+        errors.append(f"Missing token in release wrapper: {token}")
 
 pkg_text = package.read_text(encoding="utf-8")
 if 'AppVersion="0.6.0"' not in pkg_text:

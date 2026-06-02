@@ -96,6 +96,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Prefer `python tests/run_static_tests.py` unless the project later adopts a package manager.
   - If JavaScript tooling is added, prefer `pnpm` for dependency management.
   - `package.json` now exposes pnpm-first scripts for check/build/release.
+  - `scripts/release.mjs` now provides the pnpm release entrypoint around the Python release workflow.
 
 - [ ] Extend static tests to validate documentation coverage.
   - Installation instructions.

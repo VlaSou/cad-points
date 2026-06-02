@@ -57,7 +57,7 @@ docs/settings.md
 ```
 
 Release poznámka: před každým releasem zvedni verzi a srovnej verzi ve všech verzovaných souborech ještě před spuštěním `python scripts/build_release.py`.
-Balíčkové příkazy přes pnpm: `pnpm check`, `pnpm build:zip`, `pnpm release`, `pnpm release:check`.
+Balíčkové příkazy přes pnpm: `pnpm check`, `pnpm build:zip`, `pnpm release`, `pnpm release:check`. `pnpm release` používá jako vstup `scripts/release.mjs`.
 
 ### Co když se nic nenačte
 

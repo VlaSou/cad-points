@@ -47,7 +47,7 @@ docs/settings.md
 ```
 
 Release note: bump the version before each release and keep the versioned files in sync before running `python scripts/build_release.py`.
-pnpm-first package commands are available via `pnpm check`, `pnpm build:zip`, `pnpm release`, and `pnpm release:check`.
+pnpm-first package commands are available via `pnpm check`, `pnpm build:zip`, `pnpm release`, and `pnpm release:check`. `pnpm release` uses `scripts/release.mjs` as its entrypoint.
 
 ## Commands
 
