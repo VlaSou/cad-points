@@ -109,6 +109,18 @@ TRUSTEDPATHS
 - `APPLOAD` can manually load `CadPoints.bundle\Contents\LISP\cadpoints.lsp` for a one-session test.
 - `TRUSTEDPATHS` matters if secure mode blocks the bundle or the LISP file.
 
+For a shareable local report, run:
+
+```text
+pnpm diagnostics
+```
+
+Or save it to a file:
+
+```text
+py -3 scripts/diagnostics.py > cadpoints-diagnostics.txt
+```
+
 ## AutoCAD LT Limitations
 
 - The package must stay compatible with AutoCAD LT 2024+.

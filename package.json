@@ -9,6 +9,7 @@
   "scripts": {
     "check": "py -3 tests/run_static_tests.py",
     "test": "pnpm check",
+    "diagnostics": "py -3 scripts/diagnostics.py",
     "version:patch": "py -3 scripts/version.py patch",
     "version:minor": "py -3 scripts/version.py minor",
     "version:major": "py -3 scripts/version.py major",

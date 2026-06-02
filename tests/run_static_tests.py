@@ -17,6 +17,7 @@ docs_settings = repo_root / "docs" / "settings.md"
 package_json = repo_root / "package.json"
 version_script = repo_root / "scripts" / "version.py"
 release_wrapper = repo_root / "scripts" / "release.py"
+diagnostics_script = repo_root / "scripts" / "diagnostics.py"
 
 errors = []
 for required_path in [
@@ -33,6 +34,7 @@ for required_path in [
     package_json,
     version_script,
     release_wrapper,
+    diagnostics_script,
 ]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
@@ -90,6 +92,8 @@ for token in [
     "DWG writing requires AutoCAD",
     "Troubleshooting",
     "Quick Diagnostics",
+    "scripts/diagnostics.py",
+    "cadpoints-diagnostics.txt",
     "docs/development.md",
     "docs/settings.md",
 ]:
@@ -101,8 +105,10 @@ for token in [
     "scripts\\install_windows.bat",
     "AutoCAD LT 2026.1.1",
     "%APPDATA%\\Autodesk\\ApplicationPlugins",
-    "Rychlé řešení problémů",
+    "Řešení problémů",
     "Rychlá diagnostika",
+    "scripts/diagnostics.py",
+    "cadpoints-diagnostics.txt",
     "docs/development.md",
     "docs/settings.md",
 ]:
@@ -150,6 +156,7 @@ else:
     expected_scripts = {
         "check": "py -3 tests/run_static_tests.py",
         "test": "pnpm check",
+        "diagnostics": "py -3 scripts/diagnostics.py",
         "version:patch": "py -3 scripts/version.py patch",
         "version:minor": "py -3 scripts/version.py minor",
         "version:major": "py -3 scripts/version.py major",

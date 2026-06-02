@@ -58,21 +58,26 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Add `docs/settings.md` for all environment-backed settings and defaults.
   - Completed in root README, Czech README, bundle README, and new docs files.
 
-- [ ] Add a troubleshooting section.
+- [x] Add a troubleshooting section.
   - Bundle does not autoload.
   - `CPEXPORT` exports zero points.
   - Source layers do not match configured layers.
   - CSV path or write permission fails.
   - Curved geometry sampling fails because an AutoCAD LT curve function is unavailable.
   - Table or labels appear at unexpected scale because drawing/table scale is wrong.
-  - Completed in root README, Czech README, and `help.html`.
+  - Completed in root README, Czech README, bundle README, docs, and `help.html`.
 
-- [ ] Document the test workflow end to end.
+- [x] Document the test workflow end to end.
   - Static test command from repository root.
   - AutoCAD LT smoke test commands.
   - Expected generated CSV, point layers, labels, table, and point naming behavior.
   - Explicitly state that AutoCAD runtime testing is required for true validation.
-  - Completed in root README, Czech README, and bundle README.
+  - Completed in root README, Czech README, bundle README, and docs.
+
+- [x] Add a shareable diagnostics report.
+  - `pnpm diagnostics` and `py -3 scripts/diagnostics.py` now print a local report that can be pasted back.
+  - The report includes version checks, file presence checks, tracked release ZIPs, and a copy/paste AutoCAD checklist.
+  - The README files now tell users exactly what to send when they ask for help.
 
 - [ ] Expand `Contents/Resources/help.html`.
   - Current file is a short summary.
@@ -120,6 +125,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Test fixture instructions.
   - Windows installer script coverage.
   - Added an integration test for `scripts/install_windows.bat`.
+  - Static checks now also cover the diagnostics script and the new troubleshooting/reporting text.
 
 - [ ] Add release-zip validation tests.
   - ZIP exists for the requested version.

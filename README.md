@@ -534,11 +534,13 @@ For daily use, the manual `CUI` ribbon setup above is more predictable.
 
 ## Troubleshooting
 
-- If the bundle does not autoload, confirm that `CadPoints.bundle` is copied into `%APPDATA%\Autodesk\ApplicationPlugins` and restart AutoCAD LT.
+- If the bundle does not autoload, confirm that `CadPoints.bundle` is copied into `%APPDATA%\Autodesk\ApplicationPlugins`, restart AutoCAD LT, and check `TRUSTEDPATHS` when secure mode is enabled.
+- If `APPAUTOLOADER` shows `0` bundles, AutoCAD LT is not seeing the bundle in its trusted application plug-in path.
 - If `CPEXPORT` returns no points, check the configured source layers in `CPSETTINGS` and make sure the drawing actually contains matching geometry on those layers.
 - If labels or the table look too large or too small, check `drawing scale` and `table scale`; they are separate settings.
 - If curve sampling fails on a specific object type, the entity may not expose the curve functions required by AutoCAD LT. The bundle should report the unsupported type or handle and continue gracefully.
 - If contour output looks wrong, remember that CadPoints produces approximate contours from existing segments, not a Civil 3D terrain surface.
+- If the installer copies files correctly but the commands still do not appear, run the diagnostics report below and send it back together with the AutoCAD command output.
 
 ### Quick Diagnostics
 
@@ -564,3 +566,31 @@ If the commands still do not appear after a restart:
 2. Verify `PackageContents.xml` exists directly inside that folder.
 3. Run `APPAUTOLOADER` and check whether CadPoints is listed.
 4. If needed, load `CadPoints.bundle\Contents\LISP\cadpoints.lsp` manually with `APPLOAD` and test `CPSETTINGS` and `CPEXPORT`.
+
+### Shareable Diagnostics Report
+
+Run this from the repository root:
+
+```text
+pnpm diagnostics
+```
+
+Or save the output to a file:
+
+```text
+py -3 scripts/diagnostics.py > cadpoints-diagnostics.txt
+```
+
+The report prints:
+
+- repository and environment information
+- version consistency checks
+- key file presence checks
+- tracked release ZIPs
+- a copy/paste checklist of the AutoCAD LT values to send back
+
+If you are asking for help, send:
+
+- the full diagnostics report
+- the output from `APPAUTOLOAD`, `APPAUTOLOADER`, `SECURELOAD`, and `TRUSTEDPATHS`
+- the exact command-line output after `APPLOAD` and `CPEXPORT`

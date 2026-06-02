@@ -255,6 +255,8 @@ ELLIPSE
 SPLINE
 ```
 
+CadPoints vzorkuje zakřivenou geometrii jen jako pomocný výstup. Pokud některá operace v AutoCAD LT není dostupná, balíček má selhat bezpečně a nahlásit typ nebo handle objektu, který nešlo zpracovat.
+
 ## Vrstevnice
 
 Generování vrstevnic je jen přibližné. Nejde o skutečný TIN model jako v Civil 3D.
@@ -269,9 +271,17 @@ CadPoints:
 
 To je vhodné pro jednoduché vstupy, ale ne pro přesný geodetický model terénu.
 
-## Testovací soubory
+Správný pracovní postup pro přesné terénní vrstevnice je:
 
-V balíčku jsou testovací soubory ve složce:
+```text
+body -> TIN / povrchový model -> extrakce vrstevnic
+```
+
+To je vhodnější řešit v Civil 3D, ve full AutoCADu se silnějším API nebo v dedikovaném geodetickém / GIS nástroji.
+
+## Testovací výkres a smoke test
+
+Balíček obsahuje testovací soubory ve složce:
 
 ```text
 Contents\Test
@@ -286,27 +296,173 @@ cadpoints_smoke_test.lsp
 README_TEST.md
 ```
 
-## Ruční ribbon / CUI
+Nativní `example_test.dwg` se v balíčku negeneruje, protože zápis DWG vyžaduje AutoCAD nebo jiné licencované DWG runtime. Otevři `example_test.dxf` v AutoCAD LT a ulož ho jako `example_test.dwg`, nebo spusť `create_example_test.scr` a ulož vzniklý výkres.
 
-Balíček obsahuje ikony a menu, ale hotový `.cuix` se negeneruje.
+Smoke test pro pojmenování bodů:
 
-Pro běžné použití stačí vytvořit panel v AutoCAD LT přes `CUI` a přidat příkazy:
+```text
+APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
+APPLOAD CadPoints.bundle\Contents\Test\cadpoints_smoke_test.lsp
+CPTESTNAMES
+```
+
+Očekávaný výstup:
+
+```text
+CPTESTNAMES OK
+```
+
+## Ruční ribbon / panel
+
+Hotový binární `.cuix` se nepřikládá. V AutoCAD LT je bezpečnější vytvořit panel ručně přes vestavěný editor `CUI`, protože AutoCAD ukládá data pracovního prostoru přímo do vlastních CUIx souborů.
+
+Balíček obsahuje připravené ikony a starší menu šablonu:
+
+```text
+Contents\Menu\cadpoints.mnu
+Contents\Resources\cp-export.bmp
+Contents\Resources\cp-settings.bmp
+Contents\Resources\cp-help.bmp
+Contents\Resources\cp-export-16.bmp
+Contents\Resources\cp-settings-16.bmp
+Contents\Resources\cp-help-16.bmp
+```
+
+### Vytvoření panelu ručně
+
+1. Spusť AutoCAD LT.
+2. Spusť příkaz:
+
+```text
+CUI
+```
+
+3. V levém stromu rozbal:
+
+```text
+Ribbon > Panels
+```
+
+4. Vytvoř nový panel:
+
+```text
+CadPoints
+```
+
+5. V seznamu příkazů vytvoř tyto tři vlastní příkazy.
+
+### Příkaz: CadPoints Export
+
+Název:
+
+```text
+CadPoints Export
+```
+
+Makro:
 
 ```text
 ^C^C_CPEXPORT
+```
+
+Velká ikona:
+
+```text
+Contents\Resources\cp-export.bmp
+```
+
+Malá ikona:
+
+```text
+Contents\Resources\cp-export-16.bmp
+```
+
+### Příkaz: CadPoints Settings
+
+Název:
+
+```text
+CadPoints Settings
+```
+
+Makro:
+
+```text
 ^C^C_CPSETTINGS
+```
+
+Velká ikona:
+
+```text
+Contents\Resources\cp-settings.bmp
+```
+
+Malá ikona:
+
+```text
+Contents\Resources\cp-settings-16.bmp
+```
+
+### Příkaz: CadPoints Help
+
+Název:
+
+```text
+CadPoints Help
+```
+
+Makro:
+
+```text
 ^C^C_CPHELP
 ```
 
-## Rychlé řešení problémů
+Velká ikona:
 
-- Pokud AutoCAD LT nic nenačítá, zkontroluj cestu `%APPDATA%\Autodesk\ApplicationPlugins`.
-- Pokud `CPEXPORT` nic nenajde, zkontroluj nastavení zdrojových hladin v `CPSETTINGS`.
-- Pokud jsou popisy nebo tabulka moc velké nebo malé, zkontroluj `drawing scale` a `table scale`.
-- Pokud se vrstvy nebo tabulka objeví špatně, zkontroluj, že výkres opravdu pracuje v milimetrech.
-- Pokud `CPEXPORT` vrátí nulu bodů, ověř, že jsou zdrojové objekty opravdu na nastavených hladinách a že jde o podporovanou geometrii.
+```text
+Contents\Resources\cp-help.bmp
+```
+
+Malá ikona:
+
+```text
+Contents\Resources\cp-help-16.bmp
+```
+
+6. Přetáhni všechny tři příkazy do nového panelu `CadPoints`.
+7. Přetáhni panel `CadPoints` na existující kartu ribbonu, například:
+
+```text
+Ribbon > Tabs > Home - 2D
+```
+
+8. Klikni na `Apply` a potom `OK`.
+
+## Alternativní import toolbaru
+
+Soubor níže lze použít jako výchozí bod pro starší menu / toolbar:
+
+```text
+Contents\Menu\cadpoints.mnu
+```
+
+Podle verze AutoCAD LT a nastavení profilu ho můžeš importovat přes CUI transfer nástroje nebo převést na částečný customizační soubor a načíst ho přes:
+
+```text
+CUILOAD
+```
+
+Pro denní použití je ruční nastavení ribbonu přes `CUI` předvídatelnější.
+
+## Řešení problémů
+
+- Pokud se bundle nenačítá automaticky, ověř, že `CadPoints.bundle` leží v `%APPDATA%\Autodesk\ApplicationPlugins` a AutoCAD LT restartuj.
+- Pokud `APPAUTOLOADER` ukazuje `0` balíků, AutoCAD LT bundle v důvěryhodné cestě nevidí.
+- Pokud `CPEXPORT` nic nenajde, zkontroluj zdrojové hladiny v `CPSETTINGS` a ověř, že výkres skutečně obsahuje odpovídající geometrii.
+- Pokud jsou popisy nebo tabulka moc velké nebo malé, zkontroluj `drawing scale` a `table scale`; jsou to dvě různé volby.
 - Pokud vzorkování křivek selže na konkrétním objektu, může AutoCAD LT pro daný typ neposkytnout potřebné curve funkce. Balíček by měl typ nebo handle nahlásit a pokračovat dál.
 - Pokud vrstvy vypadají nepřesně, pamatuj, že CadPoints vytváří jen přibližné vrstevnice ze segmentů, ne skutečný povrch jako v Civil 3D.
+- Pokud instalátor zkopíruje soubory správně, ale příkazy se pořád nezobrazí, spusť diagnostický report níže a pošli ho zpátky spolu s výstupem z AutoCAD LT.
 
 ### Rychlá diagnostika
 
@@ -332,3 +488,31 @@ Když příkazy po restartu pořád nefungují:
 2. Ověř, že uvnitř té složky je přímo `PackageContents.xml`.
 3. Spusť `APPAUTOLOADER` a zkontroluj, jestli se CadPoints zobrazuje.
 4. Když je potřeba, načti ručně `CadPoints.bundle\Contents\LISP\cadpoints.lsp` přes `APPLOAD` a otestuj `CPSETTINGS` a `CPEXPORT`.
+
+### Sdílitelný diagnostický report
+
+Spusť z kořene repozitáře:
+
+```text
+pnpm diagnostics
+```
+
+Nebo ulož výstup do souboru:
+
+```text
+py -3 scripts/diagnostics.py > cadpoints-diagnostics.txt
+```
+
+Report vypíše:
+
+- informace o repozitáři a prostředí,
+- kontrolu shody verzí,
+- kontrolu přítomnosti důležitých souborů,
+- přehled verzovaných release ZIPů,
+- a seznam AutoCAD hodnot, které je vhodné poslat zpátky.
+
+Když žádáš o pomoc, pošli:
+
+- celý diagnostický report,
+- výstup `APPAUTOLOAD`, `APPAUTOLOADER`, `SECURELOAD` a `TRUSTEDPATHS`,
+- přesný výstup příkazů po `APPLOAD` a `CPEXPORT`.
