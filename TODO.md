@@ -87,6 +87,9 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Confirm `dist/CadPoints.bundle` is not open in another app before running the build.
   - The generated autoinstaller ZIPs are tracked in `releases/` for easy download from the repository.
 
+- [x] Add a README download shortcut to the latest release ZIP.
+  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_2.zip`.
+
 - [ ] Add optional `.cuix` support for a ready-made ribbon panel.
   - The current install flow works without admin rights, but the user still has to create or load a panel manually.
   - Generate or provide a tested CUIx that exposes `CPEXPORT`, `CPSETTINGS`, and `CPHELP`.

@@ -10,6 +10,12 @@ Tato verze je připravená pro Windows a pro podporu AutoCAD LT 2026.1.1 (`W.164
 0.6.2
 ```
 
+## Stáhnout
+
+Poslední release ZIP:
+
+- [`CadPoints_LT_Plugin_v0_6_2.zip`](releases/CadPoints_LT_Plugin_v0_6_2.zip)
+
 ## Rychlá instalace ve Windows
 
 Nejjednodušší způsob je použít připravený `install_windows.bat`. Nepotřebuje administrátorská práva.
