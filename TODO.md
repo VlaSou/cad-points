@@ -37,9 +37,10 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Keep source, test assets, release zips, and temporary build output clearly separated.
   - `dist/` and release ZIPs are generated artifacts and ignored by Git.
 
-- [ ] Standardize command names, setting names, and default layers in one documented table.
+- [x] Standardize command names, setting names, and default layers in one documented table.
   - Commands: `CPSETTINGS`, `CPEXPORT`, `CPHELP`.
   - Default output layers: `CADPOINTS_POINTS`, `CADPOINTS_POINT_LABELS`, `CADPOINTS_TABLE`, `CADPOINTS_CONTOURS`.
+  - `docs/settings.md` is the canonical settings reference, and `help.html` now includes command and output-layer summaries.
 
 ## Documentation
 
@@ -52,7 +53,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - The script installs the bundle into `%APPDATA%\Autodesk\ApplicationPlugins` without admin rights.
   - It auto-finds the bundle from `dist/`, `src/`, or the current working directory.
 
-- [ ] Split documentation by audience.
+- [x] Split documentation by audience.
   - Keep root `README.md` as the user-facing quick start.
   - Add `docs/development.md` for repository layout, testing, release process, and AutoCAD LT limitations.
   - Add `docs/settings.md` for all environment-backed settings and defaults.
@@ -79,9 +80,8 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - The report includes version checks, file presence checks, tracked release ZIPs, and a copy/paste AutoCAD checklist.
   - The README files now tell users exactly what to send when they ask for help.
 
-- [ ] Expand `Contents/Resources/help.html`.
-  - Current file is a short summary.
-  - Include install path, command list, default units, source layer setup, CSV/table columns, and contour limitation.
+- [x] Expand `Contents/Resources/help.html`.
+  - Added install path, command list, default units, source layer setup, naming rules, CSV/table columns, S-JTSK convention, output layers, troubleshooting, and contour limitation.
 
 - [x] Document release verification.
   - Confirm `PackageContents.xml` version.
@@ -108,6 +108,16 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 
 ## Tests And Quality Gates
 
+- [x] Run local non-AutoCAD verification for version 0.6.2.
+  - Date: 2026-06-08.
+  - `py -3 tests/run_static_tests.py` passed.
+  - `py -3 scripts/release.py --check` passed.
+  - `py -3 scripts/diagnostics.py` reported consistent version metadata and no missing required paths.
+  - `py -3 scripts/release.py --package-only` rebuilt `dist/CadPoints.bundle`.
+  - `py -3 scripts/release.py` rebuilt `releases/CadPoints_LT_Plugin_v0_6_2.zip`.
+  - `py -3 tests/test_install_windows.py` passed.
+  - AutoCAD LT runtime smoke testing was not run because no `acadlt.exe` or `acad.exe` installation was found on this workstation.
+
 - [x] Make static tests runnable from a clean checkout with one command.
   - Prefer `python tests/run_static_tests.py` unless the project later adopts a package manager.
   - If JavaScript tooling is added, prefer `pnpm` for dependency management.
@@ -116,7 +126,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - `pnpm build:autoinstaller` and `pnpm release` create the tracked autoinstaller ZIPs in `releases/`.
   - `scripts/version.py` and `scripts/release.py` now provide the pnpm release/version entrypoints around the Python workflow.
 
-- [ ] Extend static tests to validate documentation coverage.
+- [x] Extend static tests to validate documentation coverage.
   - Installation instructions.
   - Manual CUI/ribbon setup.
   - Drawing units and scale behavior.
@@ -126,12 +136,14 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Windows installer script coverage.
   - Added an integration test for `scripts/install_windows.bat`.
   - Static checks now also cover the diagnostics script and the new troubleshooting/reporting text.
+  - Static checks now require `docs/runtime-test-checklist.md` and verify its key runtime-test tokens.
 
-- [ ] Add release-zip validation tests.
+- [x] Add release-zip validation tests.
   - ZIP exists for the requested version.
   - ZIP contains `CadPoints.bundle/PackageContents.xml`.
   - ZIP contains LISP, resources, menu, test fixtures, and bundle README.
   - ZIP does not contain a nested extra parent directory.
+  - Added `tests/test_release_zip.py` and wired it into `tests/run_static_tests.py`.
 
 - [ ] Add static checks for AutoLISP command and setting coverage.
   - Required commands are defined.
@@ -139,9 +151,11 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Required default layers are present.
   - Parentheses remain balanced while ignoring comments and strings.
 
-- [ ] Track runtime test results in a small checklist file.
+- [x] Track runtime test results in a small checklist file.
   - Suggested file: `docs/runtime-test-checklist.md`.
   - Do not mark runtime behavior as verified unless it was tested in AutoCAD LT.
+  - Added `docs/runtime-test-checklist.md`.
+  - Recorded the 2026-06-08 workstation result: non-AutoCAD checks passed, but no AutoCAD LT executable was available for runtime testing.
 
 - [x] Add a verification-agent onboarding file.
   - Added `.agents/AGENTS.verification.md` for a local agent that can clone, install, build, and verify CadPoints in AutoCAD LT.

@@ -18,6 +18,8 @@ package_json = repo_root / "package.json"
 version_script = repo_root / "scripts" / "version.py"
 release_wrapper = repo_root / "scripts" / "release.py"
 diagnostics_script = repo_root / "scripts" / "diagnostics.py"
+release_zip_test = repo_root / "tests" / "test_release_zip.py"
+runtime_checklist = repo_root / "docs" / "runtime-test-checklist.md"
 
 errors = []
 for required_path in [
@@ -35,6 +37,8 @@ for required_path in [
     version_script,
     release_wrapper,
     diagnostics_script,
+    release_zip_test,
+    runtime_checklist,
 ]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
@@ -139,6 +143,19 @@ for token in [
     if token not in docs_settings_text:
         errors.append(f"Missing token in settings docs: {token}")
 
+runtime_checklist_text = runtime_checklist.read_text(encoding="utf-8")
+for token in [
+    "AutoCAD LT Runtime Test Checklist",
+    "Do not mark runtime behavior as verified",
+    "CPSETTINGS",
+    "CPEXPORT",
+    "CPHELP",
+    "CADPOINTS_POINTS",
+    "CADPOINTS_POINT_LABELS",
+]:
+    if token not in runtime_checklist_text:
+        errors.append(f"Missing token in runtime checklist: {token}")
+
 package_json_text = package_json.read_text(encoding="utf-8")
 try:
     package_json_data = json.loads(package_json_text)
@@ -223,5 +240,18 @@ if installer_test_result.returncode != 0:
     print(installer_test_result.stdout, end="")
     print(installer_test_result.stderr, end="")
     raise SystemExit(installer_test_result.returncode)
+
+release_zip_test_result = subprocess.run(
+    [sys.executable, str(release_zip_test)],
+    cwd=repo_root,
+    text=True,
+    capture_output=True,
+    check=False,
+)
+if release_zip_test_result.returncode != 0:
+    print("STATIC TESTS FAILED")
+    print(release_zip_test_result.stdout, end="")
+    print(release_zip_test_result.stderr, end="")
+    raise SystemExit(release_zip_test_result.returncode)
 
 print("STATIC TESTS OK")

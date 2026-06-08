@@ -1,11 +1,68 @@
 <!doctype html>
 <html lang="cs">
-<head><meta charset="utf-8"><title>CadPoints 0.6.2</title></head>
+<head>
+  <meta charset="utf-8">
+  <title>CadPoints 0.6.2</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.45; max-width: 920px; margin: 24px auto; padding: 0 16px; }
+    h1, h2 { margin-bottom: 0.25em; }
+    code, pre { background: #f2f2f2; padding: 2px 4px; }
+    pre { padding: 10px; overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 6px 8px; text-align: left; vertical-align: top; }
+  </style>
+</head>
 <body>
 <h1>CadPoints 0.6.2</h1>
-<p>Commands: CPSETTINGS, CPEXPORT, CPHELP.</p>
-<p>Default project units: millimetres. Drawing scale and table scale are configured separately.</p>
-<p>Generated point names use either the source layer suffix, e.g. CP_POINTS_A =&gt; A001, A002, or a custom pattern such as A-SO01-###.</p>
-<p>Troubleshooting: if the bundle does not autoload, copy CadPoints.bundle into %APPDATA%\Autodesk\ApplicationPlugins and restart AutoCAD LT. If CPEXPORT returns no points, check source layers. Contour output is approximate and not a Civil 3D surface model.</p>
+<p>CadPoints extracts, names, labels, tabulates, and exports coordinate points from selected CAD geometry layers in AutoCAD LT 2024+.</p>
+
+<h2>Install</h2>
+<p>Install the bundle into the user application plug-in folder:</p>
+<pre>%APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle</pre>
+<p>Restart AutoCAD LT after installation. If autoload is blocked, check <code>APPAUTOLOAD</code>, <code>APPAUTOLOADER</code>, <code>SECURELOAD</code>, and <code>TRUSTEDPATHS</code>.</p>
+
+<h2>Commands</h2>
+<table>
+  <tr><th>Command</th><th>Purpose</th></tr>
+  <tr><td><code>CPSETTINGS</code></td><td>Configure source layers, columns, scales, naming, output layers, labels, table output, sampling, and contours.</td></tr>
+  <tr><td><code>CPEXPORT</code></td><td>Extract points, create optional point entities and labels, export CSV, draw an optional table, and create approximate contours.</td></tr>
+  <tr><td><code>CPHELP</code></td><td>Print a short command-line help summary.</td></tr>
+</table>
+
+<h2>Default Units</h2>
+<p>Drawings are treated as millimetre-based drawings unless configured otherwise:</p>
+<pre>1 drawing unit = 1 mm</pre>
+<p>Default curve sample interval and contour interval are both <code>1000 mm</code>. Drawing scale is used for point labels. Table scale is used only for table text and table geometry.</p>
+
+<h2>Source Layers</h2>
+<p>Configure source layers in <code>CPSETTINGS</code>. The included example drawing uses:</p>
+<pre>CP_POINTS_A
+CP_POINTS_B</pre>
+
+<h2>Naming</h2>
+<p>If the point naming pattern is empty, names are derived from the source layer suffix after the last underscore:</p>
+<pre>CP_POINTS_A =&gt; A001, A002
+CP_POINTS_B =&gt; B001, B002</pre>
+<p>A custom pattern can use <code>#</code> placeholders, for example <code>A-SO01-###</code> or <code>P-####</code>.</p>
+
+<h2>CSV And Table Columns</h2>
+<p>The default column configuration is:</p>
+<pre>POINT_NAME:Bod;LAYER:Hladina;ENTITY_TYPE:Objekt;VERTEX_NO:Vrchol;Y_SJTSK:Y S-JTSK;X_SJTSK:X S-JTSK;Z:Z</pre>
+<p>Supported field IDs are <code>POINT_NAME</code>, <code>POINT_NO</code>, <code>LAYER</code>, <code>ENTITY_TYPE</code>, <code>HANDLE</code>, <code>VERTEX_NO</code>, <code>Y_SJTSK</code>, <code>X_SJTSK</code>, and <code>Z</code>.</p>
+
+<h2>S-JTSK</h2>
+<p>CadPoints does not transform coordinates. It assumes the drawing is already in the project coordinate convention. <code>Y_SJTSK</code> is exported from the AutoCAD X coordinate, and <code>X_SJTSK</code> from the AutoCAD Y coordinate.</p>
+
+<h2>Output Layers</h2>
+<pre>CADPOINTS_POINTS
+CADPOINTS_POINT_LABELS
+CADPOINTS_TABLE
+CADPOINTS_CONTOURS</pre>
+
+<h2>Contours</h2>
+<p>Contour output is approximate segment interpolation from available geometry Z values. It is not a Civil 3D surface model or geodetic terrain model.</p>
+
+<h2>Troubleshooting</h2>
+<p>If <code>CPEXPORT</code> returns no points, check the source layer setting and verify that supported geometry exists on those layers. If curved geometry cannot be sampled in AutoCAD LT, CadPoints should skip or report the failing object instead of crashing.</p>
 </body>
 </html>
