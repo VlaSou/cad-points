@@ -168,6 +168,12 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Added `.agents/AGENTS.test.md` for static, release, install, and AutoCAD LT smoke-test validation.
   - Added `.agents/AGENTS.verification.md` for end-to-end local clone/install/AutoCAD verification.
 
+- [x] Add and integrate baseline agent instructions.
+  - Added `.agents/AGENTS.base.md` as the baseline, project-agnostic AI coding-agent rule set.
+  - Root `AGENTS.md` now lists the baseline runbook and explains how CadPoints project rules extend it.
+  - Development, test, and verification runbooks now link back to `AGENTS.base.md`.
+  - Static tests now require the baseline runbook and validate key safety tokens.
+
 ## AutoLISP Maintainability
 
 - [ ] Group `cadpoints.lsp` into clearer sections with comment headers.

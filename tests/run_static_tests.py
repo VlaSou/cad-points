@@ -20,6 +20,10 @@ release_wrapper = repo_root / "scripts" / "release.py"
 diagnostics_script = repo_root / "scripts" / "diagnostics.py"
 release_zip_test = repo_root / "tests" / "test_release_zip.py"
 runtime_checklist = repo_root / "docs" / "runtime-test-checklist.md"
+agents_base = repo_root / ".agents" / "AGENTS.base.md"
+agents_development = repo_root / ".agents" / "AGENTS.development.md"
+agents_test = repo_root / ".agents" / "AGENTS.test.md"
+agents_verification = repo_root / ".agents" / "AGENTS.verification.md"
 
 errors = []
 for required_path in [
@@ -39,6 +43,10 @@ for required_path in [
     diagnostics_script,
     release_zip_test,
     runtime_checklist,
+    agents_base,
+    agents_development,
+    agents_test,
+    agents_verification,
 ]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
@@ -142,6 +150,23 @@ for token in [
 ]:
     if token not in docs_settings_text:
         errors.append(f"Missing token in settings docs: {token}")
+
+agents_base_text = agents_base.read_text(encoding="utf-8")
+for token in [
+    "baseline instructions for AI coding agents",
+    "Priority",
+    "Scope discipline",
+    "Change protocol",
+    "Git safety",
+    "Do not claim that validation passed unless it actually ran successfully",
+]:
+    if token not in agents_base_text:
+        errors.append(f"Missing token in base agent runbook: {token}")
+
+for path in [agents_development, agents_test, agents_verification]:
+    agent_text = path.read_text(encoding="utf-8")
+    if "AGENTS.base.md" not in agent_text:
+        errors.append(f"Missing AGENTS.base.md reference in {path.relative_to(repo_root)}")
 
 runtime_checklist_text = runtime_checklist.read_text(encoding="utf-8")
 for token in [

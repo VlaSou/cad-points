@@ -4,6 +4,7 @@ This file is for agents that only need to validate the project, build release ar
 
 Related runbooks:
 
+- `AGENTS.base.md` for baseline AI coding-agent rules
 - `AGENTS.development.md` for implementation and packaging guidance
 - `AGENTS.verification.md` for the full local clone/install/AutoCAD verification flow
 
@@ -29,6 +30,7 @@ scripts/version.py
 scripts/install_windows.bat
 tests/run_static_tests.py
 tests/test_install_windows.py
+tests/test_release_zip.py
 src/CadPoints.bundle/PackageContents.xml
 src/CadPoints.bundle/Contents/LISP/cadpoints.lsp
 src/CadPoints.bundle/Contents/Test/example_test.dxf
@@ -57,6 +59,7 @@ The static checks should confirm:
 - required settings names are present
 - README files mention installation and troubleshooting
 - `package.json` scripts exist and use the pnpm-first workflow
+- the release ZIP for the current version has the expected root structure
 
 ## Release Validation
 

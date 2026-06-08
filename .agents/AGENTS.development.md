@@ -4,6 +4,7 @@ This file is for agents working on implementation, packaging, documentation, and
 
 Related runbooks:
 
+- `AGENTS.base.md` for baseline AI coding-agent rules
 - `AGENTS.test.md` for static validation and runtime smoke-test workflow
 - `AGENTS.verification.md` for the full local clone/install/AutoCAD verification flow
 

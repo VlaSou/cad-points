@@ -117,6 +117,7 @@ docs/                human-facing developer and settings documentation
 The `.agents/` folder is part of the repository documentation surface for local and future agents. Keep any agent-facing runbooks there, including:
 
 ```text
+.agents/AGENTS.base.md
 .agents/AGENTS.development.md
 .agents/AGENTS.test.md
 .agents/AGENTS.verification.md
@@ -125,6 +126,8 @@ The `.agents/` folder is part of the repository documentation surface for local 
 Add future agent instruction files to the same folder rather than scattering them through the repository root.
 
 Keep `docs/` for human-facing documentation and `.agents/` for agent-facing runbooks.
+
+`.agents/AGENTS.base.md` contains baseline, project-agnostic AI coding-agent rules. This root `AGENTS.md` and the project-specific runbooks extend that baseline with CadPoints-specific compatibility, packaging, testing, and documentation requirements.
 
 ## Core commands
 
