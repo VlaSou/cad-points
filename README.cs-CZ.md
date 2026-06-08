@@ -63,6 +63,7 @@ Pro vývojářské poznámky, build/release postup a runtime test workflow viz:
 ```text
 docs/development.md
 docs/settings.md
+REQUIREMENTS.md
 ```
 
 Release poznámka: před každým releasem zvedni verzi přes `pnpm version:patch` (nebo `minor`/`major` podle potřeby) a srovnej verzi ve všech verzovaných souborech ještě před spuštěním balíčkovacích skriptů.
@@ -293,6 +294,8 @@ Obsah:
 example_test.dxf
 create_example_test.scr
 cadpoints_smoke_test.lsp
+cadpoints_runtime_smoke_test.lsp
+expected_output.csv
 README_TEST.md
 ```
 
@@ -311,6 +314,22 @@ Očekávaný výstup:
 ```text
 CPTESTNAMES OK
 ```
+
+Runtime smoke test pro celý export:
+
+```text
+APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
+APPLOAD CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
+CPFULLSMOKE
+```
+
+`CPFULLSMOKE` vytvoří deterministický testovací vstup v aktuálním výkresu, vyexportuje body do CSV, vytvoří generované body a popisy, vykreslí tabulku a porovná CSV s:
+
+```text
+CadPoints.bundle\Contents\Test\expected_output.csv
+```
+
+Tento test je určený pro skutečné ověření v AutoCAD LT. Statické testy repozitáře samy o sobě neověřují chování AutoCAD LISP runtime.
 
 ## Ruční ribbon / panel
 

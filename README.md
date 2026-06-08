@@ -53,6 +53,7 @@ For developer notes, build/release instructions, and the runtime test workflow, 
 ```text
 docs/development.md
 docs/settings.md
+REQUIREMENTS.md
 ```
 
 Release note: bump the version before each release with `pnpm version:patch` (or `minor`/`major` as appropriate) and keep the versioned files in sync before running the packaging scripts.
@@ -371,6 +372,8 @@ Included files:
 example_test.dxf
 create_example_test.scr
 cadpoints_smoke_test.lsp
+cadpoints_runtime_smoke_test.lsp
+expected_output.csv
 README_TEST.md
 ```
 
@@ -389,6 +392,22 @@ Expected output:
 ```text
 CPTESTNAMES OK
 ```
+
+Runtime smoke test for the full export path:
+
+```text
+APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
+APPLOAD CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
+CPFULLSMOKE
+```
+
+`CPFULLSMOKE` creates deterministic test input in the current drawing, exports points to CSV, creates generated point entities and labels, draws the table, and compares the generated CSV with:
+
+```text
+CadPoints.bundle\Contents\Test\expected_output.csv
+```
+
+This test is intended for real AutoCAD LT runtime verification. Static repository tests do not prove AutoCAD-specific LISP behavior.
 
 ## Ribbon / panel setup
 

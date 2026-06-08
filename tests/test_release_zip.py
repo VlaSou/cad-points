@@ -40,6 +40,8 @@ def main() -> int:
                 "CadPoints.bundle/Contents/Test/example_test.dxf",
                 "CadPoints.bundle/Contents/Test/create_example_test.scr",
                 "CadPoints.bundle/Contents/Test/cadpoints_smoke_test.lsp",
+                "CadPoints.bundle/Contents/Test/cadpoints_runtime_smoke_test.lsp",
+                "CadPoints.bundle/Contents/Test/expected_output.csv",
                 "CadPoints.bundle/Contents/Test/README_TEST.md",
                 "install_windows.bat",
             ]

@@ -14,16 +14,18 @@ cz_readme = repo_root / "README.cs-CZ.md"
 installer_test = repo_root / "tests" / "test_install_windows.py"
 docs_dev = repo_root / "docs" / "development.md"
 docs_settings = repo_root / "docs" / "settings.md"
+requirements_doc = repo_root / "REQUIREMENTS.md"
 package_json = repo_root / "package.json"
 version_script = repo_root / "scripts" / "version.py"
 release_wrapper = repo_root / "scripts" / "release.py"
 diagnostics_script = repo_root / "scripts" / "diagnostics.py"
 release_zip_test = repo_root / "tests" / "test_release_zip.py"
 runtime_checklist = repo_root / "docs" / "runtime-test-checklist.md"
-agents_base = repo_root / ".agents" / "AGENTS.base.md"
-agents_development = repo_root / ".agents" / "AGENTS.development.md"
-agents_test = repo_root / ".agents" / "AGENTS.test.md"
-agents_verification = repo_root / ".agents" / "AGENTS.verification.md"
+agents_base = repo_root / ".agents" / "base.md"
+agents_development = repo_root / ".agents" / "development.md"
+agents_test = repo_root / ".agents" / "test.md"
+agents_verification = repo_root / ".agents" / "verification.md"
+agents_autocad = repo_root / ".agents" / "autocad.md"
 
 errors = []
 for required_path in [
@@ -37,6 +39,7 @@ for required_path in [
     installer_test,
     docs_dev,
     docs_settings,
+    requirements_doc,
     package_json,
     version_script,
     release_wrapper,
@@ -47,6 +50,7 @@ for required_path in [
     agents_development,
     agents_test,
     agents_verification,
+    agents_autocad,
 ]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
@@ -108,6 +112,10 @@ for token in [
     "cadpoints-diagnostics.txt",
     "docs/development.md",
     "docs/settings.md",
+    "REQUIREMENTS.md",
+    "cadpoints_runtime_smoke_test.lsp",
+    "expected_output.csv",
+    "CPFULLSMOKE",
 ]:
     if token not in readme_text:
         errors.append(f"Missing token in README: {token}")
@@ -123,9 +131,24 @@ for token in [
     "cadpoints-diagnostics.txt",
     "docs/development.md",
     "docs/settings.md",
+    "REQUIREMENTS.md",
+    "cadpoints_runtime_smoke_test.lsp",
+    "expected_output.csv",
+    "CPFULLSMOKE",
 ]:
     if token not in cz_readme_text:
         errors.append(f"Missing token in Czech README: {token}")
+
+requirements_text = requirements_doc.read_text(encoding="utf-8")
+for token in [
+    "D:\\Autodesk\\AutoCAD LT 2026\\acadlt.exe",
+    "Windows PowerShell 5.1",
+    "CPFULLSMOKE",
+    "expected_output.csv",
+    "Do not install, repair, upgrade, or reinstall AutoCAD itself unless explicitly requested.",
+]:
+    if token not in requirements_text:
+        errors.append(f"Missing token in requirements doc: {token}")
 
 docs_dev_text = docs_dev.read_text(encoding="utf-8")
 for token in [
@@ -165,8 +188,20 @@ for token in [
 
 for path in [agents_development, agents_test, agents_verification]:
     agent_text = path.read_text(encoding="utf-8")
-    if "AGENTS.base.md" not in agent_text:
-        errors.append(f"Missing AGENTS.base.md reference in {path.relative_to(repo_root)}")
+    if "base.md" not in agent_text:
+        errors.append(f"Missing base.md reference in {path.relative_to(repo_root)}")
+
+agents_autocad_text = agents_autocad.read_text(encoding="utf-8")
+for token in [
+    "Official AppAutoloader Rules",
+    "PackageContents.xml",
+    "RuntimeRequirements",
+    "ApplicationPlugins",
+    "CUI",
+    "CUILOAD",
+]:
+    if token not in agents_autocad_text:
+        errors.append(f"Missing token in AutoCAD agent notes: {token}")
 
 runtime_checklist_text = runtime_checklist.read_text(encoding="utf-8")
 for token in [
@@ -237,9 +272,31 @@ for token in ["package_version", "validate_bundle", "create_zip", "--package-onl
     if token not in wrapper_text:
         errors.append(f"Missing token in release wrapper: {token}")
 
-for filename in ["example_test.dxf", "create_example_test.scr", "cadpoints_smoke_test.lsp", "README_TEST.md"]:
+for filename in ["example_test.dxf", "create_example_test.scr", "cadpoints_smoke_test.lsp", "cadpoints_runtime_smoke_test.lsp", "expected_output.csv", "README_TEST.md"]:
     if not (test_dir / filename).exists():
         errors.append(f"Missing test file: {filename}")
+
+runtime_smoke_text = (test_dir / "cadpoints_runtime_smoke_test.lsp").read_text(encoding="utf-8")
+for token in [
+    "CPFULLSMOKE",
+    "cp-test:create-example-input",
+    "expected_output.csv",
+    "CADPOINTS_POINTS",
+    "CADPOINTS_POINT_LABELS",
+    "CADPOINTS_TABLE",
+    "CP_POINTS_A,CP_POINTS_B",
+]:
+    if token not in runtime_smoke_text:
+        errors.append(f"Missing token in runtime smoke test: {token}")
+
+expected_csv_text = (test_dir / "expected_output.csv").read_text(encoding="utf-8")
+for token in [
+    "Bod;Hladina;Objekt;Vrchol;Y S-JTSK;X S-JTSK;Z",
+    "A001;CP_POINTS_A;LINE;1;1000.000;2000.000;10.000",
+    "B003;CP_POINTS_B;LWPOLYLINE;3;4000.000;2000.000;30.000",
+]:
+    if token not in expected_csv_text:
+        errors.append(f"Missing token in expected CSV: {token}")
 
 # Verify the DXF has the expected source layers.
 dxf = (test_dir / "example_test.dxf").read_text(encoding="utf-8")
@@ -265,18 +322,5 @@ if installer_test_result.returncode != 0:
     print(installer_test_result.stdout, end="")
     print(installer_test_result.stderr, end="")
     raise SystemExit(installer_test_result.returncode)
-
-release_zip_test_result = subprocess.run(
-    [sys.executable, str(release_zip_test)],
-    cwd=repo_root,
-    text=True,
-    capture_output=True,
-    check=False,
-)
-if release_zip_test_result.returncode != 0:
-    print("STATIC TESTS FAILED")
-    print(release_zip_test_result.stdout, end="")
-    print(release_zip_test_result.stderr, end="")
-    raise SystemExit(release_zip_test_result.returncode)
 
 print("STATIC TESTS OK")

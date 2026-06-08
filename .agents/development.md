@@ -1,12 +1,12 @@
-# AGENTS.development.md
+# development.md
 
 This file is for agents working on implementation, packaging, documentation, and repository maintenance.
 
 Related runbooks:
 
-- `AGENTS.base.md` for baseline AI coding-agent rules
-- `AGENTS.test.md` for static validation and runtime smoke-test workflow
-- `AGENTS.verification.md` for the full local clone/install/AutoCAD verification flow
+- `base.md` for baseline AI coding-agent rules
+- `test.md` for static validation and runtime smoke-test workflow
+- `verification.md` for the full local clone/install/AutoCAD verification flow
 
 ## Project Summary
 

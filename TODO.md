@@ -44,6 +44,11 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 
 ## Documentation
 
+- [x] Add local runtime test requirements document.
+  - Added `REQUIREMENTS.md` in the repository root.
+  - Documents optional workstation setup that improves automated AutoCAD LT testing.
+  - Covers PATH/alias setup, Windows PowerShell 5.1 COM usage, license dialogs, trust paths, runtime smoke flow, and what is not required.
+
 - [x] Add Czech user-facing README.
   - Added `README.cs-CZ.md` as a Czech localized version of the current user documentation.
   - Reworked the install flow for non-technical Windows users.
@@ -108,6 +113,17 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 
 ## Tests And Quality Gates
 
+- [ ] Complete AutoCAD LT runtime verification with the installed local AutoCAD LT.
+  - AutoCAD itself must not be installed, repaired, or upgraded by agents unless explicitly requested.
+  - User allowed agents to make changes under `D:\Autodesk\` at their discretion for CadPoints verification; keep changes targeted to the existing clean trial install.
+  - Trial timing note: clean AutoCAD LT trial had 9 days remaining on 2026-06-08.
+  - Use only the already installed executable: `D:\Autodesk\AutoCAD LT 2026\acadlt.exe`.
+  - It is acceptable to install/reinstall only `CadPoints.bundle` into `%APPDATA%\Autodesk\ApplicationPlugins`.
+  - Close stale `acadlt.exe` instances before each automated runtime attempt so windows do not accumulate.
+  - Current blocker discovered during automated `/b` script testing: AutoCAD LT may show a license / unregistered-version dialog that blocks script progress; close only that dialog or stale AutoCAD test instances.
+  - Next steps: rebuild `dist`, rebuild release ZIP, reinstall `CadPoints.bundle`, then run `CPFULLSMOKE` from `cadpoints_runtime_smoke_test.lsp`.
+  - Record final result in `docs/runtime-test-checklist.md`; do not mark runtime as passed until AutoCAD LT actually creates the runtime result file and expected CSV comparison passes.
+
 - [x] Run local non-AutoCAD verification for version 0.6.2.
   - Date: 2026-06-08.
   - `py -3 tests/run_static_tests.py` passed.
@@ -143,7 +159,9 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - ZIP contains `CadPoints.bundle/PackageContents.xml`.
   - ZIP contains LISP, resources, menu, test fixtures, and bundle README.
   - ZIP does not contain a nested extra parent directory.
-  - Added `tests/test_release_zip.py` and wired it into `tests/run_static_tests.py`.
+  - Added `tests/test_release_zip.py`.
+  - `scripts/release.py --check` runs the release ZIP test against the existing ZIP.
+  - `scripts/release.py` runs the release ZIP test after rebuilding the ZIP.
 
 - [ ] Add static checks for AutoLISP command and setting coverage.
   - Required commands are defined.
@@ -157,22 +175,41 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Added `docs/runtime-test-checklist.md`.
   - Recorded the 2026-06-08 workstation result: non-AutoCAD checks passed, but no AutoCAD LT executable was available for runtime testing.
 
+- [x] Add deterministic runtime smoke-test fixture and expected output.
+  - Added `Contents/Test/expected_output.csv`.
+  - Extended `cadpoints_runtime_smoke_test.lsp` so `CPFULLSMOKE` creates a stable input drawing in the current AutoCAD session.
+  - The runtime smoke test now compares generated CSV output with `expected_output.csv`.
+  - Static and release ZIP checks now require the runtime smoke test and expected CSV fixture.
+  - This test avoids relying on opening `example_test.dxf` during automated script execution, because AutoCAD LT `/b` testing showed `OPEN` can block on UI/prompt state.
+  - Root README, Czech README, and bundle README now document `CPFULLSMOKE`, `expected_output.csv`, and `REQUIREMENTS.md`.
+
 - [x] Add a verification-agent onboarding file.
-  - Added `.agents/AGENTS.verification.md` for a local agent that can clone, install, build, and verify CadPoints in AutoCAD LT.
+  - Added `.agents/verification.md` for a local agent that can clone, install, build, and verify CadPoints in AutoCAD LT.
 
 - [x] Expose the `.agents/` folder in root `AGENTS.md`.
-  - Root instructions now point to `.agents/` and to `.agents/AGENTS.verification.md` as the canonical agent runbook location.
+  - Root instructions now point to `.agents/` and to `.agents/verification.md` as the canonical agent runbook location.
 
 - [x] Add separate agent runbooks for development and test workflows.
-  - Added `.agents/AGENTS.development.md` for implementation and release work.
-  - Added `.agents/AGENTS.test.md` for static, release, install, and AutoCAD LT smoke-test validation.
-  - Added `.agents/AGENTS.verification.md` for end-to-end local clone/install/AutoCAD verification.
+  - Added `.agents/development.md` for implementation and release work.
+  - Added `.agents/test.md` for static, release, install, and AutoCAD LT smoke-test validation.
+  - Added `.agents/verification.md` for end-to-end local clone/install/AutoCAD verification.
 
 - [x] Add and integrate baseline agent instructions.
-  - Added `.agents/AGENTS.base.md` as the baseline, project-agnostic AI coding-agent rule set.
+  - Added `.agents/base.md` as the baseline, project-agnostic AI coding-agent rule set.
   - Root `AGENTS.md` now lists the baseline runbook and explains how CadPoints project rules extend it.
-  - Development, test, and verification runbooks now link back to `AGENTS.base.md`.
+  - Development, test, and verification runbooks now link back to `base.md`.
   - Static tests now require the baseline runbook and validate key safety tokens.
+
+- [x] Standardize `.agents/` runbook file names.
+  - Current canonical names are `.agents/base.md`, `.agents/development.md`, `.agents/test.md`, `.agents/verification.md`, and `.agents/autocad.md`.
+  - Updated root `AGENTS.md`, runbook cross-links, static tests, and TODO references to the lowercase names.
+
+- [x] Record AutoCAD LT installation and AppAutoloader findings for agents.
+  - Added `.agents/autocad.md`.
+  - Recorded that `.bundle` plug-ins should install to shared Autodesk `ApplicationPlugins` folders, not year-specific AutoCAD LT program folders.
+  - Recorded local AutoCAD LT 2026 detection at `D:\Autodesk\AutoCAD LT 2026\acadlt.exe`.
+  - Recorded CUI/CUILOAD constraints for ribbon/panel automation.
+  - Added web-researched Autodesk Help, Autodesk Developer Blog, and supporting community references for AppAutoloader, `PackageContents.xml`, `RuntimeRequirements`, CUIx, `CUI`, and `CUILOAD`.
 
 ## AutoLISP Maintainability
 

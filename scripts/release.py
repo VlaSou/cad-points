@@ -2,8 +2,10 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import re
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -47,6 +49,8 @@ def validate_bundle() -> str:
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "example_test.dxf",
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "create_example_test.scr",
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "cadpoints_smoke_test.lsp",
+        SOURCE_BUNDLE_DIR / "Contents" / "Test" / "cadpoints_runtime_smoke_test.lsp",
+        SOURCE_BUNDLE_DIR / "Contents" / "Test" / "expected_output.csv",
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "README_TEST.md",
     ]
     for path in required_paths:
@@ -86,11 +90,22 @@ def validate_bundle() -> str:
     return version
 
 
-def build_dist_bundle() -> Path:
+def remove_readonly_and_retry(function, path: str, excinfo) -> None:
+    try:
+        os.chmod(path, stat.S_IWRITE)
+        function(path)
+    except Exception:
+        raise excinfo
+
+
+def build_dist_bundle(allow_staging: bool = False) -> Path:
     if DIST_BUNDLE_DIR.exists():
         try:
-            shutil.rmtree(DIST_BUNDLE_DIR)
+            shutil.rmtree(DIST_BUNDLE_DIR, onexc=remove_readonly_and_retry)
         except PermissionError:
+            if not allow_staging:
+                shutil.copytree(SOURCE_BUNDLE_DIR, DIST_BUNDLE_DIR, dirs_exist_ok=True)
+                return DIST_BUNDLE_DIR
             staging_root = Path(tempfile.mkdtemp(prefix="CadPoints.bundle_staging_"))
             staging_dir = staging_root / "CadPoints.bundle"
             shutil.copytree(SOURCE_BUNDLE_DIR, staging_dir)
@@ -108,8 +123,16 @@ def run_static_tests() -> None:
     )
 
 
+def run_release_zip_test() -> None:
+    subprocess.run(
+        [sys.executable, str(REPO_ROOT / "tests" / "test_release_zip.py")],
+        cwd=REPO_ROOT,
+        check=True,
+    )
+
+
 def create_zip(version: str) -> Path:
-    bundle_dir = build_dist_bundle()
+    bundle_dir = build_dist_bundle(allow_staging=True)
     RELEASES_DIR.mkdir(exist_ok=True)
     zip_path = RELEASES_DIR / f"CadPoints_LT_Plugin_v{version_slug(version)}.zip"
 
@@ -148,15 +171,19 @@ def main() -> int:
     run_static_tests()
 
     if args.check:
+        run_release_zip_test()
         print(f"Release checks OK for CadPoints {version}")
         return 0
 
     if args.package_only:
-        build_dist_bundle()
+        bundle_dir = build_dist_bundle(allow_staging=False)
+        if bundle_dir != DIST_BUNDLE_DIR:
+            raise ValueError("Package-only build did not refresh dist/CadPoints.bundle")
         print(f"Prepared dist/CadPoints.bundle for CadPoints {version}")
         return 0
 
     zip_path = create_zip(version)
+    run_release_zip_test()
     print(f"Created {zip_path.relative_to(REPO_ROOT)}")
     return 0
 

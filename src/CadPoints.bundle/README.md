@@ -43,6 +43,7 @@ For developer notes, build/release instructions, and the runtime test workflow, 
 ```text
 docs/development.md
 docs/settings.md
+REQUIREMENTS.md
 ```
 
 ## Commands
@@ -357,6 +358,8 @@ Included files:
 example_test.dxf
 create_example_test.scr
 cadpoints_smoke_test.lsp
+cadpoints_runtime_smoke_test.lsp
+expected_output.csv
 README_TEST.md
 ```
 
@@ -375,6 +378,22 @@ Expected output:
 ```text
 CPTESTNAMES OK
 ```
+
+Runtime smoke test for the full export path:
+
+```text
+APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
+APPLOAD CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
+CPFULLSMOKE
+```
+
+`CPFULLSMOKE` creates deterministic test input in the current drawing, exports points to CSV, creates generated point entities and labels, draws the table, and compares the generated CSV with:
+
+```text
+CadPoints.bundle\Contents\Test\expected_output.csv
+```
+
+This test is intended for real AutoCAD LT runtime verification. Static repository tests do not prove AutoCAD-specific LISP behavior.
 
 ## Ribbon / panel setup
 
@@ -594,8 +613,9 @@ Then test the bundle in AutoCAD LT 2026.1.1:
 ```text
 APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
 APPLOAD CadPoints.bundle\Contents\Test\cadpoints_smoke_test.lsp
-CPSETTINGS
-CPEXPORT
+CPTESTNAMES
+APPLOAD CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
+CPFULLSMOKE
 ```
 
 Expected runtime results:
@@ -605,5 +625,6 @@ Expected runtime results:
 - point labels are created on `CADPOINTS_POINT_LABELS`
 - the table is inserted to the right of the maximum X coordinate
 - expected point name prefixes appear in the output
+- generated CSV matches `Contents\Test\expected_output.csv`
 
 Important: runtime validation in AutoCAD LT is required for the final check. Static tests do not prove that AutoCAD-specific commands and curve functions behave correctly on the target machine.

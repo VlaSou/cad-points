@@ -1,12 +1,12 @@
-# AGENTS.test.md
+# test.md
 
 This file is for agents that only need to validate the project, build release artifacts, and run AutoCAD LT smoke tests.
 
 Related runbooks:
 
-- `AGENTS.base.md` for baseline AI coding-agent rules
-- `AGENTS.development.md` for implementation and packaging guidance
-- `AGENTS.verification.md` for the full local clone/install/AutoCAD verification flow
+- `base.md` for baseline AI coding-agent rules
+- `development.md` for implementation and packaging guidance
+- `verification.md` for the full local clone/install/AutoCAD verification flow
 
 ## Scope
 

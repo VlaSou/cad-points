@@ -1,0 +1,10 @@
+FILEDIA
+0
+CMDDIA
+0
+_.OPEN
+_N
+C:/Users/vsous/AppData/Roaming/Autodesk/ApplicationPlugins/CadPoints.bundle/Contents/Test/example_test.dxf
+(setq f (open "C:/CODE/cad-points/runtime/open-after-n.txt" "w"))
+(write-line "AFTER_OPEN_N" f)
+(close f)

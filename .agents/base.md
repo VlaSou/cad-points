@@ -1,4 +1,4 @@
-# AGENTS.base.md
+# base.md
 
 ## Purpose
 
@@ -201,7 +201,7 @@ Generated files should include a short header indicating that they were generate
 Example:
 
 ```md
-<!-- Generated from AGENTS.base.md and .agents/project-profile.json. Do not edit manually unless intentionally overriding generated output. -->
+<!-- Generated from .agents/base.md and .agents/project-profile.json. Do not edit manually unless intentionally overriding generated output. -->
 ```
 
 ## Agent communication

@@ -1,12 +1,12 @@
-# AGENTS.verification.md
+# verification.md
 
 This file is for a local verification agent that can run AutoCAD LT on Windows.
 
 Related runbooks:
 
-- `AGENTS.base.md` for baseline AI coding-agent rules
-- `AGENTS.development.md` for implementation and packaging work
-- `AGENTS.test.md` for static checks, release validation, and smoke-test steps
+- `base.md` for baseline AI coding-agent rules
+- `development.md` for implementation and packaging work
+- `test.md` for static checks, release validation, and smoke-test steps
 
 ## Goal
 
