@@ -10,6 +10,7 @@ dist/CadPoints.bundle/  generated package payload / staging output
 scripts/                release and helper scripts
 tests/                  static and installer tests
 releases/               tracked release ZIPs for published versions
+.agents/                agent runbooks and local verification requirements
 ```
 
 ## Build And Release
@@ -51,11 +52,15 @@ CadPoints.bundle/Contents/...
 install_windows.bat
 ```
 
+Keep `install_windows.bat` in the ZIP root next to `CadPoints.bundle`, not inside the bundle. The `.bundle` directory should remain the clean AutoCAD plug-in payload.
+
 `dist/` is generated output and is not tracked in Git. It is the package payload used for npm/GitHub Packages publishing and for assembling the autoinstaller ZIP.
 
 `releases/` is tracked in Git and contains the generated autoinstaller ZIPs for published versions. If you add a new release, commit the ZIP so the repository history includes the distributable artifact.
 
-Longer term, the preferred user-facing distribution should become a self-contained executable installer, with the release ZIP remaining the build artifact used to produce it.
+Already committed release ZIPs are immutable. Do not rebuild or edit a published ZIP in place. Bump the SemVer version first and create a new `CadPoints_LT_Plugin_vX_Y_Z.zip`.
+
+Longer term, the preferred user-facing distribution should become a self-contained executable installer, with the release ZIP remaining the build artifact used to produce it. Treat MSI as a later enterprise/deployment target, not the immediate default for this lightweight plugin.
 
 Before each release:
 
@@ -76,11 +81,19 @@ If `dist/CadPoints.bundle` is locked by an editor or preview pane, the build scr
 
 Static validation is not enough for a final release. The bundle must also be tested in AutoCAD LT 2026.1.1 on a real Windows PC.
 
+Local automation requirements and current workstation details are tracked in:
+
+```text
+.agents/requirements.md
+```
+
 Suggested runtime sequence:
 
 ```text
 APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
+APPLOAD CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
 APPLOAD CadPoints.bundle\Contents\Test\cadpoints_smoke_test.lsp
+CPFULLSMOKE
 CPSETTINGS
 CPEXPORT
 ```
@@ -88,6 +101,7 @@ CPEXPORT
 Expected runtime results:
 
 - CSV file is created
+- `CPFULLSMOKE` compares the generated CSV with `expected_output.csv`
 - `POINT` entities are created on `CADPOINTS_POINTS`
 - point labels are created on `CADPOINTS_POINT_LABELS`
 - the table is inserted to the right of the maximum X coordinate

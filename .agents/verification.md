@@ -1,12 +1,15 @@
 # verification.md
 
-This file is for a local verification agent that can run AutoCAD LT on Windows.
+Scope: end-to-end verification workflow for a local agent that can run AutoCAD LT on Windows.
+
+This is the procedure for proving a CadPoints package works. Use `requirements.md` for workstation capabilities, installed AutoCAD details, PATH/COM notes, license-dialog notes, and local automation constraints.
 
 Related runbooks:
 
 - `base.md` for baseline AI coding-agent rules
 - `development.md` for implementation and packaging work
 - `test.md` for static checks, release validation, and smoke-test steps
+- `requirements.md` for local runtime-test environment requirements
 
 ## Goal
 
@@ -18,13 +21,15 @@ Verify that CadPoints can be:
 4. exercised through the main commands,
 5. validated with a real AutoCAD LT smoke test.
 
-## Prerequisites
+## Environment Gate
 
-- Windows 10 or newer
-- Git
-- Python 3.11+ installed and available as `py`
-- AutoCAD LT 2024 or newer
-- Permission to launch AutoCAD LT interactively
+Before running this workflow, confirm the workstation matches `requirements.md`.
+
+Current local assumptions:
+
+- Python is installed; run repository scripts with `py -3`.
+- AutoCAD LT is already installed locally; do not install, repair, upgrade, or reinstall AutoCAD unless explicitly requested.
+- Stale AutoCAD LT test instances may be closed before retrying automated verification.
 
 ## Repository
 
@@ -96,6 +101,8 @@ releases/CadPoints_LT_Plugin_vX_Y_Z.zip
 ```
 
 Treat `dist/` as the intermediate package payload for npm/GitHub Packages and `releases/` as the tracked downloadable autoinstaller artifact output.
+
+Do not edit an already committed release ZIP in place. Bump the SemVer version first and create a new ZIP.
 
 The ZIP must contain:
 
@@ -172,7 +179,34 @@ CPSETTINGS
 CPEXPORT
 ```
 
-### 9. Smoke test in AutoCAD LT
+### 9. Deterministic runtime smoke test in AutoCAD LT
+
+Preferred automated smoke test:
+
+```text
+CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
+```
+
+Command:
+
+```text
+CPFULLSMOKE
+```
+
+This creates deterministic input geometry in the current drawing, runs `CPEXPORT`, and compares the generated CSV with:
+
+```text
+CadPoints.bundle\Contents\Test\expected_output.csv
+```
+
+Expected local result files:
+
+```text
+runtime/cadpoints-runtime-result.txt
+runtime/cadpoints-runtime-export.csv
+```
+
+### 10. Manual example-drawing smoke test
 
 Open the example drawing:
 
@@ -198,13 +232,14 @@ Expected runtime results:
 - curve sampling uses the configured interval
 - unsupported geometry is reported gracefully instead of crashing
 
-### 10. Record the result
+### 11. Record the result
 
 Record:
 
 - whether the bundle autoloaded
 - whether manual `APPLOAD` worked
 - whether `CPEXPORT` produced the expected outputs
+- whether `CPFULLSMOKE` matched `expected_output.csv`
 - whether any AutoCAD LT warnings or command-line errors appeared
 - whether the test was done on a clean machine or on a developer workstation
 

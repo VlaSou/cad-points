@@ -1,0 +1,24 @@
+CadPoints runtime smoke test
+records=5
+points=5
+labels=5
+table_entities=58
+contours=0
+csv=C:/CODE/cad-points/runtime/cadpoints-runtime-export.csv
+expected_csv=C:/Users/vsous/AppData/Roaming/Autodesk/ApplicationPlugins/CadPoints.bundle/Contents/Test/expected_output.csv
+PASS command CPHELP defined
+PASS command CPSETTINGS defined
+PASS command CPEXPORT defined
+PASS source layer CP_POINTS_A exists
+PASS source layer CP_POINTS_B exists
+PASS records exported
+PASS expected record count
+PASS CSV created
+PASS expected CSV fixture exists
+PASS CSV matches expected output
+PASS point entities created
+PASS point labels created
+PASS table entities created
+PASS A prefix present
+PASS B prefix present
+PASS contour command path exercised

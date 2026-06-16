@@ -1,9 +1,9 @@
 ;;; CadPoints for AutoCAD LT
 ;;; Commands: CPEXPORT, CPSETTINGS, CPHELP
 
-(if (fboundp 'vl-load-com) (vl-load-com))
+(vl-load-com)
 
-(setq *cadpoints-version* "0.6.2")
+(setq *cadpoints-version* "0.6.3")
 (setq *cadpoints-point-name-pattern* "")
 (setq *cadpoints-point-name-counters* nil)
 (setq *cadpoints-env-prefix* "CADPOINTS_")

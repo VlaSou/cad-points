@@ -4,6 +4,12 @@ Use this checklist only on a Windows workstation with AutoCAD LT 2024 or newer.
 
 Do not mark runtime behavior as verified unless the commands were actually run in AutoCAD LT.
 
+Workstation capabilities, local AutoCAD path, PATH/COM notes, and trust/autoload requirements are tracked in:
+
+```text
+.agents/requirements.md
+```
+
 ## Environment
 
 - Date:
@@ -32,7 +38,36 @@ Expected user-profile install path:
 - [ ] `CPSETTINGS` runs and shows editable settings.
 - [ ] `CPEXPORT` runs on the example drawing without crashing.
 
-## Smoke Test
+## Deterministic Runtime Smoke Test
+
+Preferred automated test:
+
+```text
+CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
+```
+
+Run:
+
+```text
+CPFULLSMOKE
+```
+
+Expected comparison fixture:
+
+```text
+CadPoints.bundle\Contents\Test\expected_output.csv
+```
+
+Record:
+
+- [ ] Runtime result file is created.
+- [ ] Runtime CSV export is created.
+- [ ] CSV output matches `expected_output.csv`.
+- [ ] `POINT` entities are created on `CADPOINTS_POINTS`.
+- [ ] Point labels are created on `CADPOINTS_POINT_LABELS`.
+- [ ] Table insertion appears to the right of the maximum point X.
+
+## Manual Example-Drawing Smoke Test
 
 Open:
 
@@ -64,9 +99,24 @@ Record:
 
 ## Result
 
-- Runtime status: not run / passed / failed
-- Errors or warnings:
-- Follow-up fixes needed:
+- Runtime status: passed on 2026-06-16
+- Errors or warnings: AutoCAD LT showed a license/unregistered-version dialog before `/b` script execution; closing that dialog allowed the script to continue. `fboundp` is unavailable in this AutoCAD LT runtime and was removed from CadPoints runtime code.
+- Follow-up fixes needed: keep closing license/save dialogs before automated attempts; optional next step is manual CUI/ribbon panel verification.
+
+## 2026-06-16 Workstation Result
+
+- AutoCAD LT executable: `D:\Autodesk\AutoCAD LT 2026\acadlt.exe`
+- Installed bundle path: `%APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle`
+- Tested release version: `0.6.3`
+- Build/test commands run:
+  - `py -3 tests/run_static_tests.py`
+  - `py -3 scripts/release.py --package-only`
+  - `py -3 scripts/release.py`
+  - `scripts\install_windows.bat`
+  - AutoCAD LT `/b runtime/cadpoints-fullsmoke-diag.scr`
+- Runtime result file: `runtime/cadpoints-runtime-result.txt`
+- Runtime CSV file: `runtime/cadpoints-runtime-export.csv`
+- Result summary: `CPFULLSMOKE` passed all checks, created 5 records, 5 point entities, 5 labels, and 58 table entities. Generated CSV matched `expected_output.csv`.
 
 ## 2026-06-08 Workstation Note
 

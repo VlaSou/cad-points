@@ -1,0 +1,6 @@
+start
+loaded cadpoints.lsp
+loaded cadpoints_runtime_smoke_test.lsp
+before CPFULLSMOKE
+CPFULLSMOKE returned without catchable error
+after CPFULLSMOKE

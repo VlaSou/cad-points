@@ -1,15 +1,17 @@
-# CadPoints Local Runtime Test Requirements
+# requirements.md
 
-This file lists optional workstation setup that improves automated CadPoints testing in AutoCAD LT.
+Scope: local workstation capabilities and setup assumptions that make automated CadPoints runtime testing possible.
 
-## Required For True Runtime Verification
+This is not the verification procedure. Use `verification.md` for the actual end-to-end test workflow and result criteria.
+
+## Baseline Workstation
 
 - Windows 10 or newer.
 - AutoCAD LT 2024 or newer with AutoLISP support.
 - A working AutoCAD LT license or trial.
-- Python 3.11+ available through `py -3`.
+- Python is installed on this workstation; use `py -3` for repository scripts.
 - Permission to launch and close AutoCAD LT from scripts.
-- Permission to install/reinstall only `CadPoints.bundle` into:
+- Permission to install or reinstall only `CadPoints.bundle` into:
 
 ```text
 %APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle
@@ -35,6 +37,8 @@ ACADLT-9101:405
 ```
 
 The `:405` profile/locale suffix indicates Czech-localized AutoCAD LT profile data.
+
+Agents may make targeted changes under `D:\Autodesk\` for CadPoints verification when needed, but must not install, repair, upgrade, or reinstall AutoCAD without an explicit user request.
 
 ## Helpful PATH / Alias Setup
 
@@ -84,7 +88,7 @@ Before automated runtime verification:
 - Let profile creation finish.
 - Close extra AutoCAD LT windows before the test.
 
-Agents may close stale AutoCAD LT test instances before retrying runtime tests.
+Agents may close license/trial/unregistered-version dialogs and stale AutoCAD LT test instances before retrying runtime tests.
 
 ## AutoCAD Trust And Autoload Settings
 
@@ -106,24 +110,19 @@ Recommended user plug-in path:
 
 If secure loading blocks LISP or bundle loading, add the user `ApplicationPlugins` folder to trusted paths through AutoCAD LT.
 
-## Runtime Test Flow
+## Runtime Smoke Assets
 
-The automated runtime smoke test is:
+The automated runtime smoke test assets are:
 
 ```text
 CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
+CadPoints.bundle\Contents\Test\expected_output.csv
 ```
 
 The command is:
 
 ```text
 CPFULLSMOKE
-```
-
-It creates deterministic input geometry in the current drawing and compares the generated CSV against:
-
-```text
-CadPoints.bundle\Contents\Test\expected_output.csv
 ```
 
 Expected generated runtime files during local testing:
@@ -148,6 +147,7 @@ The most useful workstation improvements are:
 
 The following are not required for CadPoints runtime verification:
 
+- Installing Python on this workstation; it is already available.
 - Full AutoCAD instead of AutoCAD LT.
 - ObjectARX SDK.
 - .NET plugin tooling.

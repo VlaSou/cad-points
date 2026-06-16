@@ -14,7 +14,7 @@ cz_readme = repo_root / "README.cs-CZ.md"
 installer_test = repo_root / "tests" / "test_install_windows.py"
 docs_dev = repo_root / "docs" / "development.md"
 docs_settings = repo_root / "docs" / "settings.md"
-requirements_doc = repo_root / "REQUIREMENTS.md"
+requirements_doc = repo_root / ".agents" / "requirements.md"
 package_json = repo_root / "package.json"
 version_script = repo_root / "scripts" / "version.py"
 release_wrapper = repo_root / "scripts" / "release.py"
@@ -100,6 +100,9 @@ for token in required_tokens:
     if token not in text:
         errors.append(f"Missing token in LISP: {token}")
 
+if "fboundp" in text:
+    errors.append("cadpoints.lsp must not use fboundp; AutoCAD LT 2026 runtime testing showed it is unavailable")
+
 readme_text = readme.read_text(encoding="utf-8")
 for token in [
     "Point naming",
@@ -112,7 +115,7 @@ for token in [
     "cadpoints-diagnostics.txt",
     "docs/development.md",
     "docs/settings.md",
-    "REQUIREMENTS.md",
+    ".agents/requirements.md",
     "cadpoints_runtime_smoke_test.lsp",
     "expected_output.csv",
     "CPFULLSMOKE",
@@ -131,7 +134,7 @@ for token in [
     "cadpoints-diagnostics.txt",
     "docs/development.md",
     "docs/settings.md",
-    "REQUIREMENTS.md",
+    ".agents/requirements.md",
     "cadpoints_runtime_smoke_test.lsp",
     "expected_output.csv",
     "CPFULLSMOKE",
@@ -280,6 +283,8 @@ runtime_smoke_text = (test_dir / "cadpoints_runtime_smoke_test.lsp").read_text(e
 for token in [
     "CPFULLSMOKE",
     "cp-test:create-example-input",
+    "cp-test:command-defined-p",
+    "cp-test:csv-lines-match-p",
     "expected_output.csv",
     "CADPOINTS_POINTS",
     "CADPOINTS_POINT_LABELS",
@@ -292,8 +297,8 @@ for token in [
 expected_csv_text = (test_dir / "expected_output.csv").read_text(encoding="utf-8")
 for token in [
     "Bod;Hladina;Objekt;Vrchol;Y S-JTSK;X S-JTSK;Z",
-    "A001;CP_POINTS_A;LINE;1;1000.000;2000.000;10.000",
-    "B003;CP_POINTS_B;LWPOLYLINE;3;4000.000;2000.000;30.000",
+    "A001;CP_POINTS_A;LINE;1;1000;2000;10",
+    "B003;CP_POINTS_B;LWPOLYLINE;3;4000;2000;30",
 ]:
     if token not in expected_csv_text:
         errors.append(f"Missing token in expected CSV: {token}")

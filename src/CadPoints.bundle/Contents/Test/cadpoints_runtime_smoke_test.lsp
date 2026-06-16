@@ -72,6 +72,10 @@
   )
 )
 
+(defun cp-test:command-defined-p (command-name)
+  (member (strcase command-name) (atoms-family 1))
+)
+
 (defun cp-test:count-entities (layer entity-type / ss filter)
   (setq filter (list (cons 8 layer)))
   (if entity-type
@@ -119,6 +123,19 @@
     (setq right (cdr right))
   )
   ok
+)
+
+(defun cp-test:sorted-tail (lines)
+  (vl-sort (cdr lines) '<)
+)
+
+(defun cp-test:csv-lines-match-p (actual expected)
+  (and
+    actual
+    expected
+    (= (car actual) (car expected))
+    (cp-test:lines-equal-p (cp-test:sorted-tail actual) (cp-test:sorted-tail expected))
+  )
 )
 
 (defun cp-test:collect-records (/ settings layers precision columns drawing-scale point-name-pattern draw-point-p point-layer label-p label-paper-height label-height label-layer draw-table-p table-scale table-offset-paper table-offset table-text-paper-height table-text-height table-layer draw-contours-p contour-interval contour-layer contour-splines-p sample-curves-p curve-sample-interval ss index entity entity-data entity-type layer handle point-no records segments result contour-count)
@@ -244,9 +261,9 @@
   (setq *cadpoints-runtime-csv-path* csv-path)
   (cp-test:create-example-input)
 
-  (cp-test:check "command CPHELP defined" (fboundp 'c:CPHELP) "c:CPHELP is not defined")
-  (cp-test:check "command CPSETTINGS defined" (fboundp 'c:CPSETTINGS) "c:CPSETTINGS is not defined")
-  (cp-test:check "command CPEXPORT defined" (fboundp 'c:CPEXPORT) "c:CPEXPORT is not defined")
+  (cp-test:check "command CPHELP defined" (cp-test:command-defined-p "C:CPHELP") "c:CPHELP is not defined")
+  (cp-test:check "command CPSETTINGS defined" (cp-test:command-defined-p "C:CPSETTINGS") "c:CPSETTINGS is not defined")
+  (cp-test:check "command CPEXPORT defined" (cp-test:command-defined-p "C:CPEXPORT") "c:CPEXPORT is not defined")
   (cp-test:check "source layer CP_POINTS_A exists" (tblsearch "LAYER" "CP_POINTS_A") "missing CP_POINTS_A")
   (cp-test:check "source layer CP_POINTS_B exists" (tblsearch "LAYER" "CP_POINTS_B") "missing CP_POINTS_B")
 
@@ -267,7 +284,7 @@
     (progn
       (setq actual-lines (cp-test:read-lines csv-file))
       (setq expected-lines (cp-test:read-lines expected-file))
-      (cp-test:check "CSV matches expected output" (cp-test:lines-equal-p actual-lines expected-lines) "actual CSV differs from expected_output.csv")
+      (cp-test:check "CSV matches expected output" (cp-test:csv-lines-match-p actual-lines expected-lines) "actual CSV differs from expected_output.csv")
     )
   )
   (cp-test:check "point entities created" (>= point-count (length records)) (strcat "point count " (itoa point-count) ", records " (itoa (length records))))

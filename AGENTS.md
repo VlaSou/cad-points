@@ -120,6 +120,7 @@ The `.agents/` folder is part of the repository documentation surface for local 
 .agents/base.md
 .agents/development.md
 .agents/test.md
+.agents/requirements.md
 .agents/verification.md
 .agents/autocad.md
 ```
@@ -529,6 +530,8 @@ Before release:
 3. verify README version references,
 4. verify PackageContents.xml version,
 5. if AutoCAD LT is available, run the smoke test on the example drawing.
+
+Already committed release ZIPs are immutable. Do not edit or rebuild an existing published ZIP in place; bump the SemVer version first and create a new `CadPoints_LT_Plugin_vX_Y_Z.zip`.
 
 ## Documentation requirements
 

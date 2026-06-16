@@ -5,14 +5,14 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 ## Version
 
 ```text
-0.6.2
+0.6.3
 ```
 
 ## Download
 
 Latest release ZIP:
 
-- [`CadPoints_LT_Plugin_v0_6_2.zip`](releases/CadPoints_LT_Plugin_v0_6_2.zip)
+- [`CadPoints_LT_Plugin_v0_6_3.zip`](releases/CadPoints_LT_Plugin_v0_6_3.zip)
 
 ## Supported AutoCAD
 
@@ -24,6 +24,8 @@ Latest release ZIP:
 For the release ZIP, double-click `install_windows.bat` in the archive root.
 
 If you work from the repository checkout, the source installer lives in `scripts\install_windows.bat`.
+
+The installer is intentionally shipped next to `CadPoints.bundle` in the ZIP root, not inside the bundle. The `.bundle` folder should remain a clean AutoCAD plug-in payload.
 
 Copy the whole folder:
 
@@ -53,7 +55,7 @@ For developer notes, build/release instructions, and the runtime test workflow, 
 ```text
 docs/development.md
 docs/settings.md
-REQUIREMENTS.md
+.agents/requirements.md
 ```
 
 Release note: bump the version before each release with `pnpm version:patch` (or `minor`/`major` as appropriate) and keep the versioned files in sync before running the packaging scripts.

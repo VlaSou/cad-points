@@ -178,6 +178,19 @@ Installer automation should be improved conservatively:
 5. Avoid silently editing user CUIx/profile files.
 6. If panel automation is added, make it an explicit, separately verified AutoCAD LT workflow and record results in `docs/runtime-test-checklist.md`.
 
+Runtime automation note from 2026-06-16:
+
+- AutoCAD LT may stop before `/b` script execution on the license/unregistered-version dialog.
+- Close that dialog first; then the pending `/b` script continues.
+- If AutoCAD asks whether to save the generated test drawing, answer `No`.
+- Do not leave old `acadlt.exe` instances open between attempts.
+
+Packaging note:
+
+- The current ZIP should keep `install_windows.bat` at the archive root next to `CadPoints.bundle`, not inside `CadPoints.bundle`.
+- A self-contained `.exe` installer is the preferred next user-facing packaging target.
+- MSI is better treated as a later enterprise deployment target, not the immediate default.
+
 Web-researched automation conclusion:
 
 - It is reasonable for the installer to detect and print installed AutoCAD LT versions, executable paths, and registry keys.

@@ -32,6 +32,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - The build now falls back to a temporary staging copy if `dist/CadPoints.bundle` is locked by an editor.
   - `dist/` is the generated package payload / staging output for npm/GitHub Packages, while `releases/` is the autoinstaller artifact output.
   - Use the SemVer bump script before release when the version needs to change.
+  - Already committed release ZIPs are immutable; create a new SemVer ZIP instead of editing an older published artifact.
 
 - [x] Standardize generated/build output directories.
   - Keep source, test assets, release zips, and temporary build output clearly separated.
@@ -45,9 +46,10 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 ## Documentation
 
 - [x] Add local runtime test requirements document.
-  - Added `REQUIREMENTS.md` in the repository root.
-  - Documents optional workstation setup that improves automated AutoCAD LT testing.
-  - Covers PATH/alias setup, Windows PowerShell 5.1 COM usage, license dialogs, trust paths, runtime smoke flow, and what is not required.
+  - Moved the document to `.agents/requirements.md` so agent-facing workstation requirements stay with the other agent runbooks.
+  - Documents local workstation capabilities that improve automated AutoCAD LT testing.
+  - Covers PATH/alias setup, Windows PowerShell 5.1 COM usage, license dialogs, trust paths, runtime smoke assets, and what is not required.
+  - Python is confirmed installed on this workstation; use `py -3` for repository scripts.
 
 - [x] Add Czech user-facing README.
   - Added `README.cs-CZ.md` as a Czech localized version of the current user documentation.
@@ -98,7 +100,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - The generated autoinstaller ZIPs are tracked in `releases/` for easy download from the repository.
 
 - [x] Add a README download shortcut to the latest release ZIP.
-  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_2.zip`.
+  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_3.zip`.
 
 - [ ] Add optional `.cuix` support for a ready-made ribbon panel.
   - The current install flow works without admin rights, but the user still has to create or load a panel manually.
@@ -109,20 +111,23 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Chocolatey package for Windows users who prefer package-manager installs.
   - Homebrew formula or cask if a macOS-compatible distribution story ever becomes relevant.
   - A self-contained executable installer is the preferred next distribution target and should become the primary user-facing download.
+  - Keep `install_windows.bat` at the release ZIP root next to `CadPoints.bundle`, not inside the bundle.
+  - Treat MSI as a later enterprise/deployment target, not the immediate default.
   - Keep the current release ZIP and `.bat` installer as the interim low-friction path until the executable installer exists.
 
 ## Tests And Quality Gates
 
-- [ ] Complete AutoCAD LT runtime verification with the installed local AutoCAD LT.
+- [x] Complete AutoCAD LT runtime verification with the installed local AutoCAD LT.
   - AutoCAD itself must not be installed, repaired, or upgraded by agents unless explicitly requested.
   - User allowed agents to make changes under `D:\Autodesk\` at their discretion for CadPoints verification; keep changes targeted to the existing clean trial install.
   - Trial timing note: clean AutoCAD LT trial had 9 days remaining on 2026-06-08.
   - Use only the already installed executable: `D:\Autodesk\AutoCAD LT 2026\acadlt.exe`.
   - It is acceptable to install/reinstall only `CadPoints.bundle` into `%APPDATA%\Autodesk\ApplicationPlugins`.
   - Close stale `acadlt.exe` instances before each automated runtime attempt so windows do not accumulate.
-  - Current blocker discovered during automated `/b` script testing: AutoCAD LT may show a license / unregistered-version dialog that blocks script progress; close only that dialog or stale AutoCAD test instances.
-  - Next steps: rebuild `dist`, rebuild release ZIP, reinstall `CadPoints.bundle`, then run `CPFULLSMOKE` from `cadpoints_runtime_smoke_test.lsp`.
-  - Record final result in `docs/runtime-test-checklist.md`; do not mark runtime as passed until AutoCAD LT actually creates the runtime result file and expected CSV comparison passes.
+  - AutoCAD LT may show a license / unregistered-version dialog during automated `/b` script testing; agents may close that dialog and stale AutoCAD test instances.
+  - 2026-06-16 result: installed 0.6.3 bundle passed `CPFULLSMOKE` in AutoCAD LT after closing the license/unregistered-version dialog.
+  - Runtime output: 5 records, 5 point entities, 5 labels, 58 table entities, generated CSV matched `expected_output.csv`.
+  - Recorded final result in `docs/runtime-test-checklist.md`.
 
 - [x] Run local non-AutoCAD verification for version 0.6.2.
   - Date: 2026-06-08.
@@ -178,10 +183,11 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 - [x] Add deterministic runtime smoke-test fixture and expected output.
   - Added `Contents/Test/expected_output.csv`.
   - Extended `cadpoints_runtime_smoke_test.lsp` so `CPFULLSMOKE` creates a stable input drawing in the current AutoCAD session.
-  - The runtime smoke test now compares generated CSV output with `expected_output.csv`.
+  - The runtime smoke test now compares generated CSV output with `expected_output.csv` without depending on AutoCAD `ssget` selection order.
   - Static and release ZIP checks now require the runtime smoke test and expected CSV fixture.
   - This test avoids relying on opening `example_test.dxf` during automated script execution, because AutoCAD LT `/b` testing showed `OPEN` can block on UI/prompt state.
-  - Root README, Czech README, and bundle README now document `CPFULLSMOKE`, `expected_output.csv`, and `REQUIREMENTS.md`.
+  - Root README, Czech README, bundle README, and docs now document `CPFULLSMOKE`, `expected_output.csv`, and `.agents/requirements.md`.
+  - 2026-06-16 AutoCAD LT runtime testing showed `fboundp` is unavailable; CadPoints runtime code and smoke checks no longer use it.
 
 - [x] Add a verification-agent onboarding file.
   - Added `.agents/verification.md` for a local agent that can clone, install, build, and verify CadPoints in AutoCAD LT.
