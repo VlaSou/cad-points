@@ -116,6 +116,7 @@ for token in [
     "docs/development.md",
     "docs/settings.md",
     ".agents/requirements.md",
+    "cadpoints_runtime_smoke.scr",
     "cadpoints_runtime_smoke_test.lsp",
     "expected_output.csv",
     "CPFULLSMOKE",
@@ -135,6 +136,7 @@ for token in [
     "docs/development.md",
     "docs/settings.md",
     ".agents/requirements.md",
+    "cadpoints_runtime_smoke.scr",
     "cadpoints_runtime_smoke_test.lsp",
     "expected_output.csv",
     "CPFULLSMOKE",
@@ -275,9 +277,19 @@ for token in ["package_version", "validate_bundle", "create_zip", "--package-onl
     if token not in wrapper_text:
         errors.append(f"Missing token in release wrapper: {token}")
 
-for filename in ["example_test.dxf", "create_example_test.scr", "cadpoints_smoke_test.lsp", "cadpoints_runtime_smoke_test.lsp", "expected_output.csv", "README_TEST.md"]:
+for filename in ["example_test.dxf", "create_example_test.scr", "cadpoints_smoke_test.lsp", "cadpoints_runtime_smoke.scr", "cadpoints_runtime_smoke_test.lsp", "expected_output.csv", "README_TEST.md"]:
     if not (test_dir / filename).exists():
         errors.append(f"Missing test file: {filename}")
+
+runtime_smoke_script_text = (test_dir / "cadpoints_runtime_smoke.scr").read_text(encoding="utf-8")
+for token in [
+    "TRUSTEDPATHS",
+    "CadPoints.bundle\\\\...",
+    "cadpoints_runtime_smoke_test.lsp",
+    "(c:CPFULLSMOKE)",
+]:
+    if token not in runtime_smoke_script_text:
+        errors.append(f"Missing token in runtime smoke script: {token}")
 
 runtime_smoke_text = (test_dir / "cadpoints_runtime_smoke_test.lsp").read_text(encoding="utf-8")
 for token in [

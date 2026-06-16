@@ -358,6 +358,7 @@ Included files:
 example_test.dxf
 create_example_test.scr
 cadpoints_smoke_test.lsp
+cadpoints_runtime_smoke.scr
 cadpoints_runtime_smoke_test.lsp
 expected_output.csv
 README_TEST.md
@@ -386,6 +387,14 @@ APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
 APPLOAD CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
 CPFULLSMOKE
 ```
+
+For automated `/b` runs, use:
+
+```text
+CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke.scr
+```
+
+The `.scr` helper adds `CadPoints.bundle\...` to `TRUSTEDPATHS` before loading the smoke-test LISP, so AutoCAD should not show the unsigned executable-file prompt for the test helper.
 
 `CPFULLSMOKE` creates deterministic test input in the current drawing, exports points to CSV, creates generated point entities and labels, draws the table, and compares the generated CSV with:
 

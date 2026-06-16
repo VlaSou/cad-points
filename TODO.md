@@ -184,6 +184,8 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Added `Contents/Test/expected_output.csv`.
   - Extended `cadpoints_runtime_smoke_test.lsp` so `CPFULLSMOKE` creates a stable input drawing in the current AutoCAD session.
   - The runtime smoke test now compares generated CSV output with `expected_output.csv` without depending on AutoCAD `ssget` selection order.
+  - Added `Contents/Test/cadpoints_runtime_smoke.scr`; it adds `CadPoints.bundle\...` to `TRUSTEDPATHS` before loading the runtime smoke LISP to avoid AutoCAD's unsigned executable-file prompt.
+  - 2026-06-16 verification confirmed the TRUSTEDPATHS helper loads `cadpoints_runtime_smoke_test.lsp` without blocking the runtime smoke test.
   - Static and release ZIP checks now require the runtime smoke test and expected CSV fixture.
   - This test avoids relying on opening `example_test.dxf` during automated script execution, because AutoCAD LT `/b` testing showed `OPEN` can block on UI/prompt state.
   - Root README, Czech README, bundle README, and docs now document `CPFULLSMOKE`, `expected_output.csv`, and `.agents/requirements.md`.

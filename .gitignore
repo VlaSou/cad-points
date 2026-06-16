@@ -3,3 +3,7 @@ __pycache__/
 
 # Generated release artifacts.
 dist/
+
+# Local AutoCAD runtime verification output.
+.test/
+runtime/

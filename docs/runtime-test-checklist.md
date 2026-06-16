@@ -43,6 +43,7 @@ Expected user-profile install path:
 Preferred automated test:
 
 ```text
+CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke.scr
 CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
 ```
 
@@ -51,6 +52,8 @@ Run:
 ```text
 CPFULLSMOKE
 ```
+
+When using the `.scr` helper, it first appends `CadPoints.bundle\...` to `TRUSTEDPATHS` so AutoCAD LT should not display the unsigned executable-file prompt for `cadpoints_runtime_smoke_test.lsp`.
 
 Expected comparison fixture:
 
@@ -100,7 +103,7 @@ Record:
 ## Result
 
 - Runtime status: passed on 2026-06-16
-- Errors or warnings: AutoCAD LT showed a license/unregistered-version dialog before `/b` script execution; closing that dialog allowed the script to continue. `fboundp` is unavailable in this AutoCAD LT runtime and was removed from CadPoints runtime code.
+- Errors or warnings: AutoCAD LT showed a license/unregistered-version dialog before `/b` script execution; closing that dialog allowed the script to continue. `fboundp` is unavailable in this AutoCAD LT runtime and was removed from CadPoints runtime code. AutoCAD also showed an unsigned executable-file prompt for the smoke-test LISP until `CadPoints.bundle\...` was added to `TRUSTEDPATHS`; `cadpoints_runtime_smoke.scr` now does this before loading the test helper.
 - Follow-up fixes needed: keep closing license/save dialogs before automated attempts; optional next step is manual CUI/ribbon panel verification.
 
 ## 2026-06-16 Workstation Result
@@ -113,10 +116,11 @@ Record:
   - `py -3 scripts/release.py --package-only`
   - `py -3 scripts/release.py`
   - `scripts\install_windows.bat`
-  - AutoCAD LT `/b runtime/cadpoints-fullsmoke-diag.scr`
-- Runtime result file: `runtime/cadpoints-runtime-result.txt`
-- Runtime CSV file: `runtime/cadpoints-runtime-export.csv`
+  - AutoCAD LT `/b .test/cadpoints-fullsmoke-diag.scr`
+- Runtime result file: `.test/cadpoints-runtime-result.txt`
+- Runtime CSV file: `.test/cadpoints-runtime-export.csv`
 - Result summary: `CPFULLSMOKE` passed all checks, created 5 records, 5 point entities, 5 labels, and 58 table entities. Generated CSV matched `expected_output.csv`.
+- TRUSTEDPATHS verification: `.test/cadpoints-fullsmoke-diag.txt` recorded `C:\Users\vsous\AppData\Roaming\Autodesk\ApplicationPlugins\CadPoints.bundle\...` before loading `cadpoints_runtime_smoke_test.lsp`.
 
 ## 2026-06-08 Workstation Note
 

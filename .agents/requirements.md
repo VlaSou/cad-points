@@ -128,8 +128,8 @@ CPFULLSMOKE
 Expected generated runtime files during local testing:
 
 ```text
-runtime/cadpoints-runtime-result.txt
-runtime/cadpoints-runtime-export.csv
+.test/cadpoints-runtime-result.txt
+.test/cadpoints-runtime-export.csv
 ```
 
 ## What Helps Most

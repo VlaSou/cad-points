@@ -184,6 +184,9 @@ Runtime automation note from 2026-06-16:
 - Close that dialog first; then the pending `/b` script continues.
 - If AutoCAD asks whether to save the generated test drawing, answer `No`.
 - Do not leave old `acadlt.exe` instances open between attempts.
+- AutoCAD LT can also show an unsigned executable-file prompt for `Contents/Test/cadpoints_runtime_smoke_test.lsp` when `SECURELOAD` is enabled and the bundle path is not trusted.
+- Prefer adding `CadPoints.bundle\...` to `TRUSTEDPATHS`; do not globally disable `SECURELOAD`.
+- The bundled `Contents/Test/cadpoints_runtime_smoke.scr` sets that trusted path before loading the smoke-test LISP.
 
 Packaging note:
 

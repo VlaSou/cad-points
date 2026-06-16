@@ -1,5 +1,0 @@
-(setq f (open "C:/CODE/cad-points/runtime/acad-script-marker.txt" "w"))
-(write-line "SCRIPT_RAN" f)
-(close f)
-_.QUIT
-_N

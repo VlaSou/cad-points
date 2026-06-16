@@ -295,6 +295,7 @@ Obsah:
 example_test.dxf
 create_example_test.scr
 cadpoints_smoke_test.lsp
+cadpoints_runtime_smoke.scr
 cadpoints_runtime_smoke_test.lsp
 expected_output.csv
 README_TEST.md
@@ -323,6 +324,14 @@ APPLOAD CadPoints.bundle\Contents\LISP\cadpoints.lsp
 APPLOAD CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke_test.lsp
 CPFULLSMOKE
 ```
+
+Pro automatické `/b` spuštění použij:
+
+```text
+CadPoints.bundle\Contents\Test\cadpoints_runtime_smoke.scr
+```
+
+Pomocný `.scr` soubor před načtením testovacího LISP přidá `CadPoints.bundle\...` do `TRUSTEDPATHS`, takže AutoCAD nemá zobrazovat hlášku o nepodepsaném spustitelném souboru pro testovací helper.
 
 `CPFULLSMOKE` vytvoří deterministický testovací vstup v aktuálním výkresu, vyexportuje body do CSV, vytvoří generované body a popisy, vykreslí tabulku a porovná CSV s:
 

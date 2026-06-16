@@ -1,0 +1,12 @@
+FILEDIA
+0
+CMDDIA
+0
+(setq cp-trusted-path (strcat (getenv "APPDATA") "\\Autodesk\\ApplicationPlugins\\CadPoints.bundle\\..."))
+(setq cp-trusted-paths (getvar "TRUSTEDPATHS"))
+(if (not (wcmatch (strcase cp-trusted-paths) (strcat "*" (strcase cp-trusted-path) "*")))
+  (setvar "TRUSTEDPATHS" (if (= cp-trusted-paths "") cp-trusted-path (strcat cp-trusted-paths ";" cp-trusted-path)))
+)
+(load (strcat (getenv "APPDATA") "/Autodesk/ApplicationPlugins/CadPoints.bundle/Contents/LISP/cadpoints.lsp"))
+(load (strcat (getenv "APPDATA") "/Autodesk/ApplicationPlugins/CadPoints.bundle/Contents/Test/cadpoints_runtime_smoke_test.lsp"))
+(c:CPFULLSMOKE)

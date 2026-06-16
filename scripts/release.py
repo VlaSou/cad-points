@@ -49,6 +49,7 @@ def validate_bundle() -> str:
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "example_test.dxf",
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "create_example_test.scr",
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "cadpoints_smoke_test.lsp",
+        SOURCE_BUNDLE_DIR / "Contents" / "Test" / "cadpoints_runtime_smoke.scr",
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "cadpoints_runtime_smoke_test.lsp",
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "expected_output.csv",
         SOURCE_BUNDLE_DIR / "Contents" / "Test" / "README_TEST.md",
