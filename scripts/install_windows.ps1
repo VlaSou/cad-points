@@ -99,6 +99,21 @@ New-Item -ItemType Directory -Path $destinationRoot -Force | Out-Null
 Remove-ExistingBundle -BundlePath $destinationBundle
 Copy-Item -LiteralPath $sourceBundle -Destination $destinationRoot -Recurse -Force
 
+$profileConfig = Join-Path $destinationBundle 'Contents\Install\configure_autocad_profile.ps1'
+$defaultDestinationRoot = [System.IO.Path]::Combine(
+    [System.Environment]::GetFolderPath('ApplicationData'),
+    'Autodesk',
+    'ApplicationPlugins'
+)
+if (
+    (Test-Path -LiteralPath $profileConfig) -and
+    ([System.IO.Path]::GetFullPath($DestinationRoot).TrimEnd('\') -ieq [System.IO.Path]::GetFullPath($defaultDestinationRoot).TrimEnd('\'))
+) {
+    & powershell -NoProfile -ExecutionPolicy Bypass -File $profileConfig -BundlePath $destinationBundle
+} else {
+    Write-Host "Konfigurace AutoCAD LT profilu preskocena pro vlastni cilovou slozku."
+}
+
 Write-Host "CadPoints bylo nainstalováno."
 Write-Host "Zdroj: $sourceBundle"
 Write-Host "Cil:   $destinationBundle"

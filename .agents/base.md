@@ -91,6 +91,21 @@ Do not run commands that delete files, reset Git state, rewrite history, clear c
 
 Do not run long-running watch/dev commands unless the task specifically requires them. If a dev server is needed, use the existing project script and stop it after verification.
 
+## Desktop and GUI automation safety
+
+Do not send keystrokes, mouse input, focus changes, or window-management commands to the user's desktop unless the user explicitly requested that exact GUI automation in the current task.
+
+Forbidden by default:
+
+* `SendKeys`, synthetic keyboard input, or pasted command text into arbitrary windows.
+* `SetForegroundWindow`, `ShowWindow`, focus stealing, or similar APIs to target desktop applications.
+* Closing, minimizing, moving, or accepting dialogs in user-owned application windows.
+* Broad process cleanup such as stopping every process with a matching name.
+
+For GUI applications, prefer deterministic non-interactive interfaces such as command-line arguments, script files intentionally passed to that process, log files, exported reports, or application-specific automation APIs that target a known object instead of the active desktop.
+
+If GUI interaction is unavoidable, stop and ask for explicit approval with the exact target process/window, the exact input to be sent, and the expected effect. Do not infer permission from a general request to test an application.
+
 ## Validation
 
 Validate changes with the narrowest relevant command first.

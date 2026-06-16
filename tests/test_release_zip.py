@@ -34,6 +34,9 @@ def main() -> int:
             required_entries = [
                 "CadPoints.bundle/PackageContents.xml",
                 "CadPoints.bundle/README.md",
+                "CadPoints.bundle/Contents/Install/configure_autocad_profile.ps1",
+                "CadPoints.bundle/Contents/LISP/acad.lsp",
+                "CadPoints.bundle/Contents/LISP/acaddoc.lsp",
                 "CadPoints.bundle/Contents/LISP/cadpoints.lsp",
                 "CadPoints.bundle/Contents/Resources/help.html",
                 "CadPoints.bundle/Contents/Menu/cadpoints.mnu",

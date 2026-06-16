@@ -19,6 +19,7 @@ package_json = repo_root / "package.json"
 version_script = repo_root / "scripts" / "version.py"
 release_wrapper = repo_root / "scripts" / "release.py"
 installer_exe_wrapper = repo_root / "scripts" / "build_installer_exe.ps1"
+profile_config_script = root / "Contents" / "Install" / "configure_autocad_profile.ps1"
 diagnostics_script = repo_root / "scripts" / "diagnostics.py"
 release_zip_test = repo_root / "tests" / "test_release_zip.py"
 installer_exe_test = repo_root / "tests" / "test_installer_exe.py"
@@ -47,6 +48,7 @@ for required_path in [
     version_script,
     release_wrapper,
     installer_exe_wrapper,
+    profile_config_script,
     diagnostics_script,
     release_zip_test,
     installer_exe_test,
@@ -299,7 +301,14 @@ for token in ["package_version", "validate_bundle", "create_zip", "--package-onl
 
 package_text = package.read_text(encoding="utf-8")
 for token in [
-    'LoadReasons="LoadOnAutoCADStartup"',
+    'SupportPath="./Contents/LISP"',
+    'AppType="Lisp"',
+    'PerDocument="True"',
+    'LoadReasons="LoadOnCommandInvocation"',
+    '<Commands GroupName="CadPointsCommands">',
+    '<Command Global="CPHELP" Local="CPHELP" />',
+    '<Command Global="CPSETTINGS" Local="CPSETTINGS" />',
+    '<Command Global="CPEXPORT" Local="CPEXPORT" />',
 ]:
     if token not in package_text:
         errors.append(f"Missing token in PackageContents.xml: {token}")
@@ -309,9 +318,40 @@ for token in ["Resolve-CSharpCompiler", "CadPoints_payload.zip", "CadPointsInsta
     if token not in installer_exe_wrapper_text:
         errors.append(f"Missing token in installer EXE wrapper: {token}")
 
+profile_config_text = profile_config_script.read_text(encoding="utf-8")
+for token in ["Support", "CadPoints LISP support path", "New-ItemProperty", "HKCU:\\Software\\Autodesk\\AutoCAD LT"]:
+    if token not in profile_config_text:
+        errors.append(f"Missing token in profile config script: {token}")
+
+for forbidden_token in ["Set-Content", "New-LoaderText", "Install-ProfileLoader"]:
+    if forbidden_token in profile_config_text:
+        errors.append(f"profile config script must not create external startup LISP files: {forbidden_token}")
+
+installer_text = installer.read_text(encoding="utf-8")
+if "configure_autocad_profile.ps1" not in installer_text:
+    errors.append("install_windows.bat must run configure_autocad_profile.ps1")
+
 for filename in ["example_test.dxf", "create_example_test.scr", "cadpoints_smoke_test.lsp", "cadpoints_runtime_smoke.scr", "cadpoints_runtime_smoke_test.lsp", "expected_output.csv", "README_TEST.md"]:
     if not (test_dir / filename).exists():
         errors.append(f"Missing test file: {filename}")
+
+acaddoc = root / "Contents" / "LISP" / "acaddoc.lsp"
+if not acaddoc.exists():
+    errors.append("Missing AutoCAD LT document startup loader: Contents/LISP/acaddoc.lsp")
+else:
+    acaddoc_text = acaddoc.read_text(encoding="utf-8")
+    for token in ['(load "cadpoints.lsp")', "C:CPHELP"]:
+        if token not in acaddoc_text:
+            errors.append(f"Missing token in acaddoc.lsp: {token}")
+
+acad_loader = root / "Contents" / "LISP" / "acad.lsp"
+if not acad_loader.exists():
+    errors.append("Missing AutoCAD LT session startup loader: Contents/LISP/acad.lsp")
+else:
+    acad_loader_text = acad_loader.read_text(encoding="utf-8")
+    for token in ['(load "cadpoints.lsp")', "C:CPHELP"]:
+        if token not in acad_loader_text:
+            errors.append(f"Missing token in acad.lsp: {token}")
 
 runtime_smoke_script_text = (test_dir / "cadpoints_runtime_smoke.scr").read_text(encoding="utf-8")
 for token in [

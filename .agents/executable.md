@@ -161,6 +161,12 @@ Follow-up from user testing:
 - 0.6.4 installed files but `CPHELP` was still unknown after launching AutoCAD, so the bundle manifest needed an explicit startup load reason.
 - 0.6.5 adds `LoadReasons="LoadOnAutoCADStartup"` to `PackageContents.xml`.
 - 0.6.5 EXE adds visible success/failure `MessageBox` output in non-quiet mode.
+- Follow-up AutoCAD testing showed `LoadOnAutoCADStartup` is not sufficient for AutoLISP commands. Use `LoadOnCommandInvocation` with explicit `CPHELP`, `CPSETTINGS`, and `CPEXPORT` command entries.
+- 0.6.6 adds explicit LISP AppAutoloader metadata, bundle startup loader files, and installer profile Support-path configuration.
+- 0.6.6 quiet install verified the expected payload in `%APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle`.
+- AutoCAD LT `/b` manual-load verification passed for 0.6.6: installed `cadpoints.lsp` registered `CPHELP` and `CPEXPORT`.
+- AutoCAD LT `/b` did not prove automatic command invocation autoload; do not claim full autoload verification until normal interactive AutoCAD LT restart is verified.
+- Do not create profile-level `acad.lsp` or `acaddoc.lsp` by default; testing showed that profile startup LISP can trigger the unsigned executable security dialog.
 
 ## Release Hygiene
 

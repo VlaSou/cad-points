@@ -7,18 +7,18 @@ Tato verze je připravená pro Windows a pro podporu AutoCAD LT 2026.1.1 (`W.164
 ## Verze
 
 ```text
-0.6.5
+0.6.6
 ```
 
 ## Stáhnout
 
 Doporučený Windows instalátor:
 
-- [`CadPoints_LT_Plugin_v0_6_5.exe`](releases/CadPoints_LT_Plugin_v0_6_5.exe)
+- [`CadPoints_LT_Plugin_v0_6_6.exe`](releases/CadPoints_LT_Plugin_v0_6_6.exe)
 
 Záložní release ZIP:
 
-- [`CadPoints_LT_Plugin_v0_6_5.zip`](releases/CadPoints_LT_Plugin_v0_6_5.zip)
+- [`CadPoints_LT_Plugin_v0_6_6.zip`](releases/CadPoints_LT_Plugin_v0_6_6.zip)
 
 ## Rychlá instalace ve Windows
 
@@ -27,6 +27,8 @@ Nejjednodušší způsob je použít připravený `.exe` instalátor. Nepotřebu
 ZIP fallback pořád obsahuje `install_windows.bat`.
 V release ZIPu je tento soubor v kořenové složce vedle `CadPoints.bundle`.
 Instalátor záměrně není uvnitř `CadPoints.bundle`, aby bundle zůstal čistý AutoCAD plugin payload.
+
+Při standardní uživatelské instalaci instalátor také přidá `CadPoints.bundle\Contents\LISP` do AutoCAD LT support path profilu, pokud profil najde. Nevytváří profilové startup LISP soubory a nevypíná `SECURELOAD`.
 Ve zdrojovém repozitáři je instalační skript v `scripts\install_windows.bat`.
 
 Složka `dist/` je generovaný payload balíčku pro publikování přes npm/GitHub Packages.

@@ -47,6 +47,19 @@ if not exist "%DEST_BUNDLE%\PackageContents.xml" (
     goto :fail
 )
 
+set "DEFAULT_DEST_ROOT=%APPDATA%\Autodesk\ApplicationPlugins"
+if /I "%DEST_ROOT%"=="%DEFAULT_DEST_ROOT%" (
+    powershell -NoProfile -ExecutionPolicy Bypass -File "%DEST_BUNDLE%\Contents\Install\configure_autocad_profile.ps1" -BundlePath "%DEST_BUNDLE%"
+    if errorlevel 1 (
+        echo Instalace souboru probehla, ale konfigurace AutoCAD LT profilu selhala.
+        goto :fail
+    )
+)
+
+if /I not "%DEST_ROOT%"=="%DEFAULT_DEST_ROOT%" (
+    echo Konfigurace AutoCAD LT profilu preskocena pro vlastni cilovou slozku.
+)
+
 echo CadPoints bylo nainstalovano.
 echo Zdroj: %SOURCE_BUNDLE%
 echo Cil:   %DEST_BUNDLE%

@@ -5,7 +5,7 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 ## Version
 
 ```text
-0.6.5
+0.6.6
 ```
 
 ## Supported AutoCAD
@@ -39,6 +39,8 @@ For the recommended `.exe` installer, download and run `CadPoints_LT_Plugin_vX_Y
 
 For the release ZIP fallback, double-click `install_windows.bat` in the archive root.
 In the source repository, the installer script lives in `scripts\install_windows.bat`.
+
+For the standard user-profile install path, the installer also appends `CadPoints.bundle\Contents\LISP` to AutoCAD LT profile support paths when it can find them. It does not create profile-level startup LISP files and does not disable `SECURELOAD`.
 
 For developer notes, build/release instructions, and the runtime test workflow, see:
 

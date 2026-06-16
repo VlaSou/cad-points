@@ -29,7 +29,9 @@ Current local assumptions:
 
 - Python is installed; run repository scripts with `py -3`.
 - AutoCAD LT is already installed locally; do not install, repair, upgrade, or reinstall AutoCAD unless explicitly requested.
-- Stale AutoCAD LT test instances may be closed before retrying automated verification.
+- Do not close existing user-owned AutoCAD LT windows. For automated verification, launch a dedicated test instance and track only that process.
+- If a license/trial dialog appears, leave it open by default because commands may still run underneath it. Only handle dialogs that are confirmed to block the dedicated test instance.
+- Do not use `SendKeys`, focus stealing, synthetic keyboard input, or active-window typing for verification unless the user explicitly approves the exact action.
 
 ## Repository
 

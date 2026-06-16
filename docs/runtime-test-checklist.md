@@ -103,8 +103,23 @@ Record:
 ## Result
 
 - Runtime status: passed on 2026-06-16
-- Errors or warnings: AutoCAD LT showed a license/unregistered-version dialog before `/b` script execution; closing that dialog allowed the script to continue. `fboundp` is unavailable in this AutoCAD LT runtime and was removed from CadPoints runtime code. AutoCAD also showed an unsigned executable-file prompt for the smoke-test LISP until `CadPoints.bundle\...` was added to `TRUSTEDPATHS`; `cadpoints_runtime_smoke.scr` now does this before loading the test helper.
-- Follow-up fixes needed: keep closing license/save dialogs before automated attempts; optional next step is manual CUI/ribbon panel verification.
+- Errors or warnings: AutoCAD LT showed a license/unregistered-version dialog during runtime attempts. Do not close that dialog from automation unless the user explicitly approves the exact action. `fboundp` is unavailable in this AutoCAD LT runtime and was removed from CadPoints runtime code. AutoCAD also showed an unsigned executable-file prompt for the smoke-test LISP until `CadPoints.bundle\...` was added to `TRUSTEDPATHS`; `cadpoints_runtime_smoke.scr` now does this before loading the test helper.
+- Follow-up fixes needed: close blocking dialogs only inside the dedicated AutoCAD LT test instance after AutoCAD has launched; do not close user-owned AutoCAD/Windows windows. Optional next step is manual CUI/ribbon panel verification.
+
+## 2026-06-16 Version 0.6.6 Autoload Result
+
+- Installed with: `releases\CadPoints_LT_Plugin_v0_6_6.exe /Q`
+- Installed bundle path: `%APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle`
+- Non-AutoCAD checks passed:
+  - `py -3 tests/run_static_tests.py`
+  - `py -3 tests/test_release_zip.py`
+  - `py -3 tests/test_installer_exe.py`
+- AutoCAD LT `/b` manual-load check passed:
+  - nainstalovaný `cadpoints.lsp` loaded successfully
+  - `C:CPHELP=yes`
+  - `C:CPEXPORT=yes`
+- AutoCAD LT `/b` automatic command check did not prove `CPHELP` autoload before manual load.
+- A profile-level `acaddoc.lsp` loader caused the unsigned executable security dialog, so profile startup LISP files should not be created by the installer unless the user explicitly opts into that trust/profile change.
 
 ## 2026-06-16 Workstation Result
 

@@ -180,10 +180,14 @@ Installer automation should be improved conservatively:
 
 Runtime automation note from 2026-06-16:
 
-- AutoCAD LT may stop before `/b` script execution on the license/unregistered-version dialog.
-- Close that dialog first; then the pending `/b` script continues.
-- If AutoCAD asks whether to save the generated test drawing, answer `No`.
-- Do not leave old `acadlt.exe` instances open between attempts.
+- AutoCAD LT may show a license/unregistered-version dialog during `/b` script execution.
+- The local license/trial dialog can be visible while commands still run underneath it; do not close it automatically.
+- Only treat a dialog as blocking after the script output or command execution proves it is blocked.
+- If AutoCAD asks whether to save the generated test drawing, do not answer from automation unless the user explicitly approves that exact dialog action.
+- Do not close user-owned AutoCAD LT or Windows application windows during automation.
+- Do not use broad process cleanup such as stopping all `acadlt.exe` processes.
+- For automated verification, launch a dedicated AutoCAD LT test instance, track that specific process if possible, and wait for AutoCAD to finish startup. If any dialog appears to block the test, stop and ask before taking any GUI action.
+- Do not use `SendKeys`, focus stealing, synthetic keyboard input, or active-window typing. These can type CadPoints commands into the wrong Windows application. Prefer `/b` scripts, AutoLISP helpers, result files, and targeted AutoCAD APIs.
 - AutoCAD LT can also show an unsigned executable-file prompt for `Contents/Test/cadpoints_runtime_smoke_test.lsp` when `SECURELOAD` is enabled and the bundle path is not trusted.
 - Prefer adding `CadPoints.bundle\...` to `TRUSTEDPATHS`; do not globally disable `SECURELOAD`.
 - The bundled `Contents/Test/cadpoints_runtime_smoke.scr` sets that trusted path before loading the smoke-test LISP.
@@ -218,3 +222,57 @@ CUILOAD
 ```
 
 Do not claim AutoCAD LT runtime verification until the commands were actually run in AutoCAD LT.
+
+## 2026-06-16 AppAutoloader Command Finding
+
+AutoCAD LT runtime testing showed that installing CadPoints 0.6.5 with:
+
+```xml
+LoadReasons="LoadOnAutoCADStartup"
+```
+
+did not make `CPHELP` or `CPEXPORT` available after AutoCAD startup.
+
+Autodesk `PackageContents.xml` documentation says:
+
+- `LoadOnCommandInvocation` applies to AutoLISP, ObjectARX, and .NET files.
+- `LoadOnAutoCADStartup` applies to VBA Project, ObjectARX, and .NET files.
+- a `Commands` element is required when `LoadOnCommandInvocation` is enabled.
+
+Therefore AutoLISP command bundles should register commands explicitly:
+
+```xml
+<ComponentEntry
+  AppName="CadPoints"
+  ModuleName="./Contents/LISP/cadpoints.lsp"
+  LoadReasons="LoadOnCommandInvocation">
+  <Commands GroupName="CadPointsCommands">
+    <Command Global="CPHELP" Local="CPHELP" />
+    <Command Global="CPSETTINGS" Local="CPSETTINGS" />
+    <Command Global="CPEXPORT" Local="CPEXPORT" />
+  </Commands>
+</ComponentEntry>
+```
+
+## 2026-06-16 AutoCAD LT 0.6.6 Verification Notes
+
+Changes tested in 0.6.6:
+
+- `PackageContents.xml` uses `LoadOnCommandInvocation` with explicit `CPHELP`, `CPSETTINGS`, and `CPEXPORT` entries.
+- `ComponentEntry` also sets `AppType="Lisp"` and `PerDocument="True"`.
+- The bundle includes `Contents/LISP/acad.lsp` and `Contents/LISP/acaddoc.lsp` loaders.
+- The installer includes `Contents/Install/configure_autocad_profile.ps1`, which appends the bundle LISP folder to AutoCAD LT profile `Support` values. It must not create profile-level startup LISP files by default.
+
+Observed runtime behavior:
+
+- `releases\CadPoints_LT_Plugin_v0_6_6.exe /Q` installed the expected payload into `%APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle`.
+- AutoCAD LT `/b` manual-load verification passed: loading the installed `cadpoints.lsp` made `C:CPHELP` and `C:CPEXPORT` available.
+- AutoCAD LT `/b` command-autoload verification still showed `BEFORE_C:CPHELP=no` and did not complete after raw `CPHELP`.
+- Adding the bundle LISP folder to profile `Support` made `(findfile "cadpoints.lsp")` work.
+- Creating `acad.lsp` / `acaddoc.lsp` in the user profile support folder triggered the AutoCAD security dialog `Zabezpečení - nepodepsaný spustitelný soubor`; that approach should not be used by default.
+
+Automation safety note:
+
+- Do not close broad AutoCAD/Windows process sets.
+- Launch a dedicated AutoCAD LT test instance and close only that specific PID after the test.
+- If a blocking dialog appears, handle only the dialog inside that dedicated test instance.

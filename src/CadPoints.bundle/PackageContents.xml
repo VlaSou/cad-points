@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ApplicationPackage
   SchemaVersion="1.0"
-  AppVersion="0.6.5"
+  AppVersion="0.6.6"
   Name="CadPoints"
   Description="Exports named points and sampled curve points from configured AutoCAD LT layers to CSV, inserts generated point entities, labels, and a point table into the drawing."
   Author="Weela"
@@ -14,10 +14,19 @@
   <Components>
     <RuntimeRequirements
       OS="Win32|Win64"
-      Platform="ACADLT" />
+      Platform="ACADLT"
+      SupportPath="./Contents/LISP" />
     <ComponentEntry
       AppName="CadPoints"
+      AppType="Lisp"
       ModuleName="./Contents/LISP/cadpoints.lsp"
-      LoadReasons="LoadOnAutoCADStartup" />
+      PerDocument="True"
+      LoadReasons="LoadOnCommandInvocation">
+      <Commands GroupName="CadPointsCommands">
+        <Command Global="CPHELP" Local="CPHELP" />
+        <Command Global="CPSETTINGS" Local="CPSETTINGS" />
+        <Command Global="CPEXPORT" Local="CPEXPORT" />
+      </Commands>
+    </ComponentEntry>
   </Components>
 </ApplicationPackage>

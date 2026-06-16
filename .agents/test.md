@@ -142,6 +142,24 @@ For user-profile installs, `TRUSTEDPATHS` should include:
 
 If autoload fails, restart AutoCAD LT after changing trust settings.
 
+## Desktop Automation Safety
+
+Do not use desktop-level GUI automation for AutoCAD LT testing unless the user explicitly approves the exact action in the current task.
+
+Forbidden by default:
+
+```text
+SendKeys
+synthetic keyboard input
+focus stealing
+typing commands into the active Windows window
+clicking or closing dialogs
+closing user-owned AutoCAD LT windows
+stopping all acadlt.exe processes
+```
+
+Use `/b` script files, AutoLISP helpers, deterministic result files, and targeted AutoCAD APIs instead.
+
 ## Manual Load Check
 
 If the bundle still does not autoload, load the LISP file manually:

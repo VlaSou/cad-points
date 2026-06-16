@@ -100,7 +100,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - The generated autoinstaller ZIPs are tracked in `releases/` for easy download from the repository.
 
 - [x] Add a README download shortcut to the latest release ZIP.
-  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_5.exe` and `releases/CadPoints_LT_Plugin_v0_6_5.zip`.
+  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_6.exe` and `releases/CadPoints_LT_Plugin_v0_6_6.zip`.
 
 - [ ] Add optional `.cuix` support for a ready-made ribbon panel.
   - The current install flow works without admin rights, but the user still has to create or load a panel manually.
@@ -134,11 +134,24 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
 - [x] Fix EXE installer feedback and AutoCAD startup autoload.
   - Add a visible success/failure dialog for non-quiet EXE runs.
   - Verify the installed bundle after copy and show the installed path/version.
-  - Add `LoadReasons="LoadOnAutoCADStartup"` to `PackageContents.xml` so `CPHELP`, `CPSETTINGS`, and `CPEXPORT` are available after AutoCAD restart.
   - Implemented in 0.6.5. Non-quiet EXE shows a success/failure MessageBox and includes batch installer output in failure details.
-  - Static tests now require `LoadReasons="LoadOnAutoCADStartup"` in `PackageContents.xml`.
+  - The original 0.6.5 `LoadReasons="LoadOnAutoCADStartup"` attempt was not sufficient for AutoLISP command registration and is superseded by the 0.6.6 `LoadOnCommandInvocation` fix below.
+
+- [ ] Fix AutoCAD LT AppAutoloader command registration.
+  - 2026-06-16 AutoCAD `/b` check showed `CPHELP` and `CPEXPORT` were still unknown after startup even with `LoadReasons="LoadOnAutoCADStartup"`.
+  - Autodesk `PackageContents.xml` docs state `LoadOnAutoCADStartup` only applies to VBA/ObjectARX/.NET, while AutoLISP command loading should use `LoadOnCommandInvocation` with a `Commands` element.
+  - Added `LoadOnCommandInvocation`, explicit command entries, `AppType="Lisp"`, `PerDocument="True"`, and bundle-contained `acad.lsp`/`acaddoc.lsp` loaders in 0.6.6.
+  - Added installer profile support-path configuration through `Contents/Install/configure_autocad_profile.ps1`.
+  - 2026-06-16 verification: `releases\CadPoints_LT_Plugin_v0_6_6.exe /Q` installs the new payload, and AutoCAD LT `/b` manual-load verification confirms installed `cadpoints.lsp` registers `CPHELP` and `CPEXPORT`.
+  - Remaining gap: AutoCAD LT `/b` did not prove automatic `CPHELP` availability before manual load. Creating startup LISP files in the user profile triggered the unsigned executable security dialog, so the installer must not create profile-level `acad.lsp`/`acaddoc.lsp` files by default.
+  - Next step: verify 0.6.6 manually in the already open AutoCAD LT command line after a normal restart, then decide whether to keep AppAutoloader-only loading or add an explicit user-approved profile/trust configuration option.
 
 ## Tests And Quality Gates
+
+- [x] Tighten desktop automation safety rules after unsafe GUI automation attempt.
+  - Do not use `SendKeys`, focus stealing, synthetic keyboard input, or active-window typing for AutoCAD verification unless the user explicitly approves the exact action.
+  - Do not close user-owned AutoCAD LT or Windows application windows.
+  - Prefer `/b` scripts, AutoLISP helpers, result files, static tests, installer tests, and targeted AutoCAD APIs over desktop GUI automation.
 
 - [x] Complete AutoCAD LT runtime verification with the installed local AutoCAD LT.
   - AutoCAD itself must not be installed, repaired, or upgraded by agents unless explicitly requested.
@@ -146,8 +159,9 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Trial timing note: clean AutoCAD LT trial had 9 days remaining on 2026-06-08.
   - Use only the already installed executable: `D:\Autodesk\AutoCAD LT 2026\acadlt.exe`.
   - It is acceptable to install/reinstall only `CadPoints.bundle` into `%APPDATA%\Autodesk\ApplicationPlugins`.
-  - Close stale `acadlt.exe` instances before each automated runtime attempt so windows do not accumulate.
-  - AutoCAD LT may show a license / unregistered-version dialog during automated `/b` script testing; agents may close that dialog and stale AutoCAD test instances.
+  - Do not close user-owned AutoCAD LT or Windows application windows during automated runtime attempts.
+  - For automation, launch a dedicated AutoCAD LT test instance when possible and use script/API-based checks only; if a dialog blocks the test, stop and ask before taking any GUI action.
+  - AutoCAD LT may show a license / unregistered-version dialog during automated `/b` script testing; do not close it automatically because commands may still run underneath it.
   - 2026-06-16 result: installed 0.6.3 bundle passed `CPFULLSMOKE` in AutoCAD LT after closing the license/unregistered-version dialog.
   - Runtime output: 5 records, 5 point entities, 5 labels, 58 table entities, generated CSV matched `expected_output.csv`.
   - Recorded final result in `docs/runtime-test-checklist.md`.

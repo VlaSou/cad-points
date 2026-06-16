@@ -575,6 +575,33 @@ Do not overpromise Civil 3D level functionality.
 10. Update README whenever adding or changing a setting.
 11. Update `TODO.md` after each completed task so it reflects newly completed work, newly discovered follow-ups, and changed priorities.
 
+## Runtime automation safety
+
+Do not use desktop-level GUI automation to test AutoCAD LT unless the user explicitly requests that exact interaction in the current task.
+
+Forbidden by default:
+
+```text
+SendKeys
+synthetic keyboard input
+SetForegroundWindow / ShowWindow focus stealing
+clicking or closing arbitrary Windows dialogs
+stopping all acadlt.exe processes
+typing commands into whichever window is active
+```
+
+Allowed safer approaches:
+
+```text
+AutoCAD /b script files passed directly as acadlt.exe arguments
+AutoLISP test scripts loaded by AutoCAD itself
+log/result files written by those scripts
+installer/static/package tests outside AutoCAD
+COM automation only when it targets a known AutoCAD object and does not use active-desktop keystrokes
+```
+
+If GUI interaction is unavoidable, stop and ask first. The request must name the exact target process/window, the exact input/action, and why script-file or API-based testing is not enough.
+
 ## Suggested next development steps
 
 ### Step 1: Import current package into repository
