@@ -101,6 +101,8 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Reflection;
+using System.Windows.Forms;
+using System.Xml;
 
 internal static class Program
 {
@@ -110,6 +112,7 @@ internal static class Program
     {
         string tempRoot = Path.Combine(Path.GetTempPath(), "CadPointsInstaller_" + Guid.NewGuid().ToString("N"));
         bool quiet = HasArg(args, "/Q") || HasArg(args, "/QUIET") || HasArg(args, "--quiet");
+        string version = typeof(Program).Assembly.GetName().Version.ToString();
 
         try
         {
@@ -138,19 +141,41 @@ internal static class Program
             startInfo.UseShellExecute = false;
             startInfo.CreateNoWindow = quiet;
             startInfo.WorkingDirectory = payloadDir;
+            startInfo.RedirectStandardOutput = true;
+            startInfo.RedirectStandardError = true;
 
             using (Process process = Process.Start(startInfo))
             {
+                string stdout = process.StandardOutput.ReadToEnd();
+                string stderr = process.StandardError.ReadToEnd();
                 process.WaitForExit();
                 if (process.ExitCode != 0)
                 {
-                    throw new InvalidOperationException("install_windows.bat failed with exit code " + process.ExitCode);
+                    throw new InvalidOperationException(
+                        "install_windows.bat failed with exit code " + process.ExitCode + "\n\n" +
+                        "Output:\n" + stdout + "\n" +
+                        "Errors:\n" + stderr);
                 }
+            }
+
+            string installedBundle = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Autodesk",
+                "ApplicationPlugins",
+                "CadPoints.bundle");
+            string installedVersion = ReadInstalledVersion(installedBundle);
+            if (string.IsNullOrEmpty(installedVersion))
+            {
+                throw new InvalidOperationException("CadPoints.bundle was copied, but installed PackageContents.xml could not be verified.");
             }
 
             if (!quiet)
             {
-                Console.WriteLine("CadPoints installer finished.");
+                MessageBox.Show(
+                    "CadPoints was installed successfully.\n\nTarget:\n" + installedBundle + "\n\nVersion: " + installedVersion + "\n\nRestart AutoCAD LT and run CPHELP.",
+                    "CadPoints installer",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             }
             return 0;
         }
@@ -158,6 +183,14 @@ internal static class Program
         {
             Console.Error.WriteLine("CadPoints installer failed:");
             Console.Error.WriteLine(ex.Message);
+            if (!quiet)
+            {
+                MessageBox.Show(
+                    "CadPoints installation failed:\n\n" + ex.Message,
+                    "CadPoints installer",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
             return 1;
         }
         finally
@@ -202,6 +235,24 @@ internal static class Program
             }
         }
     }
+
+    private static string ReadInstalledVersion(string bundlePath)
+    {
+        string packagePath = Path.Combine(bundlePath, "PackageContents.xml");
+        if (!File.Exists(packagePath))
+        {
+            return null;
+        }
+
+        XmlDocument document = new XmlDocument();
+        document.Load(packagePath);
+        XmlElement root = document.DocumentElement;
+        if (root == null)
+        {
+            return null;
+        }
+        return root.GetAttribute("AppVersion");
+    }
 }
 '@ | Set-Content -LiteralPath $sourcePath -Encoding ASCII
 
@@ -209,11 +260,13 @@ internal static class Program
         '/r:System.dll',
         '/r:System.Core.dll',
         '/r:System.IO.Compression.dll',
-        '/r:System.IO.Compression.FileSystem.dll'
+        '/r:System.IO.Compression.FileSystem.dll',
+        '/r:System.Windows.Forms.dll',
+        '/r:System.Xml.dll'
     )
     $arguments = @(
         '/nologo',
-        '/target:exe',
+        '/target:winexe',
         "/out:$exePath",
         "/resource:$payloadZip,CadPoints_payload.zip"
     ) + $references + @($sourcePath)

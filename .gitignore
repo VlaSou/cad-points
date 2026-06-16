@@ -7,3 +7,11 @@ dist/
 # Local AutoCAD runtime verification output.
 .test/
 runtime/
+
+# Local Windows installer/compiler leftovers.
+CAB*.TMP
+releases/CAB*.TMP
+releases/CSC*.TMP
+releases/RCX*.tmp
+releases/~CadPoints_*
+releases/~CadPoints_LT_Plugin_*

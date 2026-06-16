@@ -5,18 +5,18 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 ## Version
 
 ```text
-0.6.4
+0.6.5
 ```
 
 ## Download
 
 Recommended Windows installer:
 
-- [`CadPoints_LT_Plugin_v0_6_4.exe`](releases/CadPoints_LT_Plugin_v0_6_4.exe)
+- [`CadPoints_LT_Plugin_v0_6_5.exe`](releases/CadPoints_LT_Plugin_v0_6_5.exe)
 
 Fallback release ZIP:
 
-- [`CadPoints_LT_Plugin_v0_6_4.zip`](releases/CadPoints_LT_Plugin_v0_6_4.zip)
+- [`CadPoints_LT_Plugin_v0_6_5.zip`](releases/CadPoints_LT_Plugin_v0_6_5.zip)
 
 ## Supported AutoCAD
 

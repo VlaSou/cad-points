@@ -100,7 +100,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - The generated autoinstaller ZIPs are tracked in `releases/` for easy download from the repository.
 
 - [x] Add a README download shortcut to the latest release ZIP.
-  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_4.exe` and `releases/CadPoints_LT_Plugin_v0_6_4.zip`.
+  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_5.exe` and `releases/CadPoints_LT_Plugin_v0_6_5.zip`.
 
 - [ ] Add optional `.cuix` support for a ready-made ribbon panel.
   - The current install flow works without admin rights, but the user still has to create or load a panel manually.
@@ -130,6 +130,13 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Confirmed quiet mode installs `CadPoints.bundle` into `%APPDATA%\Autodesk\ApplicationPlugins`.
   - Confirm AutoCAD LT loads the installed bundle without the unsigned test-helper prompt when using `cadpoints_runtime_smoke.scr`.
   - Keep MSI as a later enterprise packaging target only if the EXE installer proves insufficient.
+
+- [x] Fix EXE installer feedback and AutoCAD startup autoload.
+  - Add a visible success/failure dialog for non-quiet EXE runs.
+  - Verify the installed bundle after copy and show the installed path/version.
+  - Add `LoadReasons="LoadOnAutoCADStartup"` to `PackageContents.xml` so `CPHELP`, `CPSETTINGS`, and `CPEXPORT` are available after AutoCAD restart.
+  - Implemented in 0.6.5. Non-quiet EXE shows a success/failure MessageBox and includes batch installer output in failure details.
+  - Static tests now require `LoadReasons="LoadOnAutoCADStartup"` in `PackageContents.xml`.
 
 ## Tests And Quality Gates
 

@@ -44,6 +44,11 @@ releases/CadPoints_LT_Plugin_vX_Y_Z.exe
 
 The generated EXE extracts the embedded payload to `%TEMP%`, runs `install_windows.bat`, then cleans up the temporary folder.
 
+In non-quiet mode it must show a Windows message box:
+
+- success: installed path, installed version, and restart/`CPHELP` instruction,
+- failure: exception message plus captured `install_windows.bat` stdout/stderr.
+
 Supported quiet argument:
 
 ```text
@@ -149,6 +154,13 @@ Result:
 ```text
 (setq *cadpoints-version* "0.6.4")
 ```
+
+Follow-up from user testing:
+
+- 0.6.4 did not show a visible success confirmation when double-clicked.
+- 0.6.4 installed files but `CPHELP` was still unknown after launching AutoCAD, so the bundle manifest needed an explicit startup load reason.
+- 0.6.5 adds `LoadReasons="LoadOnAutoCADStartup"` to `PackageContents.xml`.
+- 0.6.5 EXE adds visible success/failure `MessageBox` output in non-quiet mode.
 
 ## Release Hygiene
 

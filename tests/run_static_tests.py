@@ -297,8 +297,15 @@ for token in ["package_version", "validate_bundle", "create_zip", "--package-onl
     if token not in wrapper_text:
         errors.append(f"Missing token in release wrapper: {token}")
 
+package_text = package.read_text(encoding="utf-8")
+for token in [
+    'LoadReasons="LoadOnAutoCADStartup"',
+]:
+    if token not in package_text:
+        errors.append(f"Missing token in PackageContents.xml: {token}")
+
 installer_exe_wrapper_text = installer_exe_wrapper.read_text(encoding="utf-8")
-for token in ["Resolve-CSharpCompiler", "CadPoints_payload.zip", "CadPointsInstaller.cs", "CadPoints_LT_Plugin_v$versionSlug.exe"]:
+for token in ["Resolve-CSharpCompiler", "CadPoints_payload.zip", "CadPointsInstaller.cs", "CadPoints_LT_Plugin_v$versionSlug.exe", "MessageBox.Show", "ReadInstalledVersion"]:
     if token not in installer_exe_wrapper_text:
         errors.append(f"Missing token in installer EXE wrapper: {token}")
 
