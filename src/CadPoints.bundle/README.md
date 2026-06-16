@@ -5,7 +5,7 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 ## Version
 
 ```text
-0.6.3
+0.6.4
 ```
 
 ## Supported AutoCAD
@@ -35,7 +35,9 @@ or, for all users:
 
 Restart AutoCAD LT.
 
-For the release ZIP, double-click `install_windows.bat` in the archive root.
+For the recommended `.exe` installer, download and run `CadPoints_LT_Plugin_vX_Y_Z.exe`.
+
+For the release ZIP fallback, double-click `install_windows.bat` in the archive root.
 In the source repository, the installer script lives in `scripts\install_windows.bat`.
 
 For developer notes, build/release instructions, and the runtime test workflow, see:

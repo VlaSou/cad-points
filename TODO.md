@@ -100,7 +100,7 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - The generated autoinstaller ZIPs are tracked in `releases/` for easy download from the repository.
 
 - [x] Add a README download shortcut to the latest release ZIP.
-  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_3.zip`.
+  - Root README and Czech README now link directly to `releases/CadPoints_LT_Plugin_v0_6_4.exe` and `releases/CadPoints_LT_Plugin_v0_6_4.zip`.
 
 - [ ] Add optional `.cuix` support for a ready-made ribbon panel.
   - The current install flow works without admin rights, but the user still has to create or load a panel manually.
@@ -114,6 +114,22 @@ CadPoints is currently a compact AutoCAD LT bundle project with editable bundle 
   - Keep `install_windows.bat` at the release ZIP root next to `CadPoints.bundle`, not inside the bundle.
   - Treat MSI as a later enterprise/deployment target, not the immediate default.
   - Keep the current release ZIP and `.bat` installer as the interim low-friction path until the executable installer exists.
+
+- [x] Implement a self-contained Windows `.exe` installer.
+  - Use the local .NET Framework C# compiler for the first implementation to avoid adding WiX/Inno/NSIS as a project dependency.
+  - Package the generated `dist/CadPoints.bundle` payload together with `install_windows.bat`.
+  - The EXE should auto-run `install_windows.bat` after extraction and install into `%APPDATA%\Autodesk\ApplicationPlugins`.
+  - Add `pnpm build:installer-exe` and release/static checks for the generated `.exe`.
+  - Bump SemVer before publishing the first EXE artifact because version 0.6.3 has already been committed.
+  - Implemented `scripts/build_installer_exe.ps1`, `tests/test_installer_exe.py`, and `releases/CadPoints_LT_Plugin_v0_6_4.exe`.
+  - Verified `py -3 tests/test_installer_exe.py` checks the generated EXE header and artifact size.
+  - Rejected IExpress after local testing produced `LoadString() Error. Could not load string resource.`; the current builder compiles a small .NET Framework C# installer instead.
+  - 2026-06-16 quiet EXE verification passed: `releases\CadPoints_LT_Plugin_v0_6_4.exe /Q` installed CadPoints 0.6.4 into `%APPDATA%\Autodesk\ApplicationPlugins`.
+
+- [x] Verify the generated `.exe` installer end-to-end from Explorer or quiet command-line mode.
+  - Confirmed quiet mode installs `CadPoints.bundle` into `%APPDATA%\Autodesk\ApplicationPlugins`.
+  - Confirm AutoCAD LT loads the installed bundle without the unsigned test-helper prompt when using `cadpoints_runtime_smoke.scr`.
+  - Keep MSI as a later enterprise packaging target only if the EXE installer proves insufficient.
 
 ## Tests And Quality Gates
 

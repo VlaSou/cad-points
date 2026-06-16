@@ -18,8 +18,10 @@ requirements_doc = repo_root / ".agents" / "requirements.md"
 package_json = repo_root / "package.json"
 version_script = repo_root / "scripts" / "version.py"
 release_wrapper = repo_root / "scripts" / "release.py"
+installer_exe_wrapper = repo_root / "scripts" / "build_installer_exe.ps1"
 diagnostics_script = repo_root / "scripts" / "diagnostics.py"
 release_zip_test = repo_root / "tests" / "test_release_zip.py"
+installer_exe_test = repo_root / "tests" / "test_installer_exe.py"
 runtime_checklist = repo_root / "docs" / "runtime-test-checklist.md"
 agents_base = repo_root / ".agents" / "base.md"
 agents_development = repo_root / ".agents" / "development.md"
@@ -43,8 +45,10 @@ for required_path in [
     package_json,
     version_script,
     release_wrapper,
+    installer_exe_wrapper,
     diagnostics_script,
     release_zip_test,
+    installer_exe_test,
     runtime_checklist,
     agents_base,
     agents_development,
@@ -244,6 +248,8 @@ else:
         "version:major": "py -3 scripts/version.py major",
         "package:dist": "py -3 scripts/release.py --package-only",
         "build:autoinstaller": "py -3 scripts/release.py",
+        "build:installer-exe": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_installer_exe.ps1",
+        "installer-exe:check": "py -3 tests/test_installer_exe.py",
         "build": "pnpm build:autoinstaller",
         "release:check": "py -3 scripts/release.py --check",
         "release": "pnpm build:autoinstaller",
@@ -276,6 +282,11 @@ wrapper_text = release_wrapper.read_text(encoding="utf-8")
 for token in ["package_version", "validate_bundle", "create_zip", "--package-only"]:
     if token not in wrapper_text:
         errors.append(f"Missing token in release wrapper: {token}")
+
+installer_exe_wrapper_text = installer_exe_wrapper.read_text(encoding="utf-8")
+for token in ["Resolve-CSharpCompiler", "CadPoints_payload.zip", "CadPointsInstaller.cs", "CadPoints_LT_Plugin_v$versionSlug.exe"]:
+    if token not in installer_exe_wrapper_text:
+        errors.append(f"Missing token in installer EXE wrapper: {token}")
 
 for filename in ["example_test.dxf", "create_example_test.scr", "cadpoints_smoke_test.lsp", "cadpoints_runtime_smoke.scr", "cadpoints_runtime_smoke_test.lsp", "expected_output.csv", "README_TEST.md"]:
     if not (test_dir / filename).exists():

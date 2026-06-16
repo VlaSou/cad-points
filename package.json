@@ -1,6 +1,6 @@
 {
   "name": "@vlasou/cad-points",
-  "version": "0.6.3",
+  "version": "0.6.4",
   "description": "CadPoints AutoCAD LT bundle for exporting and annotating coordinate points.",
   "license": "UNLICENSED",
   "private": false,
@@ -15,6 +15,8 @@
     "version:major": "py -3 scripts/version.py major",
     "package:dist": "py -3 scripts/release.py --package-only",
     "build:autoinstaller": "py -3 scripts/release.py",
+    "build:installer-exe": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_installer_exe.ps1",
+    "installer-exe:check": "py -3 tests/test_installer_exe.py",
     "build": "pnpm build:autoinstaller",
     "release:check": "py -3 scripts/release.py --check",
     "release": "pnpm build:autoinstaller"

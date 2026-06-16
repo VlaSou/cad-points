@@ -7,18 +7,24 @@ Tato verze je připravená pro Windows a pro podporu AutoCAD LT 2026.1.1 (`W.164
 ## Verze
 
 ```text
-0.6.3
+0.6.4
 ```
 
 ## Stáhnout
 
-Poslední release ZIP:
+Doporučený Windows instalátor:
 
-- [`CadPoints_LT_Plugin_v0_6_3.zip`](releases/CadPoints_LT_Plugin_v0_6_3.zip)
+- [`CadPoints_LT_Plugin_v0_6_4.exe`](releases/CadPoints_LT_Plugin_v0_6_4.exe)
+
+Záložní release ZIP:
+
+- [`CadPoints_LT_Plugin_v0_6_4.zip`](releases/CadPoints_LT_Plugin_v0_6_4.zip)
 
 ## Rychlá instalace ve Windows
 
-Nejjednodušší způsob je použít připravený `install_windows.bat`. Nepotřebuje administrátorská práva.
+Nejjednodušší způsob je použít připravený `.exe` instalátor. Nepotřebuje administrátorská práva.
+
+ZIP fallback pořád obsahuje `install_windows.bat`.
 V release ZIPu je tento soubor v kořenové složce vedle `CadPoints.bundle`.
 Instalátor záměrně není uvnitř `CadPoints.bundle`, aby bundle zůstal čistý AutoCAD plugin payload.
 Ve zdrojovém repozitáři je instalační skript v `scripts\install_windows.bat`.
@@ -68,8 +74,8 @@ docs/settings.md
 ```
 
 Release poznámka: před každým releasem zvedni verzi přes `pnpm version:patch` (nebo `minor`/`major` podle potřeby) a srovnej verzi ve všech verzovaných souborech ještě před spuštěním balíčkovacích skriptů.
-Balíčkové příkazy přes pnpm: `pnpm check`, `pnpm package:dist`, `pnpm build:autoinstaller`, `pnpm release`, `pnpm release:check`.
-`pnpm package:dist` připraví payload pro npm/GitHub Packages do `dist/`, `pnpm build:autoinstaller` a `pnpm release` vytvoří ZIP pro autoinstalátor v `releases/`.
+Balíčkové příkazy přes pnpm: `pnpm check`, `pnpm package:dist`, `pnpm build:autoinstaller`, `pnpm build:installer-exe`, `pnpm installer-exe:check`, `pnpm release`, `pnpm release:check`.
+`pnpm package:dist` připraví payload pro npm/GitHub Packages do `dist/`, `pnpm build:autoinstaller` a `pnpm release` vytvoří ZIP pro autoinstalátor v `releases/`, `pnpm build:installer-exe` vytvoří samostatný Windows `.exe` instalátor.
 
 ### Co když se nic nenačte
 

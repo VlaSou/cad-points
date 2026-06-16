@@ -5,14 +5,18 @@ LT-compatible AutoLISP bundle for exporting named point coordinates from selecte
 ## Version
 
 ```text
-0.6.3
+0.6.4
 ```
 
 ## Download
 
-Latest release ZIP:
+Recommended Windows installer:
 
-- [`CadPoints_LT_Plugin_v0_6_3.zip`](releases/CadPoints_LT_Plugin_v0_6_3.zip)
+- [`CadPoints_LT_Plugin_v0_6_4.exe`](releases/CadPoints_LT_Plugin_v0_6_4.exe)
+
+Fallback release ZIP:
+
+- [`CadPoints_LT_Plugin_v0_6_4.zip`](releases/CadPoints_LT_Plugin_v0_6_4.zip)
 
 ## Supported AutoCAD
 
@@ -21,7 +25,9 @@ Latest release ZIP:
 
 ## Installation
 
-For the release ZIP, double-click `install_windows.bat` in the archive root.
+For the recommended `.exe` installer, download and run `CadPoints_LT_Plugin_vX_Y_Z.exe`.
+
+For the release ZIP fallback, double-click `install_windows.bat` in the archive root.
 
 If you work from the repository checkout, the source installer lives in `scripts\install_windows.bat`.
 
@@ -59,8 +65,8 @@ docs/settings.md
 ```
 
 Release note: bump the version before each release with `pnpm version:patch` (or `minor`/`major` as appropriate) and keep the versioned files in sync before running the packaging scripts.
-pnpm-first package commands are available via `pnpm check`, `pnpm package:dist`, `pnpm build:autoinstaller`, `pnpm release`, and `pnpm release:check`.
-Use `pnpm package:dist` to prepare the npm/GitHub Packages payload in `dist/`, and `pnpm build:autoinstaller` or `pnpm release` to create the installer ZIP in `releases/`.
+pnpm-first package commands are available via `pnpm check`, `pnpm package:dist`, `pnpm build:autoinstaller`, `pnpm build:installer-exe`, `pnpm installer-exe:check`, `pnpm release`, and `pnpm release:check`.
+Use `pnpm package:dist` to prepare the npm/GitHub Packages payload in `dist/`, `pnpm build:autoinstaller` or `pnpm release` to create the installer ZIP in `releases/`, and `pnpm build:installer-exe` to create the self-contained Windows installer.
 
 ## Commands
 

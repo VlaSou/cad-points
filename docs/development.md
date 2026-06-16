@@ -37,12 +37,15 @@ This repository is pnpm-first. Use `pnpm` for package-manager-driven commands:
 pnpm check
 pnpm package:dist
 pnpm build:autoinstaller
+pnpm build:installer-exe
+pnpm installer-exe:check
 pnpm release
 pnpm release:check
 ```
 
 `pnpm package:dist` delegates to `scripts/release.py --package-only` and prepares the npm/GitHub Packages payload in `dist/`.
 `pnpm build:autoinstaller` and `pnpm release` delegate to `scripts/release.py` and build the tracked installer ZIP in `releases/`.
+`pnpm build:installer-exe` delegates to `scripts/build_installer_exe.ps1` and builds the self-contained Windows installer EXE in `releases/`.
 
 The release ZIP is expected to contain:
 
@@ -62,6 +65,8 @@ Already committed release ZIPs are immutable. Do not rebuild or edit a published
 
 Longer term, the preferred user-facing distribution should become a self-contained executable installer, with the release ZIP remaining the build artifact used to produce it. Treat MSI as a later enterprise/deployment target, not the immediate default for this lightweight plugin.
 
+The first `.exe` installer uses the local .NET Framework C# compiler so the repository can build a self-extracting installer without adding WiX/Inno/NSIS dependencies. The `.exe` payload contains `CadPoints.bundle` and `install_windows.bat`, then auto-runs the batch installer after extraction. IExpress was rejected for this project because local testing produced a `LoadString() Error. Could not load string resource.` dialog.
+
 Before each release:
 
 1. Bump the version with the SemVer script from `package.json`:
@@ -73,7 +78,9 @@ Before each release:
 4. Run `python tests/run_static_tests.py`.
 5. Run `python scripts/release.py --package-only` if you need the npm/GitHub Packages payload.
 6. Run `python scripts/release.py` for the autoinstaller ZIP.
-7. Verify the ZIP name and contents before publishing.
+7. Run `pnpm build:installer-exe` for the self-contained Windows installer.
+8. Run `pnpm installer-exe:check`.
+9. Verify the ZIP/EXE names and contents before publishing.
 
 If `dist/CadPoints.bundle` is locked by an editor or preview pane, the build script falls back to a temporary staging copy so the ZIP can still be created. For a clean `dist` refresh, close anything that is holding files open and rerun the build.
 
