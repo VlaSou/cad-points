@@ -28,6 +28,7 @@ agents_development = repo_root / ".agents" / "development.md"
 agents_test = repo_root / ".agents" / "test.md"
 agents_verification = repo_root / ".agents" / "verification.md"
 agents_autocad = repo_root / ".agents" / "autocad.md"
+agents_executable = repo_root / ".agents" / "executable.md"
 
 errors = []
 for required_path in [
@@ -55,6 +56,7 @@ for required_path in [
     agents_test,
     agents_verification,
     agents_autocad,
+    agents_executable,
 ]:
     if not required_path.exists():
         errors.append(f"Missing required path: {required_path.relative_to(repo_root)}")
@@ -211,6 +213,18 @@ for token in [
 ]:
     if token not in agents_autocad_text:
         errors.append(f"Missing token in AutoCAD agent notes: {token}")
+
+agents_executable_text = agents_executable.read_text(encoding="utf-8")
+for token in [
+    "scripts/build_installer_exe.ps1",
+    "tests/test_installer_exe.py",
+    "IExpress was tested and rejected",
+    "LoadString() Error",
+    "csc.exe",
+    "CadPoints_LT_Plugin_vX_Y_Z.exe",
+]:
+    if token not in agents_executable_text:
+        errors.append(f"Missing token in executable agent notes: {token}")
 
 runtime_checklist_text = runtime_checklist.read_text(encoding="utf-8")
 for token in [

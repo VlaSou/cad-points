@@ -6,6 +6,7 @@ Related runbooks:
 
 - `base.md` for baseline AI coding-agent rules
 - `test.md` for static validation and runtime smoke-test workflow
+- `executable.md` for self-contained Windows EXE installer findings
 - `verification.md` for the full local clone/install/AutoCAD verification flow
 
 ## Project Summary
@@ -18,6 +19,7 @@ CadPoints is an AutoCAD LT compatible `.bundle` plugin for extracting, naming, l
 - Canonical editable bundle source: `src/CadPoints.bundle`
 - Generated package payload / staging output: `dist/CadPoints.bundle`
 - Autoinstaller ZIP output: `releases/CadPoints_LT_Plugin_vX_Y_Z.zip` (tracked in Git)
+- Self-contained EXE output: `releases/CadPoints_LT_Plugin_vX_Y_Z.exe` (tracked in Git)
 - Agent runbooks: `.agents/`
 
 ## Target Environment
@@ -232,19 +234,23 @@ Current pnpm-first entrypoints:
 pnpm check
 pnpm package:dist
 pnpm build:autoinstaller
+pnpm build:installer-exe
+pnpm installer-exe:check
 pnpm release
 pnpm release:check
 ```
 
 `pnpm package:dist` delegates to `scripts/release.py --package-only` and prepares the npm/GitHub Packages payload in `dist/`.
 `pnpm build:autoinstaller` and `pnpm release` delegate to `scripts/release.py` and build the tracked installer ZIP in `releases/`.
+`pnpm build:installer-exe` delegates to `scripts/build_installer_exe.ps1` and builds the tracked self-contained EXE in `releases/`.
 
 ## Installer Notes
 
 - Primary user-level installer: `scripts/install_windows.bat`
+- Self-contained EXE builder: `scripts/build_installer_exe.ps1`
 - Installation path: `%APPDATA%\Autodesk\ApplicationPlugins\CadPoints.bundle`
 - No admin rights should be required for the default install path.
-- Long-term distribution target: a self-contained executable installer. Use the release ZIP as the intermediate artifact until that exists.
+- Preferred user-facing distribution target: the self-contained `.exe` installer. Keep the release ZIP as fallback and intermediate artifact.
 
 ## Maintenance Rules
 

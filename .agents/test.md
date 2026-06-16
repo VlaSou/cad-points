@@ -6,6 +6,7 @@ Related runbooks:
 
 - `base.md` for baseline AI coding-agent rules
 - `development.md` for implementation and packaging guidance
+- `executable.md` for self-contained Windows EXE installer validation
 - `verification.md` for the full local clone/install/AutoCAD verification flow
 
 ## Scope
@@ -28,9 +29,11 @@ scripts/build_release.py
 scripts/release.py
 scripts/version.py
 scripts/install_windows.bat
+scripts/build_installer_exe.ps1
 tests/run_static_tests.py
 tests/test_install_windows.py
 tests/test_release_zip.py
+tests/test_installer_exe.py
 src/CadPoints.bundle/PackageContents.xml
 src/CadPoints.bundle/Contents/LISP/cadpoints.lsp
 src/CadPoints.bundle/Contents/Test/example_test.dxf
@@ -68,6 +71,7 @@ Prepare the package payload and build the autoinstaller:
 ```text
 py -3 scripts/release.py --package-only
 py -3 scripts/release.py
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/build_installer_exe.ps1
 ```
 
 Or use the pnpm entrypoint:
@@ -75,6 +79,8 @@ Or use the pnpm entrypoint:
 ```text
 pnpm package:dist
 pnpm build:autoinstaller
+pnpm build:installer-exe
+pnpm installer-exe:check
 pnpm release
 ```
 
@@ -82,6 +88,7 @@ Expected ZIP:
 
 ```text
 releases/CadPoints_LT_Plugin_vX_Y_Z.zip
+releases/CadPoints_LT_Plugin_vX_Y_Z.exe
 ```
 
 The archive must contain:
@@ -95,6 +102,12 @@ install_windows.bat
 The archive must not wrap the bundle in an extra parent folder.
 
 Treat `dist/` as generated package payload / staging output for npm/GitHub Packages and `releases/` as the tracked user-facing autoinstaller artifact output.
+
+The EXE installer should pass:
+
+```text
+py -3 tests/test_installer_exe.py
+```
 
 ## Local Install Validation
 

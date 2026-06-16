@@ -121,6 +121,7 @@ The `.agents/` folder is part of the repository documentation surface for local 
 .agents/development.md
 .agents/test.md
 .agents/requirements.md
+.agents/executable.md
 .agents/verification.md
 .agents/autocad.md
 ```
